@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Model Canvas — Dairy Runway Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Dairy Runway Program palette, v2: --accent is the exact navy sampled from the real
+     "Dairy Innovation" logo the user provided (#315784) — the earlier green guess was wrong,
+     the real brand is a single-hue blue. Evidence-tier colors (--tier-partial, --good) are
+     kept deliberately BRAND-INDEPENDENT (amber/green, same as the universal Rev version) —
+     the on-canvas red→amber→green "stoplight" reads correctly regardless of brand hue, so it
+     no longer doubles as the brand accent the way the green version accidentally did. */
+  --ink:        #1e2733;
+  --paper:      #ffffff;
+  --panel:      #ffffff;
+  --tint-teal:  #dce7f3;
+  --tint-orange:#e8eff7;
+  --rule:       #d7dee6;
+  --muted:      #76838f;
+  --accent:     #315784;
+  --accent-deep:#22405f;
+  --teal:       #4a79ac;
+  --teal-deep:  #2c4f76;
+  --slate:      #4f6478;
+  --warn:       #c0392b;
+  --warn-tint:  #fdecea;
+  --tier-partial:     #d99a3a;
+  --tier-partial-tint:#fbf0dc;
+  --tier-partial-deep:#b97f28;
+  --good:       #3f8f4f;
+  --good-tint:  #e7f3e9;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f5f8fb;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.wordmark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.logo-img { height: 34px; width: auto; display: block; }
+header .tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+header .backlink { font-size: 13px; color: var(--slate); text-decoration: none; }
+header .backlink:hover { color: var(--accent-deep); }
+
+.mockup-banner {
+  background: var(--teal-deep);
+  color: #fff;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 8px 16px;
+}
+
+main { max-width: 1760px; margin: 0 auto; padding: 36px 48px 90px; }
+
+.title-block { margin-bottom: 24px; }
+.eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); display: inline-block; }
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.lede { font-size: 15px; line-height: 1.6; color: #3c4650; max-width: 68ch; }
+
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid var(--rule);
+  background: white;
+  color: var(--ink);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.tb-btn:hover { transform: translateY(-1px); }
+.tb-btn.primary { background: var(--ink); color: white; border-color: var(--ink); }
+.tb-btn.save:hover { border-color: var(--teal); }
+.tb-btn.load:hover { border-color: var(--teal); }
+.tb-btn.pdf:hover { border-color: var(--accent); }
+.tb-btn.word:hover { border-color: var(--accent); }
+.tb-spacer { flex: 1; }
+.tb-status { font-size: 11.5px; color: var(--muted); font-style: italic; }
+
+/* ── EXPORT (bottom of page) ── */
+.export-section {
+  margin-top: 10px;
+  padding-top: 24px;
+  border-top: 1.5px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.export-section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── AUTOSAVE RESTORE BANNER ── */
+.restore-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--tint-orange);
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+.restore-banner span { flex: 1; }
+.restore-banner button {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1.5px solid var(--rule);
+  background: white;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.restore-banner button.primary { background: var(--ink); color: white; border-color: var(--ink); }
+
+/* ── TABS ── */
+.tabbar {
+  display: flex;
+  gap: 6px;
+  background: var(--tint-teal);
+  border-radius: 999px;
+  padding: 4px;
+}
+.tab-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--teal-deep);
+  cursor: pointer;
+}
+.tab-btn.active { background: var(--teal-deep); color: white; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── META GRID ── */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.meta-field label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.meta-field input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: #fbfbfa;
+}
+.meta-field input:focus { outline: none; border-color: var(--accent); background: white; }
+
+/* ── CANVAS GRID ── */
+.canvas-wrap {
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.canvas-top {
+  display: grid;
+  grid-template-columns: 1.1fr 1.1fr 1.3fr 1.1fr 1.1fr;
+}
+.canvas-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1.5px solid var(--ink);
+}
+.canvas-col {
+  display: flex;
+  flex-direction: column;
+  border-right: 1.5px solid var(--ink);
+}
+.canvas-top > .canvas-col:last-child,
+.canvas-bottom > .canvas-col:last-child { border-right: none; }
+.canvas-split { display: flex; flex-direction: column; flex: 1; }
+.canvas-split > .block:first-child { border-bottom: 1.5px solid var(--ink); }
+/* Split-column blocks (e.g. Customer Relationships / Channels stacked in one column) must
+   size to their OWN content instead of each claiming a forced equal 50% share — otherwise
+   a block with more notes than its sibling gets squeezed below its real content height
+   (flex's min-height protection is defeated by the explicit min-height below) and its
+   overflow:visible content visually spills into the neighboring block underneath it. */
+.canvas-split > .block { flex: 0 0 auto; }
+
+.block {
+  flex: 1;
+  padding: 14px 14px 16px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+.canvas-bottom .block { min-height: 160px; }
+.block-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.block-head svg { width: 17px; height: 17px; stroke: var(--accent-deep); flex-shrink: 0; }
+.block-head .block-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.notes-list { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.note-card {
+  position: relative;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--rule);
+  border-radius: 6px;
+  padding: 9px 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.note-card.tier-untested  { background: var(--warn-tint); border-left-color: var(--warn); }
+.note-card.tier-partial   { background: var(--tier-partial-tint); border-left-color: var(--tier-partial); }
+.note-card.tier-validated { background: var(--good-tint); border-left-color: var(--good); }
+.note-card textarea {
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  padding-right: 20px;
+}
+.note-card textarea:focus { outline: none; }
+.note-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+.note-remove:hover { color: var(--warn); }
+.note-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 7px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--tier-partial);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  width: fit-content;
+}
+.note-badge:hover { background: var(--tier-partial-deep); }
+.note-badge.tier-validated { background: var(--good); }
+.note-badge.tier-validated:hover { background: #2f6b3c; }
+.note-status-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 7px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--warn);
+  width: fit-content;
+}
+
+.evidence-legend {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  font-size: 11.5px;
+  color: var(--slate);
+}
+.evidence-legend .lg-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.evidence-legend .lg-item { display: flex; align-items: center; gap: 6px; }
+.evidence-legend .lg-swatch { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+.evidence-legend .lg-swatch.untested  { background: var(--warn); }
+.evidence-legend .lg-swatch.partial   { background: var(--tier-partial); }
+.evidence-legend .lg-swatch.validated { background: var(--good); }
+
+.btn-add-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px dashed var(--teal);
+  background: white;
+  color: var(--teal-deep);
+  transition: border-style 0.15s, transform 0.15s;
+  width: fit-content;
+}
+.btn-add-note:hover { border-style: solid; transform: translateY(-1px); }
+
+@media (max-width: 1100px) {
+  .canvas-top { grid-template-columns: 1fr; }
+  .canvas-bottom { grid-template-columns: 1fr; }
+  .canvas-col { border-right: none; border-bottom: 1.5px solid var(--ink); }
+  .canvas-split > .block:first-child { border-bottom: 1.5px solid var(--ink); }
+}
+
+/* ── INTERVIEW LOG ── */
+.filter-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: var(--tint-teal);
+  border: 1.5px solid var(--teal);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: var(--teal-deep);
+}
+.filter-banner.active { display: flex; }
+.filter-banner strong { color: var(--ink); }
+.filter-banner .clear-filter {
+  margin-left: auto;
+  border: none;
+  background: var(--teal-deep);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.interview-card {
+  background: var(--panel);
+  border: 1.5px solid var(--rule);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.interview-card[open] { margin-bottom: 18px; }
+.interview-card > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.interview-card > summary::-webkit-details-marker { display: none; }
+.iv-chevron {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+.interview-card[open] .iv-chevron { transform: rotate(45deg); }
+.iv-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.iv-summary-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.iv-summary-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; }
+.iv-summary-meta { font-size: 12px; color: var(--muted); }
+.iv-summary-linked {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--teal-deep);
+  background: var(--tint-teal);
+  padding: 2px 9px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.btn-remove-interview {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.btn-remove-interview:hover { color: var(--warn); }
+.iv-body { padding: 0 22px 20px; }
+.log-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.log-toolbar .btn-fold {
+  border: 1.5px solid var(--rule);
+  background: white;
+  color: var(--slate);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.log-toolbar .btn-fold:hover { border-color: var(--teal); }
+.log-count { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+/* ── MORE INFO (collapsible disclosure, used for section-level context) ── */
+.more-info { margin-bottom: 16px; }
+.more-info summary {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--teal-deep);
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+.more-info summary::-webkit-details-marker { display: none; }
+.more-info summary::before { content: '▸'; font-size: 10px; transition: transform 0.15s ease; }
+.more-info[open] summary::before { transform: rotate(90deg); }
+.more-info .disclaimer { margin-top: 8px; }
+.csv-spec-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px; }
+.csv-spec-table th, .csv-spec-table td { border: 1px solid var(--rule); padding: 6px 9px; text-align: left; vertical-align: top; }
+.csv-spec-table th { background: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.csv-spec-table code { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; background: #fff; padding: 1px 5px; border-radius: 3px; }
+
+.iv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.iv-field label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.iv-field input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  background: #fbfbfa;
+}
+.iv-field input:focus { outline: none; border-color: var(--accent); background: white; }
+
+.iv-takeaways { margin-bottom: 16px; }
+.iv-takeaways label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.iv-takeaways textarea {
+  width: 100%;
+  min-height: 50px;
+  resize: none;
+  overflow: hidden;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: #fbfbfa;
+}
+.iv-takeaways textarea:focus { outline: none; border-color: var(--accent); background: white; }
+
+.iv-links-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.iv-links-groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.iv-links-group-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal-deep);
+  margin-bottom: 5px;
+}
+.iv-link-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink);
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+.iv-link-row input { margin-top: 2px; flex-shrink: 0; }
+.iv-no-notes { font-size: 12px; color: var(--muted); font-style: italic; }
+
+.btn-add-interview {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px dashed var(--teal);
+  background: white;
+  color: var(--teal-deep);
+}
+.btn-add-interview:hover { border-style: solid; transform: translateY(-1px); }
+.empty-interviews {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-style: italic;
+}
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  font-size: 13px;
+  color: #3c4650;
+  line-height: 1.65;
+  background: var(--tint-teal);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-top: 10px;
+}
+.disclaimer strong { color: var(--ink); }
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 22px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--accent-deep); }
+
+/* ── PRINT-ONLY DOC ── */
+#print-doc { display: none; }
+@media print {
+  body * { visibility: hidden; }
+  #print-doc, #print-doc * { visibility: visible; }
+  #print-doc {
+    display: block !important;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+  }
+  @page { size: 8.5in 11in; margin: 0.65in; }
+}
+.pw-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #222;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+.pw-logo { height: 30px; }
+.pw-header-meta { text-align: right; font-size: 10.5px; color: #666; font-family: 'Inter', sans-serif; }
+.pw-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 16px; color: #111; }
+.pw-meta-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 18px; }
+.pw-meta-table td { padding: 5px 6px; border-bottom: 1px solid #e5e5e5; }
+.pw-meta-table td.k { font-weight: 700; width: 150px; color: #333; }
+.pw-band {
+  background: #2c4f76; color: #fff; font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 12px; padding: 6px 10px; margin: 16px 0 8px;
+  border-radius: 3px;
+}
+.pw-note { margin-bottom: 6px; padding: 4px 8px; border-left: 3px solid #ccc; page-break-inside: avoid; font-size: 11px; color: #333; }
+.pw-note.tier-untested  { border-left-color: #c0392b; background: #fdecea; }
+.pw-note.tier-partial   { border-left-color: #d99a3a; background: #fbf0dc; }
+.pw-note.tier-validated { border-left-color: #3f8f4f; background: #e7f3e9; }
+.pw-note .badge { display: inline-block; margin-left: 6px; color: #fff; border-radius: 999px; padding: 1px 8px; font-size: 9.5px; font-weight: 700; }
+.pw-note .badge.tier-untested  { background: #c0392b; }
+.pw-note .badge.tier-partial   { background: #d99a3a; }
+.pw-note .badge.tier-validated { background: #3f8f4f; }
+.pw-no-notes { font-size: 10.5px; color: #888; font-style: italic; }
+.pw-iv-table { width: 100%; border-collapse: collapse; font-size: 10.5px; margin-bottom: 10px; }
+.pw-iv-table th, .pw-iv-table td { border: 1px solid #ddd; padding: 5px 7px; text-align: left; vertical-align: top; }
+.pw-iv-table th { background: #f0f0f0; }
+.pw-footer { margin-top: 22px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 9.5px; color: #888; }
+</style>
+</head>
+<body>
+
+<div id="print-doc"></div>
+
+<header>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <a class="wordmark" href="https://dairyinnovation.org/dairy-runway-program/" target="_blank" rel="noopener">
+      <img class="logo-img" src="images/dairy-innovation-logo.png" alt="Dairy Innovation — Dairy Runway">
+    </a>
+    <a class="backlink" href="https://dairyinnovation.org/" target="_blank" rel="noopener">&larr; dairyinnovation.org</a>
+    <div class="tag">Business Model Canvas</div>
+  </div>
+</header>
+
+<div class="mockup-banner">Concept mockup &mdash; styled for the Dairy Runway Program, not an official Cornell/CREA tool or an endorsed deliverable.</div>
+
+<main>
+  <div class="restore-banner" id="restoreBanner" style="display:none;">
+    <span id="restoreBannerText"></span>
+    <button type="button" class="primary" id="btn-restore-autosave">Restore</button>
+    <button type="button" id="btn-dismiss-autosave">Discard</button>
+  </div>
+
+  <div class="title-block">
+    <div class="eyebrow">Dairy Runway Program</div>
+    <h1>Business Model Canvas &amp; Interview Log</h1>
+    <p class="lede">
+      Log your current business model one assumption at a time, then tie each note back to the customer interviews that actually support it &mdash; the same customer-discovery discipline behind the NSF I-Corps model the Dairy Runway Program is built on. A note's interview count is calculated for you &mdash; it only goes up when you link a real interview to it.
+    </p>
+  </div>
+
+  <div class="toolbar">
+    <div class="tabbar">
+      <button class="tab-btn active" id="tab-btn-canvas">Canvas</button>
+      <button class="tab-btn" id="tab-btn-interviews">Interview Log</button>
+    </div>
+    <div class="tb-spacer"></div>
+    <span class="tb-status" id="wfFileStatus">No file open</span>
+    <button class="tb-btn load" id="btn-open">&#128193; Open (.docx)</button>
+    <input type="file" id="wfOpenInputFallback" accept=".docx" style="display:none">
+    <button class="tb-btn primary" id="btn-save">&#128190; Save</button>
+    <button class="tb-btn" id="btn-save-as">Save As&hellip;</button>
+  </div>
+
+  <div class="meta-grid" id="meta-grid"></div>
+
+  <!-- ── CANVAS VIEW ── -->
+  <div class="view active" id="view-canvas">
+    <div class="evidence-legend">
+      <span class="lg-label">Evidence level</span>
+      <span class="lg-item"><span class="lg-swatch untested"></span>No interviews yet &mdash; untested, prioritize these</span>
+      <span class="lg-item"><span class="lg-swatch partial"></span>1&ndash;9 interviews &mdash; partially validated</span>
+      <span class="lg-item"><span class="lg-swatch validated"></span>10+ interviews &mdash; validated</span>
+      <span style="color: var(--muted);">Notes within each block are sorted least- to most-validated.</span>
+    </div>
+    <div class="canvas-wrap">
+      <div class="canvas-top" id="canvas-top"></div>
+      <div class="canvas-bottom" id="canvas-bottom"></div>
+    </div>
+  </div>
+
+  <!-- ── INTERVIEW LOG VIEW ── -->
+  <div class="view" id="view-interviews">
+    <div class="filter-banner" id="filter-banner">
+      <span>Showing interviews linked to: <strong id="filter-banner-text"></strong></span>
+      <button class="clear-filter" id="btn-clear-filter">Clear filter</button>
+    </div>
+    <div class="log-toolbar">
+      <button type="button" class="btn-fold" id="btn-expand-all">Expand all</button>
+      <button type="button" class="btn-fold" id="btn-collapse-all">Collapse all</button>
+      <button type="button" class="btn-fold" id="btn-import-interviews">&#128228; Import from spreadsheet (.csv)</button>
+      <input type="file" id="import-interviews-input" accept=".csv,text/csv" style="display:none">
+      <span class="log-count" id="log-count"></span>
+    </div>
+
+    <details class="more-info">
+      <summary>Formatting your spreadsheet for import</summary>
+      <div class="disclaimer">
+        Export your spreadsheet as a <strong>.csv</strong> file first &mdash; in Excel or Google Sheets, use File &rarr; Save As / Download &rarr; <strong>Comma Separated Values (.csv)</strong>. This tool reads plain CSV only; it can't open a native <code>.xlsx</code> or Google Sheets file directly.
+        <br><br>
+        Put one interview per row, with a header row using these column names (any order is fine, and extra columns you don't need are simply ignored):
+        <table class="csv-spec-table">
+          <thead><tr><th>Column header</th><th>Required?</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>Customer Name</code></td><td>Required</td><td>Also recognized as "Name" or "Interviewee".</td></tr>
+            <tr><td><code>Company</code></td><td>Optional</td><td>&mdash;</td></tr>
+            <tr><td><code>Date</code></td><td>Optional</td><td>Any text is fine &mdash; it's stored as-is, not parsed as a calendar date.</td></tr>
+            <tr><td><code>Segment</code></td><td>Optional</td><td>The customer segment this interviewee represents.</td></tr>
+            <tr><td><code>Key Takeaways</code></td><td>Optional</td><td>Also recognized as "Takeaways" or "Notes".</td></tr>
+          </tbody>
+        </table>
+        Imported interviews start <strong>unlinked</strong> to every canvas note &mdash; a spreadsheet has no way of telling this tool which BMC assumption each interview actually supports, so that part still has to happen here: open each imported interview and check off the notes it validates under "Linked BMC Notes."
+        <br><br>
+        <button type="button" class="btn-fold" id="btn-download-csv-template">Download a blank template</button>
+      </div>
+    </details>
+
+    <div id="interviews-container"></div>
+    <button class="btn-add-interview" id="btn-add-interview">+ Add Interview</button>
+  </div>
+
+  <div class="disclaimer">
+    <strong>What this tool is:</strong> an unofficial concept mockup styled for the <a href="https://dairyinnovation.org/dairy-runway-program/" target="_blank" rel="noopener">Dairy Runway Program</a> &mdash; a workshop aid for drafting a Business Model Canvas and tracking the customer-interview evidence behind it, in the same customer-discovery spirit as the NSF I-Corps model the program is based on. <strong>This page is not an official Cornell, CREA, or Dairy Runway Program deliverable</strong>, and isn't affiliated with, reviewed by, or endorsed by them &mdash; it's a visual re-skin of a generic workshop tool, built to show what a branded version could look like. The canvas layout is adapted from the <a href="https://www.strategyzer.com/" target="_blank" rel="noopener">Business Model Canvas</a> by Strategyzer AG / Business Model Generation, used under <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>.<br><br>
+    <strong>How linking works:</strong> each canvas note can hold a running list of customer interviews that support it. You add that link from the Interview Log &mdash; check off which notes an interview validates &mdash; and the badge on the canvas note updates automatically. There's no way to hand-type a count; it's always the real number of linked interviews.<br><br>
+    <strong>Your data:</strong> nothing you enter here is uploaded or sent anywhere, including a spreadsheet you import &mdash; it's read directly in your browser tab and never leaves your machine. As a safety net against an accidental refresh or back-navigation, your in-progress work is also autosaved to this browser's local storage (still never leaves your machine) and offered back to you the next time you open this page. Your working file is a real <code>.docx</code> Word document &mdash; use "Save" or "Save As&hellip;" to keep a copy anywhere on your computer, and "Open" to pick back up later. That one file holds your whole canvas, your whole interview log, and all the links between them.
+  </div>
+
+  <div class="export-section">
+    <div class="export-section-title">Export</div>
+    <button class="tb-btn pdf" id="btn-pdf">&#128424; Export PDF</button>
+  </div>
+</main>
+
+<footer>
+  <div>Dairy Runway Program &middot; Cornell Center for Regional Economic Advancement (CREA)</div>
+  <a href="https://dairyinnovation.org/dairy-runway-program/" target="_blank" rel="noopener">dairyinnovation.org/dairy-runway-program &#8599;</a>
+</footer>
+
+<script>
+// ── DATA MODEL ─────────────────────────────────────────────────────────
+const META_FIELDS = [
+  { id: "company_name", label: "Company Name" },
+  { id: "designed_for", label: "Designed For" },
+  { id: "designed_by", label: "Designed By" },
+  { id: "date", label: "Date" },
+  { id: "version", label: "Version" },
+];
+
+const ICONS = {
+  partnerships: '<path d="M8 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M16 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M9.5 9.5 14.5 14.5"/>',
+  activities: '<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>',
+  resources: '<path d="M3 21V9l9-6 9 6v12"/><path d="M8 21v-7h8v7"/><circle cx="12" cy="11" r="1.5"/>',
+  value: '<path d="M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7c-1.5 0-4-1-4-3a2 2 0 0 1 4 0v3Z"/><path d="M12 7c1.5 0 4-1 4-3a2 2 0 0 0-4 0v3Z"/>',
+  relationships: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>',
+  channels: '<rect x="1" y="7" width="13" height="10" rx="1"/><path d="M14 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="17" cy="19" r="1.6"/>',
+  segments: '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/>',
+  cost: '<path d="M20.6 12 13 4.4a2 2 0 0 0-2.8 0L3.4 11.2a2 2 0 0 0 0 2.8l7.6 7.6a2 2 0 0 0 2.8 0l6.8-6.8a2 2 0 0 0 0-2.8Z"/><circle cx="9.5" cy="9.5" r="1.5"/>',
+  revenue: '<path d="M3 10c0-1.5 1-2.5 2.5-2.5h13A2.5 2.5 0 0 1 21 10v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18Z"/><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"/><path d="M12 13v4"/><path d="M10 15h4"/>',
+};
+
+const BLOCKS = [
+  { key: "partnerships",   title: "Key Partnerships",     icon: ICONS.partnerships },
+  { key: "activities",     title: "Key Activities",       icon: ICONS.activities },
+  { key: "resources",      title: "Key Resources",        icon: ICONS.resources },
+  { key: "value",          title: "Value Propositions",   icon: ICONS.value },
+  { key: "relationships",  title: "Customer Relationships",icon: ICONS.relationships },
+  { key: "channels",       title: "Channels",             icon: ICONS.channels },
+  { key: "segments",       title: "Customer Segments",    icon: ICONS.segments },
+  { key: "cost",           title: "Cost Structure",       icon: ICONS.cost },
+  { key: "revenue",        title: "Revenue Streams",      icon: ICONS.revenue },
+];
+
+function blockTitle(key) {
+  const b = BLOCKS.find(b => b.key === key);
+  return b ? b.title : key;
+}
+
+let state = {
+  meta: {},
+  notes: [],
+  interviews: [],
+  nextNoteId: 1,
+  nextInterviewId: 1,
+};
+
+let activeFilterNoteId = null; // when set, Interview Log view is filtered to interviews linked to this note
+let openInterviewIds = new Set(); // which interview cards are expanded, so a re-render doesn't collapse what the user had open
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : str;
+  return div.innerHTML.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function autoResize(ta) {
+  ta.style.height = "auto";
+  ta.style.height = (ta.scrollHeight + 2) + "px";
+}
+
+function linkedCount(noteId) {
+  return state.interviews.filter(iv => iv.linkedNoteIds.includes(noteId)).length;
+}
+
+// Evidence tiers, used to color-code and prioritize notes: 0 interviews = untested
+// (needs attention first), 1-9 = partially validated, 10+ = validated.
+const VALIDATED_THRESHOLD = 10;
+function noteTier(count) {
+  if (count === 0) return "untested";
+  if (count < VALIDATED_THRESHOLD) return "partial";
+  return "validated";
+}
+
+// ── META ─────────────────────────────────────────────────────────────
+const metaGrid = document.getElementById("meta-grid");
+META_FIELDS.forEach(f => {
+  const wrap = document.createElement("div");
+  wrap.className = "meta-field";
+  wrap.innerHTML = `<label for="meta_${f.id}">${f.label}</label><input type="text" id="meta_${f.id}" data-meta="${f.id}">`;
+  metaGrid.appendChild(wrap);
+});
+document.querySelectorAll("[data-meta]").forEach(el => {
+  el.addEventListener("input", () => { state.meta[el.dataset.meta] = el.value; scheduleAutosave(); });
+});
+
+// ── TABS ─────────────────────────────────────────────────────────────
+function showTab(tab) {
+  document.getElementById("view-canvas").classList.toggle("active", tab === "canvas");
+  document.getElementById("view-interviews").classList.toggle("active", tab === "interviews");
+  document.getElementById("tab-btn-canvas").classList.toggle("active", tab === "canvas");
+  document.getElementById("tab-btn-interviews").classList.toggle("active", tab === "interviews");
+}
+document.getElementById("tab-btn-canvas").addEventListener("click", () => showTab("canvas"));
+document.getElementById("tab-btn-interviews").addEventListener("click", () => {
+  activeFilterNoteId = null;
+  showTab("interviews");
+  renderInterviews();
+});
+
+// ── CANVAS RENDER ────────────────────────────────────────────────────
+function addNote(blockKey) {
+  state.notes.push({ id: state.nextNoteId++, block: blockKey, text: "" });
+  renderCanvas();
+  scheduleAutosave();
+}
+
+function removeNote(noteId) {
+  state.notes = state.notes.filter(n => n.id !== noteId);
+  state.interviews.forEach(iv => {
+    iv.linkedNoteIds = iv.linkedNoteIds.filter(id => id !== noteId);
+  });
+  renderCanvas();
+  scheduleAutosave();
+}
+
+function noteCardHtml(note) {
+  const count = linkedCount(note.id);
+  const tier = noteTier(count);
+  const badge = count > 0
+    ? `<button type="button" class="note-badge tier-${tier}" data-jump-note="${note.id}">&#128172; ${count} interview${count === 1 ? "" : "s"}</button>`
+    : `<div class="note-status-flag">&#9888; No interviews yet</div>`;
+  return `
+    <div class="note-card tier-${tier}" data-note-id="${note.id}">
+      <button type="button" class="note-remove" data-remove-note="${note.id}" title="Remove note">&times;</button>
+      <textarea data-note-text="${note.id}" rows="1" placeholder="Add a note&hellip;">${escapeHtml(note.text)}</textarea>
+      ${badge}
+    </div>
+  `;
+}
+
+// Within a block, surface the least-validated hypotheses first (0 interviews, then 1, then
+// 2+) so a founder scanning a block sees what needs evidence most urgently at the top.
+// Ties keep their original note order rather than reshuffling as counts change.
+function sortNotesByEvidence(notes) {
+  return notes
+    .map((n, i) => ({ n, i, count: linkedCount(n.id) }))
+    .sort((a, b) => (a.count - b.count) || (a.i - b.i))
+    .map(x => x.n);
+}
+
+function blockHtml(block) {
+  const notes = sortNotesByEvidence(state.notes.filter(n => n.block === block.key));
+  return `
+    <div class="block" data-block="${block.key}">
+      <div class="block-head">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${block.icon}</svg>
+        <div class="block-title">${block.title}</div>
+      </div>
+      <div class="notes-list" data-notes-list="${block.key}">
+        ${notes.map(noteCardHtml).join("")}
+      </div>
+      <button type="button" class="btn-add-note" data-add-note="${block.key}">+ Add note</button>
+    </div>
+  `;
+}
+
+function renderCanvas() {
+  const topKeys = ["partnerships", "activities|resources", "value", "relationships|channels", "segments"];
+  const top = document.getElementById("canvas-top");
+  top.innerHTML = topKeys.map(k => {
+    if (k.includes("|")) {
+      const [a, b] = k.split("|");
+      const ba = BLOCKS.find(x => x.key === a), bb = BLOCKS.find(x => x.key === b);
+      return `<div class="canvas-col"><div class="canvas-split">${blockHtml(ba)}${blockHtml(bb)}</div></div>`;
+    }
+    const b = BLOCKS.find(x => x.key === k);
+    return `<div class="canvas-col">${blockHtml(b)}</div>`;
+  }).join("");
+
+  const bottom = document.getElementById("canvas-bottom");
+  bottom.innerHTML = ["cost", "revenue"].map(k => {
+    const b = BLOCKS.find(x => x.key === k);
+    return `<div class="canvas-col">${blockHtml(b)}</div>`;
+  }).join("");
+
+  document.querySelectorAll("#canvas-top textarea[data-note-text], #canvas-bottom textarea[data-note-text]").forEach(ta => {
+    autoResize(ta);
+  });
+}
+
+document.addEventListener("click", (e) => {
+  const addNoteKey = e.target.closest("[data-add-note]");
+  if (addNoteKey) { addNote(addNoteKey.dataset.addNote); return; }
+
+  const removeNoteBtn = e.target.closest("[data-remove-note]");
+  if (removeNoteBtn) { removeNote(parseInt(removeNoteBtn.dataset.removeNote, 10)); return; }
+
+  const jumpBtn = e.target.closest("[data-jump-note]");
+  if (jumpBtn) {
+    activeFilterNoteId = parseInt(jumpBtn.dataset.jumpNote, 10);
+    // Open every interview in the filtered set so the founder sees the supporting evidence immediately.
+    state.interviews.forEach(iv => {
+      if (iv.linkedNoteIds.includes(activeFilterNoteId)) openInterviewIds.add(iv.id);
+    });
+    showTab("interviews");
+    renderInterviews();
+    return;
+  }
+
+  if (e.target.id === "btn-clear-filter") {
+    activeFilterNoteId = null;
+    renderInterviews();
+    return;
+  }
+
+  if (e.target.id === "btn-add-interview") {
+    addInterview();
+    return;
+  }
+
+  const removeIv = e.target.closest("[data-remove-interview]");
+  if (removeIv) {
+    e.preventDefault(); // stop the click from also toggling the <details> summary it sits inside
+    removeInterview(parseInt(removeIv.dataset.removeInterview, 10));
+    return;
+  }
+
+  if (e.target.id === "btn-expand-all") {
+    openInterviewIds = new Set(state.interviews.map(iv => iv.id));
+    renderInterviews();
+    return;
+  }
+  if (e.target.id === "btn-collapse-all") {
+    openInterviewIds = new Set();
+    renderInterviews();
+    return;
+  }
+});
+
+// <details>/<summary> toggle doesn't bubble, but capturing listeners still see it on the way down.
+document.addEventListener("toggle", (e) => {
+  const card = e.target.closest && e.target.closest(".interview-card");
+  if (!card) return;
+  const id = parseInt(card.dataset.interviewId, 10);
+  if (card.open) openInterviewIds.add(id);
+  else openInterviewIds.delete(id);
+}, true);
+
+document.addEventListener("input", (e) => {
+  const noteId = e.target.dataset && e.target.dataset.noteText;
+  if (noteId !== undefined) {
+    const note = state.notes.find(n => n.id === parseInt(noteId, 10));
+    if (note) note.text = e.target.value;
+    autoResize(e.target);
+    scheduleAutosave();
+    return;
+  }
+  const ivField = e.target.dataset && e.target.dataset.ivField;
+  if (ivField) {
+    const ivId = parseInt(e.target.dataset.ivId, 10);
+    const iv = state.interviews.find(x => x.id === ivId);
+    if (iv) iv[ivField] = e.target.value;
+    if (e.target.tagName === "TEXTAREA") autoResize(e.target);
+    scheduleAutosave();
+    return;
+  }
+});
+
+document.addEventListener("change", (e) => {
+  const linkCb = e.target.closest("[data-link-note]");
+  if (linkCb) {
+    const ivId = parseInt(linkCb.dataset.ivId, 10);
+    const noteId = parseInt(linkCb.dataset.linkNote, 10);
+    const iv = state.interviews.find(x => x.id === ivId);
+    if (!iv) return;
+    if (linkCb.checked) {
+      if (!iv.linkedNoteIds.includes(noteId)) iv.linkedNoteIds.push(noteId);
+    } else {
+      iv.linkedNoteIds = iv.linkedNoteIds.filter(id => id !== noteId);
+    }
+    renderCanvas(); // Canvas tab is hidden while linking from the Interview Log, so a full rebuild here never fights focus.
+    scheduleAutosave();
+  }
+});
+
+// ── INTERVIEW LOG RENDER ─────────────────────────────────────────────
+function addInterview() {
+  const id = state.nextInterviewId++;
+  state.interviews.push({
+    id, customerName: "", company: "", date: "", segment: "",
+    takeaways: "", linkedNoteIds: [],
+  });
+  openInterviewIds.add(id); // a freshly added interview opens so the founder can fill it in right away
+  renderInterviews();
+  scheduleAutosave();
+}
+
+function removeInterview(ivId) {
+  state.interviews = state.interviews.filter(iv => iv.id !== ivId);
+  openInterviewIds.delete(ivId);
+  renderInterviews();
+  renderCanvas();
+  scheduleAutosave();
+}
+
+// ── IMPORT: CSV (bulk-add interviews from an existing spreadsheet) ──────
+// Columns are matched by header NAME, not position, so the order doesn't matter and extra
+// columns this tool doesn't use are simply ignored. A few common aliases are accepted since
+// not every spreadsheet will call a column exactly what this tool does — see the "Formatting
+// your spreadsheet for import" note above the interview list for the expected layout.
+const INTERVIEW_CSV_ALIASES = {
+  customerName: ["customer name", "name", "interviewee", "customer"],
+  company: ["company", "organization", "org"],
+  date: ["date", "interview date"],
+  segment: ["segment", "customer segment"],
+  takeaways: ["key takeaways", "takeaways", "notes", "summary", "interview notes"],
+};
+
+function matchInterviewColumns(header) {
+  const colByField = {};
+  const usedCols = new Set();
+  Object.keys(INTERVIEW_CSV_ALIASES).forEach(field => {
+    const aliases = INTERVIEW_CSV_ALIASES[field];
+    const idx = header.findIndex((h, i) => !usedCols.has(i) && aliases.includes(h.trim().toLowerCase()));
+    if (idx !== -1) { colByField[field] = idx; usedCols.add(idx); }
+  });
+  return colByField;
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { field += c; }
+    } else if (c === '"') { inQuotes = true; }
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\r") { /* skip */ }
+    else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+    else { field += c; }
+  }
+  if (field !== "" || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.length > 1 || r[0] !== "");
+}
+
+function importInterviewsCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const parsed = parseCSV(reader.result);
+    if (!parsed.length) {
+      alert("That file looks empty.");
+      event.target.value = "";
+      return;
+    }
+    const header = parsed[0].map(h => h.trim());
+    const colByField = matchInterviewColumns(header);
+    if (colByField.customerName === undefined) {
+      alert('That file doesn\'t have a recognizable "Customer Name" column, so it can\'t be imported.\n\nSee "Formatting your spreadsheet for import" above for the expected column headers, or download the blank template to start from the right format.');
+      event.target.value = "";
+      return;
+    }
+    const matchedFields = Object.keys(colByField);
+    const skippedHeaders = header.filter((h, i) => h && !Object.values(colByField).includes(i));
+    let added = 0;
+    parsed.slice(1).forEach(cols => {
+      if (!cols.some(c => c.trim() !== "")) return; // blank row
+      const name = (cols[colByField.customerName] || "").trim();
+      if (!name) return; // no customer name on this row — nothing usable to import
+      const iv = { id: state.nextInterviewId++, customerName: "", company: "", date: "", segment: "", takeaways: "", linkedNoteIds: [] };
+      matchedFields.forEach(field => { iv[field] = (cols[colByField[field]] || "").trim(); });
+      state.interviews.push(iv);
+      added++;
+    });
+    renderInterviews();
+    scheduleAutosave();
+    event.target.value = "";
+    let msg = added
+      ? `Imported ${added} interview${added === 1 ? "" : "s"} from the spreadsheet. They're added to your log, unlinked to any canvas note — open each one and check off which notes it supports under "Linked BMC Notes."`
+      : 'No interview rows were found to import — make sure every row has a value in the "Customer Name" column.';
+    if (skippedHeaders.length) msg += `\n\nColumns not recognized and skipped: ${skippedHeaders.join(", ")}.`;
+    alert(msg);
+  };
+  reader.readAsText(file);
+}
+
+document.getElementById("btn-import-interviews").addEventListener("click", () => {
+  document.getElementById("import-interviews-input").click();
+});
+document.getElementById("import-interviews-input").addEventListener("change", importInterviewsCSV);
+
+document.getElementById("btn-download-csv-template").addEventListener("click", () => {
+  const csv = [
+    "Customer Name,Company,Date,Segment,Key Takeaways",
+    '"Jane Doe","Acme Dog Co.","2026-01-15","Urban dog owners, 25-40","Wants a retractable leash that doesn\'t tangle; currently duct-tapes the handle."',
+  ].join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = slugFilename("interview-import-template", "csv");
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+function linksGroupHtml(iv) {
+  const groups = BLOCKS.map(b => {
+    const notesInBlock = state.notes.filter(n => n.block === b.key);
+    if (!notesInBlock.length) return "";
+    const rows = notesInBlock.map(n => {
+      const checked = iv.linkedNoteIds.includes(n.id) ? "checked" : "";
+      const label = n.text.trim() || "(untitled note)";
+      return `
+        <label class="iv-link-row">
+          <input type="checkbox" data-link-note="${n.id}" data-iv-id="${iv.id}" ${checked}>
+          <span>${escapeHtml(label)}</span>
+        </label>
+      `;
+    }).join("");
+    return `<div><div class="iv-links-group-title">${b.title}</div>${rows}</div>`;
+  }).filter(Boolean).join("");
+
+  if (!groups) return `<div class="iv-no-notes">No canvas notes yet &mdash; add notes on the Canvas tab, then come back here to link this interview to them.</div>`;
+  return `<div class="iv-links-groups">${groups}</div>`;
+}
+
+function interviewCardHtml(iv, index, openIds) {
+  const linkedN = iv.linkedNoteIds.length;
+  const name = iv.customerName.trim() || "(unnamed)";
+  const metaBits = [iv.company, iv.date, iv.segment].filter(s => s && s.trim()).join(" &middot; ");
+  const isOpen = openIds.has(iv.id);
+  return `
+    <details class="interview-card" data-interview-id="${iv.id}" ${isOpen ? "open" : ""}>
+      <summary data-toggle-interview="${iv.id}">
+        <span class="iv-chevron"></span>
+        <span class="iv-num">#${index + 1}</span>
+        <span class="iv-summary-main">
+          <span class="iv-summary-name">${escapeHtml(name)}</span>
+          ${metaBits ? `<span class="iv-summary-meta">${metaBits}</span>` : ""}
+        </span>
+        ${linkedN > 0 ? `<span class="iv-summary-linked">${linkedN} note${linkedN === 1 ? "" : "s"} linked</span>` : ""}
+        <button type="button" class="btn-remove-interview" data-remove-interview="${iv.id}">Remove</button>
+      </summary>
+      <div class="iv-body">
+        <div class="iv-grid">
+          <div class="iv-field"><label>Customer Name</label><input type="text" data-iv-field="customerName" data-iv-id="${iv.id}" value="${escapeHtml(iv.customerName)}"></div>
+          <div class="iv-field"><label>Company</label><input type="text" data-iv-field="company" data-iv-id="${iv.id}" value="${escapeHtml(iv.company)}"></div>
+          <div class="iv-field"><label>Date</label><input type="date" data-iv-field="date" data-iv-id="${iv.id}" value="${escapeHtml(iv.date)}"></div>
+          <div class="iv-field"><label>Segment</label><input type="text" data-iv-field="segment" data-iv-id="${iv.id}" value="${escapeHtml(iv.segment)}" placeholder="e.g. Dog owners 25-40"></div>
+        </div>
+        <div class="iv-takeaways">
+          <label>Key Takeaways</label>
+          <textarea data-iv-field="takeaways" data-iv-id="${iv.id}" rows="1">${escapeHtml(iv.takeaways)}</textarea>
+        </div>
+        <div class="iv-links-label">Linked BMC Notes &mdash; check which notes this interview supports</div>
+        ${linksGroupHtml(iv)}
+      </div>
+    </details>
+  `;
+}
+
+function renderInterviews() {
+  const banner = document.getElementById("filter-banner");
+  const bannerText = document.getElementById("filter-banner-text");
+  let list = state.interviews;
+
+  if (activeFilterNoteId !== null) {
+    const note = state.notes.find(n => n.id === activeFilterNoteId);
+    list = state.interviews.filter(iv => iv.linkedNoteIds.includes(activeFilterNoteId));
+    banner.classList.add("active");
+    bannerText.textContent = note ? (note.text.trim() || "(untitled note)") + ` — ${blockTitle(note.block)}` : "(note removed)";
+  } else {
+    banner.classList.remove("active");
+  }
+
+  const container = document.getElementById("interviews-container");
+  if (!list.length) {
+    container.innerHTML = `<div class="empty-interviews">${activeFilterNoteId !== null ? "No interviews are linked to this note yet." : "No interviews logged yet. Click “+ Add Interview” to start."}</div>`;
+  } else {
+    container.innerHTML = list.map((iv, i) => interviewCardHtml(iv, state.interviews.indexOf(iv), openInterviewIds)).join("");
+  }
+  // Collapsed <details> report scrollHeight 0, so only auto-size textareas inside open cards.
+  document.querySelectorAll("#interviews-container details[open] textarea[data-iv-field]").forEach(ta => autoResize(ta));
+
+  const logCount = document.getElementById("log-count");
+  if (logCount) {
+    logCount.textContent = activeFilterNoteId !== null
+      ? `${list.length} of ${state.interviews.length} interview${state.interviews.length === 1 ? "" : "s"}`
+      : `${state.interviews.length} interview${state.interviews.length === 1 ? "" : "s"}`;
+  }
+}
+
+// ── SAVE / LOAD ──────────────────────────────────────────────────────
+function collectData() {
+  return JSON.parse(JSON.stringify(state));
+}
+
+function populateData(data) {
+  if (!data) return;
+  state = Object.assign({ meta: {}, notes: [], interviews: [], nextNoteId: 1, nextInterviewId: 1 }, data);
+  META_FIELDS.forEach(f => {
+    const el = document.getElementById(`meta_${f.id}`);
+    if (el) el.value = state.meta[f.id] || "";
+  });
+  activeFilterNoteId = null;
+  openInterviewIds = new Set();
+  renderCanvas();
+  renderInterviews();
+}
+
+function slugFilename(base, ext) {
+  const name = (state.meta.company_name || "").trim();
+  const slug = name ? name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") : "untitled";
+  return `${slug}_${base}.${ext}`;
+}
+
+// ── PDF EXPORT (print) ───────────────────────────────────────────────
+function buildPrintDoc() {
+  const m = state.meta;
+  const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+
+  let html = `
+    <div class="pw-header">
+      <img class="pw-logo" src="images/dairy-innovation-logo.png" alt="Dairy Innovation — Dairy Runway">
+      <div class="pw-header-meta">Generated ${dateStr}<br>Business Model Canvas &mdash; unofficial concept mockup</div>
+    </div>
+    <div class="pw-title">${escapeHtml(m.company_name) || "Untitled Business Model Canvas"}</div>
+    <table class="pw-meta-table"><tbody>
+      <tr><td class="k">Designed For</td><td>${escapeHtml(m.designed_for)}</td></tr>
+      <tr><td class="k">Designed By</td><td>${escapeHtml(m.designed_by)}</td></tr>
+      <tr><td class="k">Date</td><td>${escapeHtml(m.date)}</td></tr>
+      <tr><td class="k">Version</td><td>${escapeHtml(m.version)}</td></tr>
+    </tbody></table>
+  `;
+
+  BLOCKS.forEach(b => {
+    html += `<div class="pw-band">${b.title.toUpperCase()}</div>`;
+    const notes = sortNotesByEvidence(state.notes.filter(n => n.block === b.key));
+    if (!notes.length) {
+      html += `<div class="pw-no-notes">No notes yet.</div>`;
+    } else {
+      notes.forEach(n => {
+        const count = linkedCount(n.id);
+        const tier = noteTier(count);
+        html += `<div class="pw-note tier-${tier}">${escapeHtml(n.text) || "<em>(untitled note)</em>"}<span class="badge tier-${tier}">${count === 0 ? "No interviews yet" : `${count} interview${count === 1 ? "" : "s"}`}</span></div>`;
+      });
+    }
+  });
+
+  html += `<div class="pw-band">CUSTOMER INTERVIEW LOG</div>`;
+  if (!state.interviews.length) {
+    html += `<div class="pw-no-notes">No interviews logged yet.</div>`;
+  } else {
+    html += `<table class="pw-iv-table"><thead><tr><th>#</th><th>Customer</th><th>Company</th><th>Date</th><th>Segment</th><th>Takeaways</th><th>Linked Notes</th></tr></thead><tbody>`;
+    state.interviews.forEach((iv, i) => {
+      const linked = iv.linkedNoteIds
+        .map(id => state.notes.find(n => n.id === id))
+        .filter(Boolean)
+        .map(n => (n.text.trim() || "(untitled)") + ` [${blockTitle(n.block)}]`)
+        .join("; ") || "—";
+      html += `<tr>
+        <td>${i + 1}</td>
+        <td>${escapeHtml(iv.customerName) || "—"}</td>
+        <td>${escapeHtml(iv.company) || "—"}</td>
+        <td>${escapeHtml(iv.date) || "—"}</td>
+        <td>${escapeHtml(iv.segment) || "—"}</td>
+        <td>${escapeHtml(iv.takeaways) || "—"}</td>
+        <td>${escapeHtml(linked)}</td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+  }
+
+  html += `<div class="pw-footer">Unofficial concept mockup styled for the Dairy Runway Program &middot; Business Model Canvas &amp; Interview Log &middot; Canvas layout adapted from Strategyzer AG / Business Model Generation, CC BY-SA 3.0</div>`;
+  document.getElementById("print-doc").innerHTML = html;
+}
+
+document.getElementById("btn-pdf").addEventListener("click", () => {
+  buildPrintDoc();
+  window.print();
+});
+
+/* ── NATIVE SAVE / OPEN: working file is a real .docx ───────────────────────
+   Copy of the canonical docx writer/reader in prd-worksheet.html — see that
+   file for the full explanation. Any fix made here should be backported there
+   and to the other copies (pilot-testing-worksheet.html,
+   trl_mrl_assessment_prototype.html, process-selector.html).
+   Tool-specific wrinkle: BMC's notes aren't fixed named fields — they're a
+   freeform list per canvas block, and interviews separately link to notes by
+   reference. Each note gets a stable position-based label ("{Block Title} —
+   Note N") used as its row label; an interview's linked notes are written as
+   a semicolon-joined list of those SAME label strings in its own row, so
+   reopening re-resolves the links by label text instead of by any internal
+   numeric id (ids are session-only bookkeeping, same as every other tool
+   here, and aren't meaningful across a save/reopen). */
+function docxEscapeXml(s) {
+  return (s ?? '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function docxCellParagraphs(text, bold) {
+  const lines = (text ?? '').toString().split('\n');
+  const rPr = bold ? '<w:rPr><w:b/></w:rPr>' : '';
+  return lines.map(line => `<w:p><w:r>${rPr}<w:t xml:space="preserve">${docxEscapeXml(line)}</w:t></w:r></w:p>`).join('');
+}
+function docxCell(text, widthDxa, bold) {
+  const widthAttr = widthDxa ? ` w:w="${widthDxa}"` : ' w:w="0"';
+  const typeAttr = widthDxa ? ' w:type="dxa"' : ' w:type="auto"';
+  const paras = docxCellParagraphs(text, bold) || '<w:p/>';
+  return `<w:tc><w:tcPr><w:tcW${widthAttr}${typeAttr}/></w:tcPr>${paras}</w:tc>`;
+}
+function docxLabelRow(label, answer) {
+  return `<w:tr>${docxCell(label, 2700, true)}${docxCell(answer, 7300, false)}</w:tr>`;
+}
+function docxTable(rows) {
+  const borderXml = '<w:tblBorders><w:top w:val="single" w:sz="4" w:color="CCCCCC"/><w:left w:val="single" w:sz="4" w:color="CCCCCC"/><w:bottom w:val="single" w:sz="4" w:color="CCCCCC"/><w:right w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideH w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideV w:val="single" w:sz="4" w:color="CCCCCC"/></w:tblBorders>';
+  return `<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/>${borderXml}</w:tblPr><w:tblGrid><w:gridCol w:w="2700"/><w:gridCol w:w="7300"/></w:tblGrid>${rows.join('')}</w:tbl>`;
+}
+function docxHeading(text, sizeHalfPoints) {
+  return `<w:p><w:pPr><w:spacing w:before="200" w:after="120"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="${sizeHalfPoints}"/></w:rPr><w:t xml:space="preserve">${docxEscapeXml(text)}</w:t></w:r></w:p>`;
+}
+function docxSpacer() {
+  return '<w:p/>';
+}
+function docxBuildPackage(bodyXml) {
+  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:body>${bodyXml}<w:sectPr/></w:body>
+</w:document>`;
+
+  const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+</Types>`;
+
+  const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+
+  const documentRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+  const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:sz w:val="22"/></w:rPr></w:rPrDefault></w:docDefaults>
+<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>
+</w:styles>`;
+
+  return makeZip([
+    { name: '[Content_Types].xml', data: contentTypes },
+    { name: '_rels/.rels', data: rootRels },
+    { name: 'word/document.xml', data: documentXml },
+    { name: 'word/_rels/document.xml.rels', data: documentRels },
+    { name: 'word/styles.xml', data: stylesXml }
+  ]);
+}
+function crc32(bytes) {
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) {
+    crc ^= bytes[i];
+    for (let j = 0; j < 8; j++) crc = (crc >>> 1) ^ (0xEDB88320 & -(crc & 1));
+  }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function makeZip(files) {
+  const encoder = new TextEncoder();
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+  files.forEach(f => {
+    const nameBytes = encoder.encode(f.name);
+    const data = typeof f.data === 'string' ? encoder.encode(f.data) : f.data;
+    const crc = crc32(data);
+    const size = data.length;
+
+    const local = new Uint8Array(30 + nameBytes.length);
+    const lv = new DataView(local.buffer);
+    lv.setUint32(0, 0x04034b50, true);
+    lv.setUint16(4, 20, true);
+    lv.setUint16(6, 0, true);
+    lv.setUint16(8, 0, true);
+    lv.setUint16(10, 0, true);
+    lv.setUint16(12, 0, true);
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, size, true);
+    lv.setUint32(22, size, true);
+    lv.setUint16(26, nameBytes.length, true);
+    lv.setUint16(28, 0, true);
+    local.set(nameBytes, 30);
+    localParts.push(local, data);
+
+    const central = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(central.buffer);
+    cv.setUint32(0, 0x02014b50, true);
+    cv.setUint16(4, 20, true);
+    cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0, true);
+    cv.setUint16(10, 0, true);
+    cv.setUint16(12, 0, true);
+    cv.setUint16(14, 0, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, size, true);
+    cv.setUint32(24, size, true);
+    cv.setUint16(28, nameBytes.length, true);
+    cv.setUint16(30, 0, true);
+    cv.setUint16(32, 0, true);
+    cv.setUint16(34, 0, true);
+    cv.setUint16(36, 0, true);
+    cv.setUint32(38, 0, true);
+    cv.setUint32(42, offset, true);
+    central.set(nameBytes, 46);
+    centralParts.push(central);
+
+    offset += local.length + data.length;
+  });
+
+  const centralOffset = offset;
+  const centralSize = centralParts.reduce((sum, c) => sum + c.length, 0);
+  const end = new Uint8Array(22);
+  const ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(8, files.length, true);
+  ev.setUint16(10, files.length, true);
+  ev.setUint32(12, centralSize, true);
+  ev.setUint32(16, centralOffset, true);
+
+  return new Blob([...localParts, ...centralParts, end], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+}
+function wfUnzipStore(buf) {
+  const data = new Uint8Array(buf);
+  const dv = new DataView(buf);
+  let eocdOffset = -1;
+  for (let i = data.length - 22; i >= 0; i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
+  }
+  if (eocdOffset === -1) throw new Error('Not a valid zip/.docx file (no end-of-central-directory record found).');
+  const numEntries = dv.getUint16(eocdOffset + 10, true);
+  const centralOffset = dv.getUint32(eocdOffset + 16, true);
+  const files = {};
+  let offset = centralOffset;
+  for (let i = 0; i < numEntries; i++) {
+    if (dv.getUint32(offset, true) !== 0x02014b50) break;
+    const compMethod = dv.getUint16(offset + 10, true);
+    const compSize = dv.getUint32(offset + 20, true);
+    const nameLen = dv.getUint16(offset + 28, true);
+    const extraLen = dv.getUint16(offset + 30, true);
+    const commentLen = dv.getUint16(offset + 32, true);
+    const localOffset = dv.getUint32(offset + 42, true);
+    const name = new TextDecoder().decode(data.slice(offset + 46, offset + 46 + nameLen));
+    const localNameLen = dv.getUint16(localOffset + 26, true);
+    const localExtraLen = dv.getUint16(localOffset + 28, true);
+    const dataStart = localOffset + 30 + localNameLen + localExtraLen;
+    if (compMethod !== 0) throw new Error(`"${name}" uses zip compression this tool's hand-rolled reader doesn't support — likely because the file was opened and re-saved by real Word in between. A real zip/inflate library would be needed to handle that; this tool doesn't include one.`);
+    files[name] = data.slice(dataStart, dataStart + compSize);
+    offset += 46 + nameLen + extraLen + commentLen;
+  }
+  return files;
+}
+function docxParseTables(xmlText) {
+  const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) throw new Error('That document\'s XML could not be parsed.');
+  return Array.from(doc.getElementsByTagName('w:tbl')).map(tbl =>
+    Array.from(tbl.getElementsByTagName('w:tr')).map(tr =>
+      Array.from(tr.getElementsByTagName('w:tc')).map(tc =>
+        Array.from(tc.getElementsByTagName('w:p')).map(p =>
+          Array.from(p.getElementsByTagName('w:t')).map(t => t.textContent).join('')
+        ).join('\n')
+      )
+    )
+  );
+}
+
+const WF_NOTE_LABEL_PREFIX = (blockTitleStr, n) => `${blockTitleStr} — Note ${n}`;
+
+function wfBuildWorkbookBlob() {
+  const m = state.meta;
+  const dateStr = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+
+  // Assign each note a stable label ("{Block Title} — Note N") by its current position
+  // within its block — this is what both this note's own row AND any interview's "linked
+  // notes" list refer to it by, since note ids are session-only and not meaningful on reopen.
+  const noteLabel = {};
+  BLOCKS.forEach(b => {
+    const notes = state.notes.filter(n => n.block === b.key);
+    notes.forEach((n, i) => { noteLabel[n.id] = WF_NOTE_LABEL_PREFIX(b.title, i + 1); });
+  });
+
+  let body = docxHeading('Business Model Canvas', 48);
+  body += docxCellParagraphs(`Dairy Runway Program · Unofficial concept mockup · Saved ${dateStr}`, false);
+  body += docxSpacer();
+  body += docxTable(META_FIELDS.map(f => docxLabelRow(f.label, m[f.id])));
+  body += docxSpacer();
+
+  BLOCKS.forEach(b => {
+    const notes = state.notes.filter(n => n.block === b.key);
+    body += docxHeading(b.title.toUpperCase(), 28);
+    if (!notes.length) {
+      body += docxTable([docxLabelRow('(no notes)', '')]);
+    } else {
+      body += docxTable(notes.map((n, i) => docxLabelRow(noteLabel[n.id], n.text)));
+    }
+  });
+
+  body += docxHeading('CUSTOMER INTERVIEW LOG', 28);
+  if (!state.interviews.length) {
+    body += docxTable([docxLabelRow('(no interviews)', '')]);
+  } else {
+    state.interviews.forEach((iv, i) => {
+      const linkedLabels = iv.linkedNoteIds.map(id => noteLabel[id]).filter(Boolean).join('; ');
+      body += docxTable([
+        docxLabelRow(`Interview ${i + 1} — Customer Name`, iv.customerName),
+        docxLabelRow(`Interview ${i + 1} — Company`, iv.company),
+        docxLabelRow(`Interview ${i + 1} — Date`, iv.date),
+        docxLabelRow(`Interview ${i + 1} — Segment`, iv.segment),
+        docxLabelRow(`Interview ${i + 1} — Key Takeaways`, iv.takeaways),
+        docxLabelRow(`Interview ${i + 1} — Linked Notes`, linkedLabels)
+      ]);
+    });
+  }
+
+  return docxBuildPackage(body);
+}
+
+function wfLoadFromArrayBuffer(buf) {
+  let files;
+  try { files = wfUnzipStore(buf); }
+  catch (e) { alert('Could not read that .docx file.\n\n' + e.message); return; }
+
+  const doc = files['word/document.xml'];
+  if (!doc) { alert('Could not find a document body inside that file.'); return; }
+
+  let tables;
+  try { tables = docxParseTables(new TextDecoder().decode(doc)); }
+  catch (e) { alert('Could not read that file\'s content.\n\n' + e.message); return; }
+
+  const byLabel = {};
+  tables.forEach(rows => rows.forEach(cells => {
+    if (cells.length < 2) return;
+    const label = (cells[0] || '').trim();
+    if (!label) return;
+    byLabel[label] = (cells[1] || '').trim();
+  }));
+  if (!Object.keys(byLabel).length) {
+    alert('That file doesn\'t have a recognizable table layout for this worksheet, so it can\'t be opened here.');
+    return;
+  }
+
+  const newMeta = {};
+  META_FIELDS.forEach(f => { if (byLabel[f.label] !== undefined) newMeta[f.id] = byLabel[f.label]; });
+
+  // Rebuild notes per block by scanning "{Block Title} — Note N" labels sequentially,
+  // stopping at the first missing N (same accepted limitation as any label-matched design —
+  // deleting a middle note's row in Word drops everything after it in that block's scan).
+  const newNotes = [];
+  let nextNoteId = 1;
+  const noteIdByLabel = {};
+  BLOCKS.forEach(b => {
+    let n = 1;
+    while (byLabel[WF_NOTE_LABEL_PREFIX(b.title, n)] !== undefined) {
+      const id = nextNoteId++;
+      newNotes.push({ id, block: b.key, text: byLabel[WF_NOTE_LABEL_PREFIX(b.title, n)] });
+      noteIdByLabel[WF_NOTE_LABEL_PREFIX(b.title, n)] = id;
+      n += 1;
+    }
+  });
+
+  // Rebuild interviews by scanning "Interview N — ..." labels sequentially, resolving each
+  // interview's "Linked Notes" cell (a "; "-joined list of note labels) back to the newly
+  // assigned note ids above.
+  const newInterviews = [];
+  let nextInterviewId = 1;
+  let i = 1;
+  while (byLabel[`Interview ${i} — Customer Name`] !== undefined) {
+    const linkedLabels = (byLabel[`Interview ${i} — Linked Notes`] || '').split(';').map(s => s.trim()).filter(Boolean);
+    newInterviews.push({
+      id: nextInterviewId++,
+      customerName: byLabel[`Interview ${i} — Customer Name`] || '',
+      company: byLabel[`Interview ${i} — Company`] || '',
+      date: byLabel[`Interview ${i} — Date`] || '',
+      segment: byLabel[`Interview ${i} — Segment`] || '',
+      takeaways: byLabel[`Interview ${i} — Key Takeaways`] || '',
+      linkedNoteIds: linkedLabels.map(l => noteIdByLabel[l]).filter(id => id !== undefined)
+    });
+    i += 1;
+  }
+
+  populateData({ meta: newMeta, notes: newNotes, interviews: newInterviews, nextNoteId, nextInterviewId });
+}
+
+function wfUpdateStatus(label) {
+  document.getElementById('wfFileStatus').textContent = label || 'No file open';
+}
+let wfFileHandle = null;
+async function wfSave(forceSaveAs) {
+  const blob = wfBuildWorkbookBlob();
+  const suggestedName = slugFilename('Business-Model-Canvas', 'docx');
+  if (window.showSaveFilePicker) {
+    try {
+      let handle = wfFileHandle;
+      if (forceSaveAs || !handle) {
+        handle = await window.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: 'Word Document', accept: { 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'] } }]
+        });
+      }
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      wfFileHandle = handle;
+      wfUpdateStatus(`File: ${handle.name}`);
+      clearAutosave();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = suggestedName;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  wfUpdateStatus(`${suggestedName} (downloaded — this browser can't link Save back to a chosen file)`);
+  clearAutosave();
+}
+async function wfOpen() {
+  if (window.showOpenFilePicker) {
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'Word Document', accept: { 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'] } }]
+      });
+      const file = await handle.getFile();
+      wfLoadFromArrayBuffer(await file.arrayBuffer());
+      wfFileHandle = handle;
+      wfUpdateStatus(`File: ${handle.name}`);
+      clearAutosave();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  document.getElementById('wfOpenInputFallback').click();
+}
+function wfHandleOpenFallback(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    wfLoadFromArrayBuffer(reader.result);
+    wfFileHandle = null;
+    wfUpdateStatus(`${file.name} (opened via upload — this browser needs a fresh download on Save)`);
+    clearAutosave();
+  };
+  reader.readAsArrayBuffer(file);
+  event.target.value = '';
+}
+
+document.getElementById('btn-open').addEventListener('click', wfOpen);
+document.getElementById('btn-save').addEventListener('click', () => wfSave(false));
+document.getElementById('btn-save-as').addEventListener('click', () => wfSave(true));
+document.getElementById('wfOpenInputFallback').addEventListener('change', wfHandleOpenFallback);
+
+/* ── AUTOSAVE (localStorage only — never leaves the browser) ── */
+// Guards against the classic accidental-back/accidental-refresh data loss: every change is
+// snapshotted to localStorage (debounced so typing doesn't thrash it), and on next load — if
+// that snapshot wasn't cleared by a normal Save Progress / explicit discard — the user is
+// offered a one-click restore. This is separate from Save Progress: it's a safety net, not a
+// save format, and is cleared as soon as it's restored or discarded so it never resurfaces
+// stale data.
+const AUTOSAVE_KEY = 'bmcWorksheetAutosave_v1';
+let autosaveTimer = null;
+let autosaveSuppressed = false; // true right after a restore/discard, to avoid re-saving the banner's own removal as "new" data
+
+function hasAnyData() {
+  return state.notes.length > 0 || state.interviews.length > 0
+    || Object.values(state.meta).some(v => (v || '').trim() !== '');
+}
+
+function scheduleAutosave() {
+  if (autosaveSuppressed) return;
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    if (!hasAnyData()) { localStorage.removeItem(AUTOSAVE_KEY); return; }
+    const snapshot = Object.assign({ savedAt: new Date().toISOString() }, collectData());
+    try { localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snapshot)); } catch (e) { /* storage full/unavailable — silently skip, Save Progress still works */ }
+  }, 800);
+}
+
+function clearAutosave() {
+  localStorage.removeItem(AUTOSAVE_KEY);
+}
+
+function showRestoreBanner(snapshot) {
+  const when = snapshot.savedAt ? new Date(snapshot.savedAt).toLocaleString() : 'a previous session';
+  const noteCount = (snapshot.notes || []).length;
+  const ivCount = (snapshot.interviews || []).length;
+  document.getElementById('restoreBannerText').textContent =
+    `Found unsaved work from ${when} (${noteCount} note${noteCount === 1 ? '' : 's'}, ${ivCount} interview${ivCount === 1 ? '' : 's'}) — looks like the tab was closed or refreshed before it was saved. Restore it?`;
+  document.getElementById('restoreBanner').style.display = 'flex';
+}
+
+function restoreAutosave() {
+  const raw = localStorage.getItem(AUTOSAVE_KEY);
+  if (!raw) return;
+  try {
+    autosaveSuppressed = true;
+    populateData(JSON.parse(raw));
+    autosaveSuppressed = false;
+  } catch (e) { /* corrupt snapshot — nothing to restore */ }
+  document.getElementById('restoreBanner').style.display = 'none';
+}
+
+function dismissAutosave() {
+  clearAutosave();
+  autosaveSuppressed = false;
+  document.getElementById('restoreBanner').style.display = 'none';
+}
+
+document.getElementById('btn-restore-autosave').addEventListener('click', restoreAutosave);
+document.getElementById('btn-dismiss-autosave').addEventListener('click', dismissAutosave);
+
+// Check for a leftover autosave snapshot before the first render so the banner appears
+// immediately on load, without flashing an empty canvas first. Suppress autosave until the
+// user restores or discards it — otherwise the empty starting state's own autosave (still
+// debouncing from page load) clears the very snapshot the banner is offering to restore.
+(function checkAutosaveOnLoad() {
+  const raw = localStorage.getItem(AUTOSAVE_KEY);
+  if (!raw) return;
+  try { autosaveSuppressed = true; showRestoreBanner(JSON.parse(raw)); } catch (e) { localStorage.removeItem(AUTOSAVE_KEY); }
+})();
+
+// Cheap first line of defense against an instinctive back/refresh: only prompts when there's
+// actually something to lose.
+window.addEventListener('beforeunload', (e) => {
+  if (hasAnyData()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────
+renderCanvas();
+renderInterviews();
+</script>
+</body>
+</html>
