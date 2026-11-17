@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Break-Even Analysis Worksheet — Dairy Runway Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Dairy Runway Program palette — matches dairy-runway-bmc-worksheet.html */
+  --ink:        #1e2733;
+  --paper:      #ffffff;
+  --panel:      #ffffff;
+  --tint-teal:  #dce7f3;
+  --tint-orange:#e8eff7;
+  --rule:       #d7dee6;
+  --muted:      #76838f;
+  --accent:     #315784;
+  --accent-deep:#22405f;
+  --teal:       #4a79ac;
+  --teal-deep:  #2c4f76;
+  --slate:      #4f6478;
+  --warn:       #c0392b;
+  --warn-tint:  #fdecea;
+  --good:       #3f8f4f;
+  --good-tint:  #e7f3e9;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f4f6f6;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.wordmark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.logo-img { height: 34px; width: auto; display: block; }
+header .tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+header .backlink { font-size: 13px; color: var(--slate); text-decoration: none; }
+header .backlink:hover { color: var(--accent-deep); }
+
+main { max-width: 1760px; margin: 0 auto; padding: 36px 48px 90px; }
+
+.title-block { margin-bottom: 28px; }
+.eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); display: inline-block; }
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.lede { font-size: 15px; line-height: 1.6; color: #465055; max-width: 68ch; }
+
+/* ── PANEL ── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 26px 28px;
+  margin-bottom: 24px;
+}
+.panel h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel h2 .n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--tint-teal);
+  color: var(--teal-deep);
+  font-size: 12px;
+  font-weight: 700;
+}
+.panel .panel-sub {
+  font-size: 13px;
+  color: var(--slate);
+  margin-bottom: 16px;
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+button {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 9px 16px;
+  cursor: pointer;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+button:hover { border-color: var(--teal); }
+button.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
+button.primary:hover { background: var(--teal-deep); border-color: var(--teal-deep); }
+button.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+button.ghost { background: transparent; }
+button.small { padding: 5px 10px; font-size: 11px; }
+button.danger-ghost { color: var(--warn); border-color: var(--warn); background: transparent; }
+button.danger-ghost:hover { background: var(--warn-tint); }
+.toolbar .spacer { flex: 1; }
+
+/* ── SUMMARY / RESULT STATS ── */
+.summary-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.stat {
+  background: var(--tint-teal);
+  border-radius: 5px;
+  padding: 16px 18px;
+}
+.stat.flagged { background: var(--warn-tint); }
+.stat.orange { background: var(--tint-orange); }
+.stat.hero { background: var(--teal-deep); }
+.stat .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--teal-deep);
+  line-height: 1;
+}
+.stat.flagged .num { color: var(--warn); }
+.stat.orange .num { color: var(--accent-deep); }
+.stat.hero .num { color: #fff; font-size: 28px; }
+.stat .label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-top: 4px;
+}
+.stat.hero .label { color: rgba(255,255,255,0.85); }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; table-layout: fixed; min-width: 900px; width: 100%; }
+thead th {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-align: left;
+  padding: 8px 10px 8px 8px;
+  border-bottom: 2px solid var(--rule);
+  white-space: nowrap;
+}
+tbody tr { height: 42px; }
+tbody td {
+  height: 42px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+  overflow: hidden;
+}
+tbody tr.subtotal-row td { border-top: 2px solid var(--rule); border-bottom: none; font-weight: 700; padding-top: 10px; }
+tbody tr.nre-row td { background: var(--tint-orange); }
+tbody tr.price-tier-row td { background: var(--tint-teal); height: 38px; }
+.tier-label { font-size: 12px; color: var(--slate); white-space: nowrap; }
+
+td input, td select {
+  display: block;
+  width: 100%;
+  height: 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 6px 7px;
+  border: 1.5px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+}
+td input:hover, td select:hover { border-color: var(--teal); }
+td input:focus, td select:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px var(--tint-teal);
+}
+td input[disabled] { background: #f4f6f6; color: var(--muted); cursor: not-allowed; }
+td input[type="number"] { font-family: 'IBM Plex Mono', monospace; text-align: right; }
+td input[type="checkbox"] { width: auto; height: auto; display: inline-block; }
+.checkbox-cell { text-align: center; }
+td.total-cell {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 12px;
+}
+td.actions-cell { white-space: nowrap; text-align: right; }
+.estimate-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--tint-orange);
+  color: var(--accent-deep);
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* ── CALCULATOR ── */
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+.calc-field label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+.calc-field input {
+  width: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  color: var(--ink);
+  background: var(--paper);
+}
+.calc-field input:focus { outline: none; border-color: var(--teal); }
+.calc-field input[disabled] { background: #f4f6f6; color: var(--slate); }
+.calc-field .note { font-size: 12px; color: var(--slate); margin-top: 6px; line-height: 1.4; }
+.calc-field .warn-text { color: var(--warn); font-weight: 600; }
+
+.empty-state {
+  text-align: center;
+  padding: 24px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--slate);
+  background: #f4f6f6;
+  border-radius: 5px;
+  padding: 16px 18px;
+}
+.disclaimer strong { color: var(--ink); }
+
+/* ── MORE INFO (collapsible disclosure, used for section-level context) ── */
+.more-info { margin-bottom: 16px; }
+.more-info summary {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--teal-deep);
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+.more-info summary::-webkit-details-marker { display: none; }
+.more-info summary::before {
+  content: '▸';
+  font-size: 10px;
+  transition: transform 0.15s ease;
+}
+.more-info[open] summary::before { transform: rotate(90deg); }
+.more-info .disclaimer { margin-top: 8px; }
+
+/* ── AUTOSAVE RESTORE BANNER ── */
+.restore-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--tint-orange);
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+.restore-banner span { flex: 1; }
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 22px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── PRINT ── */
+#print-doc { display: none; }
+@media print {
+  header, footer, main > *:not(#print-doc) { display: none !important; }
+  #print-doc { display: block !important; }
+  @page { size: 8.5in 11in; margin: 0.6in; }
+  body { background: #fff; }
+  #print-doc h1 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; margin-bottom: 4px; }
+  #print-doc .meta-line { font-size: 11px; color: #555; margin-bottom: 14px; }
+  #print-doc table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 16px; }
+  #print-doc th, #print-doc td { border: 1px solid #ccc; padding: 4px 6px; text-align: left; }
+  #print-doc th { background: #f0f0f0; }
+  #print-doc h2 { font-size: 14px; margin: 14px 0 6px; page-break-after: avoid; }
+  #print-doc .section { page-break-inside: avoid; }
+  #print-doc .resultbox { background: #e6f8f7; border: 1px solid #128078; padding: 8px 10px; font-size: 11px; margin-bottom: 12px; }
+  #print-doc .disclaimer-print { font-size: 9.5px; color: #555; margin-top: 18px; border-top: 1px solid #ccc; padding-top: 8px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index-test.html">
+    <img class="logo-img" src="images/dairy-innovation-logo.png" alt="Dairy Innovation — Dairy Runway">
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <a class="backlink" href="index-test.html">← All resources</a>
+    <div class="tag">Break-Even Analysis</div>
+  </div>
+</header>
+
+<main>
+  <div class="restore-banner" id="restoreBanner" style="display:none;">
+    <span id="restoreBannerText"></span>
+    <button class="small primary" onclick="restoreAutosave()">Restore</button>
+    <button class="small ghost" onclick="dismissAutosave()">Discard</button>
+  </div>
+
+  <div class="title-block">
+    <div class="eyebrow">Dairy Runway Program</div>
+    <h1>Break-Even Analysis Worksheet</h1>
+    <p class="lede">
+      Separate your recurring per-unit costs from one-time tooling and certification costs, then get the exact number of units you need to sell to hit $0 balance — no more nudging a "units sold" number up and down until the balance looks close enough.
+    </p>
+    <details class="more-info">
+      <summary>More info</summary>
+      <div class="disclaimer">
+      <strong>What this tool is:</strong> a workshop aid for modeling break-even volume on a hardware product — a concept companion to Rev: Ithaca Startup Works' costing workshops, not a substitute for a supplier-quoted, accountant-reviewed cost model before you commit capital.
+    </div>
+    </details>
+  </div>
+
+  <!-- PARTS COGS -->
+  <div class="panel">
+    <h2><span class="n">1</span>Component / Parts COGS (Per Unit)</h2>
+    <div class="panel-sub">Check "Has NRE Cost?" for a part with a one-time tooling or certification fee — that cost moves to the Non-Recurring Costs table below instead of inflating your per-unit cost. Check "Price Breaks" for a part with quantity-based supplier pricing to record up to three quantity/price tiers below that row for reference; "Save" (or "Hide Price Breaks") collapses the tiers without deleting them, and unchecking "Price Breaks" clears them.</div>
+
+    <details class="more-info">
+      <summary>More info</summary>
+      <div class="disclaimer">
+      <strong>Price breaks:</strong> check "Price Breaks" on a Parts COGS row if your supplier quotes lower unit costs at higher quantities. Three tier rows appear below that part for you to fill in Qty/Unit Cost reference points; "Save" or "Hide Price Breaks" collapses them without losing the data, and unchecking "Price Breaks" clears them. Tiers don't automatically change the Unit Cost or break-even math — if the solved break-even quantity qualifies a part for a different tier than its current Unit Cost, a "Resolve at break-even volume" prompt appears above so you can apply the correct tier price with one click.<br><br>
+      <strong>BOM upload:</strong> "Upload BOM (.xlsx)" reads a Bill of Materials saved from the <a href="bom-worksheet.html">BOM Worksheet</a> tool and fills in part names, quantities, and unit costs here, matched by column header name — a BOM you built from scratch in Excel with recognizable column headers (Name, Qty, Unit Cost) works too, not just a file that tool itself saved.<br><br>
+      <strong>Recurring vs. non-recurring:</strong> per-unit costs (parts, assembly, packaging, shipping) recur every time you build a unit; tooling and certification costs (FCC, UL, CE, etc.) are one-time. Mislabeling a certification fee as "tooling" on a part row understates your real per-unit margin — use the "Has NRE Cost?" checkbox on the Parts table and the NRE table below it to keep them separate.
+    </div>
+    </details>
+    <div class="toolbar">
+      <button class="primary" onclick="addPartRow()">+ Add Part</button>
+      <div class="spacer"></div>
+      <span id="wfFileStatus" style="font-size:12px; color:var(--slate); margin-right:2px;">No file open</span>
+      <button class="ghost" onclick="wfOpen()">📂 Open (.xlsx)</button>
+      <button class="primary" onclick="wfSave(false)">💾 Save</button>
+      <button class="ghost" onclick="wfSave(true)">Save As…</button>
+      <input type="file" id="wfOpenInputFallback" accept=".xlsx" style="display:none" onchange="wfHandleOpenFallback(event)">
+    </div>
+    <div class="toolbar" style="margin-top:-10px;">
+      <span style="font-size:13px; color:var(--slate);">Importing an existing BOM from the BOM Worksheet tool:</span>
+      <button class="ghost" onclick="document.getElementById('bomXlsxInput').click()">Upload BOM (.xlsx)</button>
+      <input type="file" id="bomXlsxInput" accept=".xlsx" style="display:none" onchange="loadBomXlsx(event)">
+    </div>
+
+    <div class="table-wrap">
+      <table style="min-width:1150px">
+        <colgroup>
+          <col style="width:200px"><col style="width:110px"><col style="width:90px"><col style="width:90px">
+          <col style="width:90px"><col style="width:110px"><col style="width:110px"><col style="width:120px"><col style="width:140px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Part / Component</th>
+            <th>Unit Cost ($)</th>
+            <th>Qty / Unit</th>
+            <th>Extended ($)</th>
+            <th>Price Breaks</th>
+            <th style="white-space:normal;">Hide Price Breaks</th>
+            <th>Has NRE Cost?</th>
+            <th>NRE Cost ($)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="partsBody"></tbody>
+      </table>
+      <div class="empty-state" id="partsEmpty">No parts yet — click "+ Add Part" or upload a BOM.</div>
+    </div>
+  </div>
+
+  <!-- OTHER COGS -->
+  <div class="panel">
+    <h2><span class="n">2</span>Other Per-Unit COGS</h2>
+    <div class="panel-sub">Assembly, packaging, and shipping are pre-loaded here so they don't get forgotten — edit the costs, or remove a row if it doesn't apply. These are recurring per-unit costs only; one-time tooling belongs in the Parts table above (flagged with "Has NRE Cost?") or the NRE table below.</div>
+
+    <div class="toolbar">
+      <button class="primary" onclick="addOtherRow()">+ Add Row</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:260px"><col style="width:140px"><col style="width:110px"><col style="width:110px">
+          <col><col style="width:70px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Cost Category</th>
+            <th>Unit Cost ($)</th>
+            <th>Qty / Unit</th>
+            <th>Extended ($)</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="otherBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- NRE -->
+  <div class="panel">
+    <h2><span class="n">3</span>Non-Recurring Costs (NRE) — Facility Costs</h2>
+
+    <div class="panel-sub">Tooling costs flagged in the Parts table above total automatically on the first row below. Add certification fees (FCC, UL, CE, etc.) or other one-time costs directly below — don't disguise a certification fee as "tooling."</div>
+
+    <details class="more-info">
+      <summary>More info</summary>
+      <div class="disclaimer">
+      <strong>Recurring vs. non-recurring:</strong> per-unit costs (parts, assembly, packaging, shipping) recur every time you build a unit; tooling and certification costs (FCC, UL, CE, etc.) are one-time. Mislabeling a certification fee as "tooling" on a part row understates your real per-unit margin — use the "Has NRE Cost?" checkbox on the Parts table and the NRE table below it to keep them separate.
+    </div>
+    </details>
+
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:260px"><col style="width:140px"><col><col style="width:70px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Cost ($)</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="nreBody"></tbody>
+      </table>
+    </div>
+
+    <div class="toolbar" style="margin-top:12px; margin-bottom:0;">
+      <button class="primary" onclick="addNreRow()">+ Add NRE Item</button>
+    </div>
+  </div>
+
+  <!-- BREAK-EVEN CALCULATOR -->
+  <div class="panel">
+    <h2><span class="n">4</span>Break-Even Calculator</h2>
+    <details class="more-info">
+      <summary>More info</summary>
+      <div class="disclaimer">
+      <strong>Break-even math:</strong> Exact Break-Even Units = Total Non-Recurring Costs ÷ (Price per Unit − COGS per Unit). "Your Total Spend" is the full amount you'll spend on COGS and NRE to produce and sell that many units. If price doesn't cover COGS per unit, there is no break-even volume — a warning is shown instead of a number.
+    </div>
+    </details>
+
+    <div class="panel-sub">Every field below updates live as you edit the tables above — the exact break-even quantity is solved directly, not by trial and error.</div>
+
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label for="pricePerUnit">Price per Unit ($)</label>
+        <input type="number" id="pricePerUnit" step="any" value="0" oninput="onPriceChange(this.value)">
+      </div>
+      <div class="calc-field">
+        <label>COGS per Unit ($)</label>
+        <input type="text" id="cogsPerUnit" disabled value="$0.00">
+        <div class="note">Parts subtotal + other per-unit COGS subtotal (NRE-flagged costs excluded — these are recurring costs only).</div>
+      </div>
+      <div class="calc-field">
+        <label>Contribution Margin per Unit ($)</label>
+        <input type="text" id="marginPerUnit" disabled value="$0.00">
+      </div>
+      <div class="calc-field">
+        <label>Total Non-Recurring Costs ($)</label>
+        <input type="text" id="totalNre" disabled value="$0.00">
+        <div class="note">Tooling flagged in the Parts table + all NRE items listed below.</div>
+      </div>
+    </div>
+
+    <div class="summary-bar" style="margin-top:20px;">
+      <div class="stat hero">
+        <div class="num" id="exactUnitsOut">—</div>
+        <div class="label">Exact Break-Even Units</div>
+      </div>
+      <div class="stat hero">
+        <div class="num" id="roundedUnitsOut">—</div>
+        <div class="label">Units to Sell (Rounded Up)</div>
+      </div>
+      <div class="stat hero">
+        <div class="num" id="totalSpendOut">—</div>
+        <div class="label">Your Total Spend (Rounded Up)</div>
+      </div>
+    </div>
+    <div class="note" id="priceWarning" style="display:none;"></div>
+    <div class="note" id="priceBreakResolve" style="display:none;"></div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="panel">
+    <h2><span class="n">5</span>Export</h2>
+    <div class="toolbar" style="margin-bottom:0;">
+      <button class="accent" onclick="exportPDF()">Export PDF</button>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Your data:</strong> nothing you enter here is uploaded or sent anywhere. Everything lives in this browser tab only. As a safety net against an accidental refresh or back-navigation, your in-progress work is also autosaved to this browser's local storage (still never leaves your machine) and offered back to you the next time you open this page. Your working file is a real <code>.xlsx</code> spreadsheet — use "Save" or "Save As…" to keep a copy anywhere on your computer (or a synced Drive/Dropbox folder, to share with teammates), and "Open" to pick back up later. It opens normally in Excel or Google Sheets too.
+  </div>
+</main>
+
+<footer>
+  <div>Dairy Runway Program · Cornell Center for Regional Economic Advancement (CREA)</div>
+  <a href="https://dairyinnovation.org/dairy-runway-program/" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:none;">dairyinnovation.org/dairy-runway-program ↗</a>
+</footer>
+
+<div id="print-doc"></div>
+
+<script>
+/* ── STATE ── */
+let nextId = 1;
+let parts = [];
+let otherCogs = [];
+let nreItems = [];
+let pricePerUnit = 0;
+
+function seedDefaults() {
+  parts = [];
+  otherCogs = [
+    newRow({ name: 'Assembly', unitCost: '', qty: 1 }),
+    newRow({ name: 'Packaging', unitCost: '', qty: 1 }),
+    newRow({ name: 'Shipping', unitCost: '', qty: 1 }),
+  ];
+  nreItems = [];
+}
+
+function newRow(overrides) {
+  return Object.assign({
+    id: nextId++, name: '', unitCost: '', qty: 1, isNRE: false, nreCost: '', notes: '', estimate: false,
+    hasPriceBreaks: false, priceBreaksHidden: false, priceBreaks: blankPriceBreaks()
+  }, overrides || {});
+}
+function blankPriceBreaks() {
+  return [{ qty: '', cost: '' }, { qty: '', cost: '' }, { qty: '', cost: '' }];
+}
+/* Highest-threshold tier whose qty is at or below the given volume (falls back to the
+   lowest tier if volume is below every threshold, or null if no valid tiers exist). */
+function applicableTier(r, volume) {
+  if (!r.hasPriceBreaks) return null;
+  const tiers = (r.priceBreaks || [])
+    .map(t => ({ qty: parseFloat(t.qty), cost: parseFloat(t.cost) }))
+    .filter(t => !isNaN(t.qty) && !isNaN(t.cost))
+    .sort((a, b) => a.qty - b.qty);
+  if (!tiers.length) return null;
+  const applicable = tiers.filter(t => t.qty <= volume);
+  return applicable.length ? applicable[applicable.length - 1] : tiers[0];
+}
+
+/* ── DERIVED CALCULATIONS ── */
+function extended(r) {
+  const u = parseFloat(r.unitCost);
+  const q = parseFloat(r.qty);
+  if (isNaN(u) || isNaN(q)) return 0;
+  return u * q;
+}
+function rowNreCost(r) {
+  if (!r.isNRE) return 0;
+  const c = parseFloat(r.nreCost);
+  return isNaN(c) ? 0 : c;
+}
+function subtotalExtended(list) {
+  return list.reduce((sum, r) => sum + extended(r), 0);
+}
+function subtotalRowNre(list) {
+  return list.reduce((sum, r) => sum + rowNreCost(r), 0);
+}
+function nreItemsTotal() {
+  return nreItems.reduce((sum, n) => {
+    const c = parseFloat(n.cost);
+    return sum + (isNaN(c) ? 0 : c);
+  }, 0);
+}
+function totalCOGSPerUnit() {
+  return subtotalExtended(parts) + subtotalExtended(otherCogs);
+}
+function totalNRE() {
+  return subtotalRowNre(parts) + subtotalRowNre(otherCogs) + nreItemsTotal();
+}
+function fmt(n) { return '$' + (isFinite(n) ? n : 0).toFixed(2); }
+
+/* ── RENDER: PARTS / OTHER COGS TABLES ──
+   Deliberately: row-building functions (costRowHtml/renderXTable) are only called for
+   structural changes (add/remove row, BOM import, JSON load). A per-keystroke oninput
+   handler must NEVER trigger these — rebuilding a table body's innerHTML while the user
+   is mid-keystroke destroys and recreates the input DOM node, which drops focus and
+   makes typing look like "only one character at a time" registers. Keystroke handlers
+   (updateRow/updateNre/onPriceChange) only mutate state and patch the
+   small set of *read-only* derived cells directly via targeted DOM writes. */
+function costRowHtml(r, tableName) {
+  const escAttr = (v) => (v ?? '').toString().replace(/"/g, '&quot;');
+  const estimateBadge = r.estimate ? '<span class="estimate-badge">Estimate</span>' : '';
+  if (tableName === 'other') {
+    return `<tr data-row-id="${r.id}">
+      <td><input type="text" value="${escAttr(r.name)}" oninput="updateRow('${tableName}',${r.id},'name',this.value)" placeholder="Name"></td>
+      <td><input type="number" step="any" value="${escAttr(r.unitCost)}" oninput="updateRow('${tableName}',${r.id},'unitCost',this.value)"></td>
+      <td><input type="number" step="any" value="${escAttr(r.qty)}" oninput="updateRow('${tableName}',${r.id},'qty',this.value)"></td>
+      <td class="total-cell" id="ext-${tableName}-${r.id}">${fmt(extended(r))}</td>
+      <td><input type="text" value="${escAttr(r.notes)}" oninput="updateRow('${tableName}',${r.id},'notes',this.value)" placeholder="Notes">${estimateBadge}</td>
+      <td class="actions-cell"><button class="small danger-ghost" onclick="removeRow('${tableName}',${r.id})">Remove</button></td>
+    </tr>`;
+  }
+  const showTiers = r.hasPriceBreaks && !r.priceBreaksHidden;
+  const priceBreakRows = showTiers
+    ? (r.priceBreaks || blankPriceBreaks()).map((t, i) => `<tr class="price-tier-row" data-row-id="${r.id}">
+        <td class="tier-label">Tier ${i + 1}</td>
+        <td><input type="number" step="any" placeholder="Unit cost" value="${escAttr(t.cost)}" oninput="updatePriceBreakTier(${r.id},${i},'cost',this.value)"></td>
+        <td><input type="number" step="any" placeholder="Qty" value="${escAttr(t.qty)}" oninput="updatePriceBreakTier(${r.id},${i},'qty',this.value)"></td>
+        <td></td><td></td><td></td><td></td><td></td>
+      </tr>`).join('')
+    : '';
+  return `<tr data-row-id="${r.id}">
+    <td><input type="text" value="${escAttr(r.name)}" oninput="updateRow('${tableName}',${r.id},'name',this.value)" placeholder="Name">${estimateBadge}</td>
+    <td><input type="number" step="any" value="${escAttr(r.unitCost)}" oninput="updateRow('${tableName}',${r.id},'unitCost',this.value)"></td>
+    <td><input type="number" step="any" value="${escAttr(r.qty)}" oninput="updateRow('${tableName}',${r.id},'qty',this.value)"></td>
+    <td class="total-cell" id="ext-${tableName}-${r.id}">${fmt(extended(r))}</td>
+    <td class="checkbox-cell"><input type="checkbox" ${r.hasPriceBreaks ? 'checked' : ''} onchange="togglePriceBreaks(${r.id},this.checked)"></td>
+    <td class="checkbox-cell"><input type="checkbox" ${r.priceBreaksHidden ? 'checked' : ''} ${r.hasPriceBreaks ? '' : 'disabled'} onchange="toggleHidePriceBreaks(${r.id},this.checked)"></td>
+    <td class="checkbox-cell"><input type="checkbox" ${r.isNRE ? 'checked' : ''} onchange="updateRow('${tableName}',${r.id},'isNRE',this.checked)"></td>
+    <td><input type="number" step="any" id="nreCost-${tableName}-${r.id}" value="${escAttr(r.nreCost)}" ${r.isNRE ? '' : 'disabled'} oninput="updateRow('${tableName}',${r.id},'nreCost',this.value)"></td>
+    <td class="actions-cell"><button class="small primary" onclick="savePriceBreaks(${r.id})">Save</button> <button class="small danger-ghost" onclick="removeRow('${tableName}',${r.id})">Remove</button></td>
+  </tr>${priceBreakRows}`;
+}
+
+function renderPartsTable() {
+  document.getElementById('partsBody').innerHTML = parts.map(r => costRowHtml(r, 'parts')).join('');
+  document.getElementById('partsEmpty').style.display = parts.length ? 'none' : 'block';
+}
+function renderOtherTable() {
+  document.getElementById('otherBody').innerHTML = otherCogs.map(r => costRowHtml(r, 'other')).join('');
+}
+function renderNreTable() {
+  const rows = [];
+  const partsNre = subtotalRowNre(parts) + subtotalRowNre(otherCogs);
+  rows.push(`<tr class="nre-row"><td>Tooling (flagged in Parts COGS table)</td><td class="total-cell" id="ext-nre-tooling">${fmt(partsNre)}</td><td>Auto-total — read only</td><td></td></tr>`);
+  nreItems.forEach(n => {
+    const escAttr = (v) => (v ?? '').toString().replace(/"/g, '&quot;');
+    rows.push(`<tr data-nre-id="${n.id}">
+      <td><input type="text" value="${escAttr(n.label)}" oninput="updateNre(${n.id},'label',this.value)" placeholder="e.g. UL Certification"></td>
+      <td><input type="number" step="any" value="${escAttr(n.cost)}" oninput="updateNre(${n.id},'cost',this.value)"></td>
+      <td><input type="text" value="${escAttr(n.notes)}" oninput="updateNre(${n.id},'notes',this.value)" placeholder="Notes"></td>
+      <td class="actions-cell"><button class="small danger-ghost" onclick="removeNre(${n.id})">Remove</button></td>
+    </tr>`);
+  });
+  rows.push(`<tr class="subtotal-row"><td>TOTAL NON-RECURRING COSTS</td><td class="total-cell" id="nre-grand-total">${fmt(totalNRE())}</td><td></td><td></td></tr>`);
+  document.getElementById('nreBody').innerHTML = rows.join('');
+}
+
+/* ── ROW MUTATIONS ──
+   These run on every keystroke. They update state, patch only the read-only cells that
+   depend on the field just edited (via direct DOM writes, not innerHTML rebuilds of the
+   row/table), then refresh the calculator summary. Full render() is reserved for
+   add/remove/import, called from those functions only. */
+function listFor(tableName) { return tableName === 'parts' ? parts : otherCogs; }
+function updateRow(tableName, id, field, value) {
+  const list = listFor(tableName);
+  const r = list.find(x => x.id === id);
+  if (!r) return;
+  r[field] = value;
+
+  const extCell = document.getElementById(`ext-${tableName}-${id}`);
+  if (extCell && (field === 'unitCost' || field === 'qty')) extCell.textContent = fmt(extended(r));
+
+  if (field === 'isNRE') {
+    const nreInput = document.getElementById(`nreCost-${tableName}-${id}`);
+    if (nreInput) nreInput.disabled = !r.isNRE;
+  }
+
+  recalcSummary();
+  if (field === 'isNRE' || field === 'unitCost' || field === 'qty' || field === 'nreCost') {
+    const nreCell = document.getElementById('ext-nre-tooling');
+    if (nreCell) nreCell.textContent = fmt(subtotalRowNre(parts) + subtotalRowNre(otherCogs));
+    const nreTotalCell = document.getElementById('nre-grand-total');
+    if (nreTotalCell) nreTotalCell.textContent = fmt(totalNRE());
+  }
+}
+function removeRow(tableName, id) {
+  if (tableName === 'parts') parts = parts.filter(r => r.id !== id);
+  else otherCogs = otherCogs.filter(r => r.id !== id);
+  if (tableName === 'parts') renderPartsTable(); else renderOtherTable();
+  renderNreTable();
+  recalcSummary();
+}
+function addPartRow() { parts.push(newRow({})); renderPartsTable(); recalcSummary(); }
+function addOtherRow() { otherCogs.push(newRow({})); renderOtherTable(); recalcSummary(); }
+
+/* ── PRICE BREAK TIERS ──
+   togglePriceBreaks/toggleHidePriceBreaks/savePriceBreaks are structural (they show/hide
+   the tier rows below a part) so they go through the full renderPartsTable() rebuild,
+   same as add/removeRow. updatePriceBreakTier runs on every keystroke in a visible tier
+   row and only mutates state (no rebuild), same rule as updateRow() — these tiers are
+   reference info only and don't feed into the COGS/break-even math directly (see the
+   "resolve at break-even volume" check below, which reads them explicitly on demand). */
+function togglePriceBreaks(id, checked) {
+  const r = parts.find(x => x.id === id);
+  if (!r) return;
+  r.hasPriceBreaks = checked;
+  // Unchecking removes any entered tier data; checking always starts from blank tiers.
+  r.priceBreaks = blankPriceBreaks();
+  r.priceBreaksHidden = false;
+  renderPartsTable();
+  recalcSummary();
+}
+function toggleHidePriceBreaks(id, checked) {
+  const r = parts.find(x => x.id === id);
+  if (!r) return;
+  r.priceBreaksHidden = checked;
+  renderPartsTable();
+}
+function savePriceBreaks(id) {
+  const r = parts.find(x => x.id === id);
+  if (!r) return;
+  r.priceBreaksHidden = true;
+  renderPartsTable();
+  recalcSummary();
+}
+function updatePriceBreakTier(id, tierIndex, field, value) {
+  const r = parts.find(x => x.id === id);
+  if (!r || !Array.isArray(r.priceBreaks) || !r.priceBreaks[tierIndex]) return;
+  r.priceBreaks[tierIndex][field] = value;
+  recalcSummary();
+}
+
+function updateNre(id, field, value) {
+  const n = nreItems.find(x => x.id === id);
+  if (!n) return;
+  n[field] = value;
+  if (field === 'cost') {
+    const totalCell = document.getElementById('nre-grand-total');
+    if (totalCell) totalCell.textContent = fmt(totalNRE());
+  }
+  recalcSummary();
+}
+function removeNre(id) {
+  nreItems = nreItems.filter(n => n.id !== id);
+  renderNreTable();
+  recalcSummary();
+}
+function addNreRow() {
+  nreItems.push({ id: nextId++, label: '', cost: '', notes: '' });
+  renderNreTable();
+  recalcSummary();
+}
+
+function onPriceChange(value) {
+  pricePerUnit = parseFloat(value);
+  if (isNaN(pricePerUnit)) pricePerUnit = 0;
+  recalcSummary();
+}
+/* ── SUMMARY RECALC (no table rebuilds — safe to call on every keystroke) ── */
+function recalcSummary() {
+  const cogs = totalCOGSPerUnit();
+  const margin = pricePerUnit - cogs;
+  const nre = totalNRE();
+
+  document.getElementById('cogsPerUnit').value = fmt(cogs);
+  document.getElementById('marginPerUnit').value = fmt(margin);
+  document.getElementById('totalNre').value = fmt(nre);
+
+  const warningEl = document.getElementById('priceWarning');
+  const exactEl = document.getElementById('exactUnitsOut');
+  const roundedEl = document.getElementById('roundedUnitsOut');
+  const totalSpendEl = document.getElementById('totalSpendOut');
+
+  const resolveEl = document.getElementById('priceBreakResolve');
+
+  if (margin <= 0) {
+    exactEl.textContent = '—';
+    roundedEl.textContent = '—';
+    totalSpendEl.textContent = '—';
+    warningEl.style.display = 'block';
+    warningEl.innerHTML = '<span class="warn-text">Price per unit does not cover COGS per unit — there is no break-even quantity at this price.</span>';
+    resolveEl.style.display = 'none';
+  } else {
+    const exactUnits = nre / margin;
+    const roundedUnits = Math.max(1, Math.ceil(exactUnits));
+    exactEl.textContent = exactUnits.toFixed(2);
+    roundedEl.textContent = roundedUnits.toLocaleString();
+    totalSpendEl.textContent = fmt((cogs * roundedUnits) + nre);
+    warningEl.style.display = 'none';
+
+    const mismatched = parts.filter(r => {
+      const tier = applicableTier(r, roundedUnits);
+      if (!tier) return false;
+      const current = parseFloat(r.unitCost);
+      return isNaN(current) || Math.abs(tier.cost - current) > 0.0001;
+    });
+    if (mismatched.length) {
+      resolveEl.style.display = 'block';
+      resolveEl.innerHTML = `<span class="warn-text">Your break-even quantity (${roundedUnits.toLocaleString()} units) qualifies ${mismatched.length} part${mismatched.length === 1 ? '' : 's'} for a different price-break tier than its current Unit Cost.</span> <button class="small accent" onclick="resolvePriceBreaks()">Resolve at break-even volume</button>`;
+    } else {
+      resolveEl.style.display = 'none';
+    }
+  }
+  scheduleAutosave();
+}
+/* Sets each price-break part's Unit Cost to whichever tier applies at the currently
+   displayed break-even quantity, then recalculates (which may shift that quantity,
+   so the note above can prompt the user to Resolve again if it moved into a new tier). */
+function resolvePriceBreaks() {
+  const roundedUnits = Math.max(1, Math.ceil(parseFloat(document.getElementById('exactUnitsOut').textContent) || 1));
+  parts.forEach(r => {
+    const tier = applicableTier(r, roundedUnits);
+    if (tier) r.unitCost = tier.cost;
+  });
+  renderPartsTable();
+  recalcSummary();
+}
+
+/* ── FULL RENDER (structural changes only: import, load, initial paint) ── */
+function renderAll() {
+  renderPartsTable();
+  renderOtherTable();
+  renderNreTable();
+  recalcSummary();
+}
+
+/* ── BOM UPLOAD: .xlsx, matched by column header name ──
+   Reads a BOM saved by the BOM Worksheet tool (or a BOM hand-built from scratch in Excel
+   with recognizable column headers) and fills in part names, quantities, and unit costs
+   here. Reuses the same unzip/sheet-parsing and header-alias-matching approach as that
+   tool's own Open — see bom-worksheet.html for the canonical version of this pattern. */
+const BOM_HEADER_ALIASES = {
+  name: ['name'],
+  qty: ['qty', 'quantity'],
+  unitCost: ['unit cost', 'unit price', 'cost'],
+  archived: ['archived']
+};
+function matchBomColumns(header) {
+  const colByField = {};
+  const usedCols = new Set();
+  Object.keys(BOM_HEADER_ALIASES).forEach(field => {
+    const aliases = BOM_HEADER_ALIASES[field];
+    const idx = header.findIndex((h, i) => !usedCols.has(i) && aliases.includes((h || '').trim().toLowerCase()));
+    if (idx !== -1) { colByField[field] = idx; usedCols.add(idx); }
+  });
+  return colByField;
+}
+async function loadBomXlsx(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const buf = await file.arrayBuffer();
+  let files;
+  try { files = await wfUnzip(buf); }
+  catch (e) { alert('Could not read that .xlsx file.\n\n' + e.message); return; }
+  const sheet1 = files['xl/worksheets/sheet1.xml'];
+  if (!sheet1) { alert('Could not find a worksheet inside that file.'); return; }
+  const sharedStrings = files['xl/sharedStrings.xml'] ? wfParseSharedStrings(new TextDecoder().decode(files['xl/sharedStrings.xml'])) : null;
+  let sheetRows;
+  try { sheetRows = wfParseSheetXml(new TextDecoder().decode(sheet1), sharedStrings); }
+  catch (e) { alert('Could not read that file\'s worksheet.\n\n' + e.message); return; }
+
+  let headerRowIdx = -1, colByField = null;
+  for (let i = 0; i < sheetRows.length; i++) {
+    const candidate = matchBomColumns(sheetRows[i]);
+    if (candidate.name !== undefined) { headerRowIdx = i; colByField = candidate; break; }
+  }
+  if (headerRowIdx === -1) {
+    alert('That file doesn\'t have a recognizable column layout for a BOM (no "Name" column header found), so it can\'t be imported.');
+    event.target.value = '';
+    return;
+  }
+
+  let added = 0;
+  for (let i = headerRowIdx + 1; i < sheetRows.length; i++) {
+    const row = sheetRows[i];
+    if (!row.some(c => (c || '').trim() !== '')) continue;
+    const archived = colByField.archived !== undefined && /^y/i.test((row[colByField.archived] || '').trim());
+    if (archived) continue;
+    const name = (row[colByField.name] || '').trim();
+    if (!name) continue;
+    const unitCost = colByField.unitCost !== undefined ? (row[colByField.unitCost] || '').trim() : '';
+    const qty = colByField.qty !== undefined ? (row[colByField.qty] || '').trim() : '';
+    parts.push(newRow({ name, unitCost, qty: qty || 1 }));
+    added++;
+  }
+  renderAll();
+  event.target.value = '';
+  alert(`Imported ${added} part${added === 1 ? '' : 's'} from the BOM.`);
+}
+
+/* ── NATIVE SAVE / OPEN: working file is a real .xlsx ───────────────────────
+   Same approach as bom-worksheet.html: the working file is a plain, single-sheet
+   .xlsx — double-click it and Excel/Sheets shows a normal, readable analysis.
+   Extended-cost cells are live formulas (=Unit Cost*Qty), so they recalculate if
+   someone edits Unit Cost or Qty by hand in Excel. Price-break tiers round-trip
+   as a "(Price breaks: qty@$cost, ...)" suffix on that row's Notes cell — visible,
+   plain text, not hidden data.
+   Known limitation: the hand-rolled zip reader only understands the uncompressed
+   zip format this tool's own writer produces — a file re-saved by real Excel in
+   between typically can't be read back here. See bom-worksheet.html for the fuller
+   explanation; same tradeoff applies. */
+function parsePriceBreaksFromNote(note) {
+  const m = /\(Price breaks:\s*([^)]*)\)/.exec(note || '');
+  if (!m) return { tiers: null, rest: (note || '').trim() };
+  const tiers = m[1].split(',').map(s => s.trim()).map(s => {
+    const mm = /^([\d.]+)@\$([\d.]+)$/.exec(s);
+    return mm ? { qty: mm[1], cost: mm[2] } : null;
+  }).filter(Boolean);
+  return { tiers, rest: note.replace(m[0], '').trim() };
+}
+function tiersToPriceBreaks(tiers) {
+  if (!tiers || !tiers.length) return blankPriceBreaks();
+  return tiers.concat(blankPriceBreaks()).slice(0, 3);
+}
+function wfPopulateState(result) {
+  pricePerUnit = result.pricePerUnit || 0;
+  parts = result.parts || [];
+  otherCogs = result.otherCogs || [];
+  nreItems = result.nreItems || [];
+  nextId = Math.max(1, ...parts.concat(otherCogs, nreItems).map(r => r.id || 0)) + 1;
+  document.getElementById('pricePerUnit').value = pricePerUnit;
+  renderAll();
+}
+function colLetterToIndex(letters) {
+  let n = 0;
+  for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
+  return n;
+}
+// Unzip for both the uncompressed (STORE) entries this tool's own writer produces and the
+// DEFLATE-compressed entries real Excel/Google Sheets always write. DEFLATE is unpacked with
+// the browser's built-in DecompressionStream, so this still needs no zip/inflate library —
+// just a browser recent enough to have that API (Chrome/Edge/Firefox/Safari all have it).
+// Async because DecompressionStream is stream-based.
+async function wfUnzip(buf) {
+  const data = new Uint8Array(buf);
+  const dv = new DataView(buf);
+  let eocdOffset = -1;
+  for (let i = data.length - 22; i >= 0; i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
+  }
+  if (eocdOffset === -1) throw new Error('Not a valid zip/.xlsx file (no end-of-central-directory record found).');
+  const numEntries = dv.getUint16(eocdOffset + 10, true);
+  const centralOffset = dv.getUint32(eocdOffset + 16, true);
+  const entries = [];
+  let offset = centralOffset;
+  for (let i = 0; i < numEntries; i++) {
+    if (dv.getUint32(offset, true) !== 0x02014b50) break;
+    const compMethod = dv.getUint16(offset + 10, true);
+    const compSize = dv.getUint32(offset + 20, true);
+    const nameLen = dv.getUint16(offset + 28, true);
+    const extraLen = dv.getUint16(offset + 30, true);
+    const commentLen = dv.getUint16(offset + 32, true);
+    const localOffset = dv.getUint32(offset + 42, true);
+    const name = new TextDecoder().decode(data.slice(offset + 46, offset + 46 + nameLen));
+    entries.push({ name, compMethod, compSize, localOffset });
+    offset += 46 + nameLen + extraLen + commentLen;
+  }
+  const files = {};
+  for (const entry of entries) {
+    const localNameLen = dv.getUint16(entry.localOffset + 26, true);
+    const localExtraLen = dv.getUint16(entry.localOffset + 28, true);
+    const dataStart = entry.localOffset + 30 + localNameLen + localExtraLen;
+    const compBytes = data.slice(dataStart, dataStart + entry.compSize);
+    if (entry.compMethod === 0) {
+      files[entry.name] = compBytes;
+    } else if (entry.compMethod === 8) {
+      if (typeof DecompressionStream === 'undefined') {
+        throw new Error(`"${entry.name}" uses zip (DEFLATE) compression, which needs this browser's built-in decompression support (DecompressionStream) to unpack. Please open this tool in a recent Chrome, Edge, Firefox, or Safari.`);
+      }
+      const stream = new Blob([compBytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      files[entry.name] = new Uint8Array(await new Response(stream).arrayBuffer());
+    } else {
+      throw new Error(`"${entry.name}" uses a zip compression method (${entry.compMethod}) this tool doesn't support.`);
+    }
+  }
+  return files;
+}
+// Shared-string table (xl/sharedStrings.xml): real Excel/Google Sheets exports reference
+// text cells into this table (<c t="s"><v>INDEX</v></c>) instead of inlining the text.
+function wfParseSharedStrings(xmlText) {
+  const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) return [];
+  return Array.from(doc.getElementsByTagName('si')).map(si => Array.from(si.getElementsByTagName('t')).map(t => t.textContent).join(''));
+}
+// Reads a worksheet's <row>/<c> grid into one array per row: cells[colIndex-1] = text.
+// Also resolves shared-string cells (t="s") against sharedStrings, since real Excel/Google
+// Sheets exports almost always use that instead of inline text.
+function wfParseSheetXml(xmlText, sharedStrings) {
+  const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) throw new Error('That sheet\'s XML could not be parsed.');
+  return Array.from(doc.getElementsByTagName('row')).map(rowEl => {
+    const cells = {};
+    Array.from(rowEl.getElementsByTagName('c')).forEach(c => {
+      const ref = c.getAttribute('r') || '';
+      const m = ref.match(/^([A-Z]+)/);
+      if (!m) return;
+      const colIdx = colLetterToIndex(m[1]);
+      const isEl = c.getElementsByTagName('is')[0];
+      const tEl = isEl ? isEl.getElementsByTagName('t')[0] : null;
+      const vEl = c.getElementsByTagName('v')[0];
+      if (tEl) cells[colIdx] = tEl.textContent;
+      else if (c.getAttribute('t') === 's' && vEl) cells[colIdx] = (sharedStrings && sharedStrings[Number(vEl.textContent)]) || '';
+      else cells[colIdx] = vEl ? vEl.textContent : '';
+    });
+    const maxCol = Math.max(0, ...Object.keys(cells).map(Number));
+    const arr = [];
+    for (let i = 1; i <= maxCol; i++) arr.push(cells[i] || '');
+    return arr;
+  });
+}
+function wfParseBreakEvenRows(rows) {
+  const idxOf = (label) => rows.findIndex(r => (r[0] || '').trim() === label);
+  let i = idxOf('COMPONENT / PARTS COGS (PER UNIT)');
+  if (i < 0) return null;
+  const newParts = [], newOther = [], newNre = [];
+  i += 2;
+  for (; i < rows.length; i++) {
+    const row = rows[i];
+    if (!row.length || (row[0] || '').trim() === 'Parts Subtotal') { i++; break; }
+    const [name, unitCost, qty, , isNreTxt, nreCost, notes] = row;
+    const { tiers, rest } = parsePriceBreaksFromNote(notes);
+    const hasBreaks = !!(tiers && tiers.length);
+    newParts.push(newRow({
+      name: name || '', unitCost: unitCost || '', qty: qty || 1,
+      isNRE: (isNreTxt || '').trim() === 'Yes', nreCost: nreCost || '', notes: rest,
+      hasPriceBreaks: hasBreaks, priceBreaksHidden: hasBreaks, priceBreaks: tiersToPriceBreaks(tiers)
+    }));
+  }
+  i++;
+  i += 2;
+  for (; i < rows.length; i++) {
+    const row = rows[i];
+    if (!row.length || (row[0] || '').trim() === 'Other COGS Subtotal') { i++; break; }
+    const [name, unitCost, qty, , notes] = row;
+    newOther.push(newRow({ name: name || '', unitCost: unitCost || '', qty: qty || 1, notes: notes || '' }));
+  }
+  i++;
+  i += 2;
+  i++; // skip auto-computed "Tooling flagged in Parts COGS" row
+  for (; i < rows.length; i++) {
+    const row = rows[i];
+    if (!row.length || (row[0] || '').trim() === 'TOTAL NON-RECURRING COSTS') { i++; break; }
+    const [label, cost, notes] = row;
+    newNre.push({ id: nextId++, label: label || '', cost: cost || '', notes: notes || '' });
+  }
+  let price = 0;
+  for (; i < rows.length; i++) {
+    if ((rows[i][0] || '').trim() === 'Price per Unit') { price = parseFloat(rows[i][1]) || 0; break; }
+  }
+  return { parts: newParts, otherCogs: newOther, nreItems: newNre, pricePerUnit: price };
+}
+function wfUpdateStatus(label) {
+  document.getElementById('wfFileStatus').textContent = label || 'No file open';
+}
+async function wfLoadFromArrayBuffer(buf) {
+  let files;
+  try { files = await wfUnzip(buf); }
+  catch (e) { alert('Could not read that .xlsx file.\n\n' + e.message); return; }
+  const sheet1 = files['xl/worksheets/sheet1.xml'];
+  if (!sheet1) { alert('Could not find a worksheet inside that file.'); return; }
+  const sharedStrings = files['xl/sharedStrings.xml'] ? wfParseSharedStrings(new TextDecoder().decode(files['xl/sharedStrings.xml'])) : null;
+  let sheetRows;
+  try { sheetRows = wfParseSheetXml(new TextDecoder().decode(sheet1), sharedStrings); }
+  catch (e) { alert('Could not read that file\'s worksheet.\n\n' + e.message); return; }
+  const result = wfParseBreakEvenRows(sheetRows);
+  if (!result) {
+    alert('That file doesn\'t look like a Break-Even Analysis saved by this tool, so it can\'t be opened here.');
+    return;
+  }
+  wfPopulateState(result);
+}
+let wfFileHandle = null;
+async function wfSave(forceSaveAs) {
+  const blob = wfBuildWorkbookBlob();
+  const suggestedName = 'break_even_analysis.xlsx';
+  if (window.showSaveFilePicker) {
+    try {
+      let handle = wfFileHandle;
+      if (forceSaveAs || !handle) {
+        handle = await window.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: 'Excel Workbook', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+        });
+      }
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      wfFileHandle = handle;
+      wfUpdateStatus(`File: ${handle.name}`);
+      clearAutosave();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = suggestedName;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  wfUpdateStatus(`${suggestedName} (downloaded — this browser can't link Save back to a chosen file)`);
+  clearAutosave();
+}
+async function wfOpen() {
+  if (window.showOpenFilePicker) {
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'Excel Workbook', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+      });
+      const file = await handle.getFile();
+      await wfLoadFromArrayBuffer(await file.arrayBuffer());
+      wfFileHandle = handle;
+      wfUpdateStatus(`File: ${handle.name}`);
+      clearAutosave();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  document.getElementById('wfOpenInputFallback').click();
+}
+function wfHandleOpenFallback(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    await wfLoadFromArrayBuffer(reader.result);
+    wfFileHandle = null;
+    wfUpdateStatus(`${file.name} (opened via upload — this browser needs a fresh download on Save)`);
+    clearAutosave();
+  };
+  reader.readAsArrayBuffer(file);
+  event.target.value = '';
+}
+
+function priceBreakNote(r) {
+  if (!r.hasPriceBreaks) return '';
+  const tiers = (r.priceBreaks || []).filter(t => t.qty !== '' && t.cost !== '');
+  if (!tiers.length) return '';
+  return ' (Price breaks: ' + tiers.map(t => `${t.qty}@$${parseFloat(t.cost).toFixed(2)}`).join(', ') + ')';
+}
+function noteWithPriceBreak(r) {
+  return ((r.notes || '') + priceBreakNote(r)).trim();
+}
+/* ── NATIVE SAVE / OPEN: working file is a real .xlsx (hand-rolled minimal uncompressed OOXML, same technique as bom-worksheet.html) ── */
+function crc32(bytes) {
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) {
+    crc ^= bytes[i];
+    for (let j = 0; j < 8; j++) crc = (crc >>> 1) ^ (0xEDB88320 & -(crc & 1));
+  }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function makeZip(files) {
+  const encoder = new TextEncoder();
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+  files.forEach(f => {
+    const nameBytes = encoder.encode(f.name);
+    const data = typeof f.data === 'string' ? encoder.encode(f.data) : f.data;
+    const crc = crc32(data);
+    const size = data.length;
+
+    const local = new Uint8Array(30 + nameBytes.length);
+    const lv = new DataView(local.buffer);
+    lv.setUint32(0, 0x04034b50, true);
+    lv.setUint16(4, 20, true);
+    lv.setUint16(6, 0, true);
+    lv.setUint16(8, 0, true);
+    lv.setUint16(10, 0, true);
+    lv.setUint16(12, 0, true);
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, size, true);
+    lv.setUint32(22, size, true);
+    lv.setUint16(26, nameBytes.length, true);
+    lv.setUint16(28, 0, true);
+    local.set(nameBytes, 30);
+    localParts.push(local, data);
+
+    const central = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(central.buffer);
+    cv.setUint32(0, 0x02014b50, true);
+    cv.setUint16(4, 20, true);
+    cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0, true);
+    cv.setUint16(10, 0, true);
+    cv.setUint16(12, 0, true);
+    cv.setUint16(14, 0, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, size, true);
+    cv.setUint32(24, size, true);
+    cv.setUint16(28, nameBytes.length, true);
+    cv.setUint16(30, 0, true);
+    cv.setUint16(32, 0, true);
+    cv.setUint16(34, 0, true);
+    cv.setUint16(36, 0, true);
+    cv.setUint32(38, 0, true);
+    cv.setUint32(42, offset, true);
+    central.set(nameBytes, 46);
+    centralParts.push(central);
+
+    offset += local.length + data.length;
+  });
+
+  const centralOffset = offset;
+  const centralSize = centralParts.reduce((sum, c) => sum + c.length, 0);
+  const end = new Uint8Array(22);
+  const ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(8, files.length, true);
+  ev.setUint16(10, files.length, true);
+  ev.setUint32(12, centralSize, true);
+  ev.setUint32(16, centralOffset, true);
+
+  return new Blob([...localParts, ...centralParts, end], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+}
+function escapeXml(s) {
+  return (s ?? '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function colLetter(n) {
+  let s = '';
+  while (n > 0) { const rem = (n - 1) % 26; s = String.fromCharCode(65 + rem) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+function xlsxTextCell(col, row, value, styleIdx) {
+  const ref = `${colLetter(col)}${row}`;
+  const s = styleIdx ? ` s="${styleIdx}"` : '';
+  const text = (value ?? '').toString();
+  if (!text) return `<c r="${ref}"${s}/>`;
+  return `<c r="${ref}"${s} t="inlineStr"><is><t xml:space="preserve">${escapeXml(text)}</t></is></c>`;
+}
+function xlsxNumberCell(col, row, value, styleIdx) {
+  const ref = `${colLetter(col)}${row}`;
+  const s = styleIdx ? ` s="${styleIdx}"` : '';
+  if (value === null || value === undefined || value === '' || isNaN(value)) return `<c r="${ref}"${s}/>`;
+  return `<c r="${ref}"${s}><v>${Number(value)}</v></c>`;
+}
+function xlsxFormulaCell(col, row, formula, cachedValue, styleIdx) {
+  const ref = `${colLetter(col)}${row}`;
+  const s = styleIdx ? ` s="${styleIdx}"` : '';
+  const vPart = (cachedValue !== null && cachedValue !== undefined && !isNaN(cachedValue)) ? `<v>${Number(cachedValue)}</v>` : '';
+  return `<c r="${ref}"${s}><f>${formula}</f>${vPart}</c>`;
+}
+function wfBuildWorkbookBlob() {
+  const sheetRows = [];
+  let row = 1;
+  const addTextRow = (text) => { sheetRows.push(`<row r="${row}">${xlsxTextCell(1, row, text, 3)}</row>`); row++; };
+  const addBlankRow = () => { sheetRows.push(`<row r="${row}"></row>`); row++; };
+  const addHeaderRow = (cells) => { sheetRows.push(`<row r="${row}">${cells.map((c, i) => xlsxTextCell(i + 1, row, c, 1)).join('')}</row>`); row++; };
+  const addDataRow = (cells) => {
+    sheetRows.push(`<row r="${row}">${cells.map((c, i) => c.formula
+      ? xlsxFormulaCell(i + 1, row, c.formula, c.val, 2)
+      : (c.num ? xlsxNumberCell(i + 1, row, c.val, 2) : xlsxTextCell(i + 1, row, c.val))).join('')}</row>`);
+    row++;
+  };
+
+  addTextRow('Break-Even Analysis');
+  addTextRow(`Saved: ${new Date().toLocaleString()}`);
+  addBlankRow();
+
+  addTextRow('COMPONENT / PARTS COGS (PER UNIT)');
+  addHeaderRow(['Part', 'Unit Cost', 'Qty', 'Extended', 'Has NRE Cost', 'NRE Cost', 'Notes']);
+  parts.forEach(r => {
+    const extRow = row;
+    addDataRow([
+      { val: r.name }, { val: r.unitCost, num: true }, { val: r.qty, num: true },
+      { formula: `B${extRow}*C${extRow}`, val: extended(r) }, { val: r.isNRE ? 'Yes' : 'No' },
+      { val: rowNreCost(r), num: true }, { val: noteWithPriceBreak(r) }
+    ]);
+  });
+  addDataRow([{ val: 'Parts Subtotal' }, { val: '' }, { val: '' }, { val: subtotalExtended(parts), num: true }, { val: '' }, { val: subtotalRowNre(parts), num: true }, { val: '' }]);
+  addBlankRow();
+
+  addTextRow('OTHER PER-UNIT COGS');
+  addHeaderRow(['Category', 'Unit Cost', 'Qty', 'Extended', 'Notes']);
+  otherCogs.forEach(r => {
+    const extRow = row;
+    addDataRow([
+      { val: r.name }, { val: r.unitCost, num: true }, { val: r.qty, num: true },
+      { formula: `B${extRow}*C${extRow}`, val: extended(r) }, { val: r.notes }
+    ]);
+  });
+  addDataRow([{ val: 'Other COGS Subtotal' }, { val: '' }, { val: '' }, { val: subtotalExtended(otherCogs), num: true }, { val: '' }]);
+  addBlankRow();
+
+  addTextRow('NON-RECURRING COSTS (NRE)');
+  addHeaderRow(['Item', 'Cost', 'Notes']);
+  addDataRow([{ val: 'Tooling flagged in Parts COGS' }, { val: subtotalRowNre(parts) + subtotalRowNre(otherCogs), num: true }, { val: '' }]);
+  nreItems.forEach(n => addDataRow([{ val: n.label }, { val: parseFloat(n.cost) || 0, num: true }, { val: n.notes }]));
+  addDataRow([{ val: 'TOTAL NON-RECURRING COSTS' }, { val: totalNRE(), num: true }, { val: '' }]);
+  addBlankRow();
+
+  const cogs = totalCOGSPerUnit();
+  const margin = pricePerUnit - cogs;
+  const nre = totalNRE();
+  const roundedUnits = margin > 0 ? Math.max(1, Math.ceil(nre / margin)) : null;
+  addTextRow('BREAK-EVEN CALCULATOR');
+  addDataRow([{ val: 'Price per Unit' }, { val: pricePerUnit, num: true }]);
+  addDataRow([{ val: 'COGS per Unit' }, { val: cogs, num: true }]);
+  addDataRow([{ val: 'Contribution Margin per Unit' }, { val: margin, num: true }]);
+  addDataRow([{ val: 'Total Non-Recurring Costs' }, { val: nre, num: true }]);
+  addDataRow([{ val: 'Exact Break-Even Units' }, { val: margin > 0 ? nre / margin : '', num: true }]);
+  addDataRow([{ val: 'Units to Sell (Rounded Up)' }, { val: roundedUnits !== null ? roundedUnits : '', num: true }]);
+  addDataRow([{ val: 'Your Total Spend (Rounded Up)' }, { val: roundedUnits !== null ? (cogs * roundedUnits) + nre : '', num: true }]);
+
+  const sheetXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<sheetData>${sheetRows.join('')}</sheetData>
+</worksheet>`;
+
+  const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+</Types>`;
+
+  const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`;
+
+  const workbookXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets><sheet name="Break-Even Analysis" sheetId="1" r:id="rId1"/></sheets>
+</workbook>`;
+
+  const workbookRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+  const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<fonts count="2">
+<font><sz val="11"/><name val="Calibri"/></font>
+<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font>
+</fonts>
+<fills count="3">
+<fill><patternFill patternType="none"/></fill>
+<fill><patternFill patternType="gray125"/></fill>
+<fill><patternFill patternType="solid"><fgColor rgb="FF128078"/><bgColor indexed="64"/></patternFill></fill>
+</fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="4">
+<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+<xf numFmtId="2" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>
+<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+</cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
+</styleSheet>`;
+
+  return makeZip([
+    { name: '[Content_Types].xml', data: contentTypes },
+    { name: '_rels/.rels', data: rootRels },
+    { name: 'xl/workbook.xml', data: workbookXml },
+    { name: 'xl/_rels/workbook.xml.rels', data: workbookRels },
+    { name: 'xl/styles.xml', data: stylesXml },
+    { name: 'xl/worksheets/sheet1.xml', data: sheetXml }
+  ]);
+}
+
+/* ── EXPORT: PDF (print) ── */
+function escapeHtml(s) {
+  return (s ?? '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function printCostTable(list, title, withNre) {
+  const cols = withNre
+    ? ['Item', 'Unit Cost', 'Qty', 'Extended', 'Has NRE Cost', 'NRE Cost', 'Notes']
+    : ['Item', 'Unit Cost', 'Qty', 'Extended', 'Notes'];
+  const rowsHtml = list.map(r => {
+    const ucDisplay = r.unitCost !== '' ? '$' + (parseFloat(r.unitCost) || 0).toFixed(2) : '';
+    const cells = withNre
+      ? [r.name, ucDisplay, r.qty,
+         '$' + extended(r).toFixed(2), r.isNRE ? 'Yes' : 'No', r.isNRE ? '$' + rowNreCost(r).toFixed(2) : '', noteWithPriceBreak(r)]
+      : [r.name, ucDisplay, r.qty,
+         '$' + extended(r).toFixed(2), r.notes];
+    return `<tr>${cells.map(v => `<td>${escapeHtml(v)}</td>`).join('')}</tr>`;
+  }).join('');
+  return `<div class="section"><h2>${title}</h2>
+    <table><thead><tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+    <tbody>${rowsHtml || `<tr><td colspan="${cols.length}" style="color:#888;">No rows.</td></tr>`}</tbody></table></div>`;
+}
+function printNreTable() {
+  const rowsHtml = [
+    `<tr><td>Tooling flagged in Parts COGS</td><td>$${(subtotalRowNre(parts) + subtotalRowNre(otherCogs)).toFixed(2)}</td><td></td></tr>`,
+    ...nreItems.map(n => `<tr><td>${escapeHtml(n.label)}</td><td>$${(parseFloat(n.cost) || 0).toFixed(2)}</td><td>${escapeHtml(n.notes)}</td></tr>`)
+  ].join('');
+  return `<div class="section"><h2>Non-Recurring Costs (NRE) — Total: $${totalNRE().toFixed(2)}</h2>
+    <table><thead><tr><th>Item</th><th>Cost</th><th>Notes</th></tr></thead>
+    <tbody>${rowsHtml}</tbody></table></div>`;
+}
+function exportPDF() {
+  const cogs = totalCOGSPerUnit();
+  const margin = pricePerUnit - cogs;
+  const nre = totalNRE();
+  const roundedUnits = margin > 0 ? Math.max(1, Math.ceil(nre / margin)) : null;
+  const exactUnits = margin > 0 ? (nre / margin).toFixed(2) : 'N/A';
+
+  let html = `<h1>Break-Even Analysis</h1>
+  <div class="meta-line">Exported: ${new Date().toLocaleDateString()}</div>`;
+
+  html += `<div class="resultbox"><strong>Price per Unit:</strong> $${pricePerUnit.toFixed(2)} &nbsp;|&nbsp;
+    <strong>COGS per Unit:</strong> $${cogs.toFixed(2)} &nbsp;|&nbsp;
+    <strong>Contribution Margin:</strong> $${margin.toFixed(2)} &nbsp;|&nbsp;
+    <strong>Total NRE:</strong> $${nre.toFixed(2)}<br>
+    <strong>Exact Break-Even Units:</strong> ${exactUnits} &nbsp;|&nbsp;
+    <strong>Units to Sell (Rounded Up):</strong> ${roundedUnits !== null ? roundedUnits.toLocaleString() : 'N/A'}${roundedUnits !== null ? ` <br>
+    <strong>Your Total Spend (Rounded Up):</strong> $${((cogs * roundedUnits) + nre).toFixed(2)}` : ''}</div>`;
+
+  html += printCostTable(parts, `Component / Parts COGS (Subtotal: $${subtotalExtended(parts).toFixed(2)})`, true);
+  html += printCostTable(otherCogs, `Other Per-Unit COGS (Subtotal: $${subtotalExtended(otherCogs).toFixed(2)})`);
+  html += printNreTable();
+
+  html += `<div class="disclaimer-print">This is a workshop aid for modeling break-even volume — a companion to Rev: Ithaca Startup Works' costing workshops, not a substitute for a supplier-quoted, accountant-reviewed cost model. Nothing entered in this tool is uploaded or sent anywhere.</div>`;
+
+  document.getElementById('print-doc').innerHTML = html;
+  window.print();
+}
+
+/* ── AUTOSAVE (localStorage only — never leaves the browser) ── */
+// Guards against the classic accidental-back/accidental-refresh data loss: every change is
+// snapshotted to localStorage (debounced so typing doesn't thrash it), and on next load — if
+// that snapshot wasn't cleared by a normal Save JSON / explicit discard — the user is offered
+// a one-click restore. This is separate from Save JSON: it's a safety net, not a save format,
+// and is cleared as soon as it's restored or discarded so it never resurfaces stale data.
+const AUTOSAVE_KEY = 'breakEvenWorksheetAutosave_v1';
+let autosaveTimer = null;
+let autosaveSuppressed = false; // true right after a restore/discard, to avoid re-saving the banner's own removal as "new" data
+
+// otherCogs always starts pre-seeded with named (but blank-cost) Assembly/Packaging/Shipping
+// rows, so "name is non-empty" isn't a useful signal there — only count a row as real data
+// once its cost or notes have actually been touched.
+function hasAnyData() {
+  const otherRowHasData = (r) => (r.unitCost || '').toString().trim() !== '' || (r.notes || '').trim() !== '';
+  return parts.length > 0 || otherCogs.some(otherRowHasData) || nreItems.length > 0 || pricePerUnit > 0;
+}
+
+function scheduleAutosave() {
+  if (autosaveSuppressed) return;
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    if (!hasAnyData()) { localStorage.removeItem(AUTOSAVE_KEY); return; }
+    const snapshot = { pricePerUnit, parts, otherCogs, nreItems, nextId, savedAt: new Date().toISOString() };
+    try { localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snapshot)); } catch (e) { /* storage full/unavailable — silently skip, Save JSON still works */ }
+  }, 800);
+}
+
+function clearAutosave() {
+  localStorage.removeItem(AUTOSAVE_KEY);
+}
+
+function showRestoreBanner(snapshot) {
+  const when = snapshot.savedAt ? new Date(snapshot.savedAt).toLocaleString() : 'a previous session';
+  const rowCount = (snapshot.parts || []).length + (snapshot.otherCogs || []).length;
+  document.getElementById('restoreBannerText').textContent =
+    `Found unsaved work from ${when} (${rowCount} part row${rowCount === 1 ? '' : 's'}) — looks like the tab was closed or refreshed before it was saved. Restore it?`;
+  document.getElementById('restoreBanner').style.display = 'flex';
+}
+
+function restoreAutosave() {
+  const raw = localStorage.getItem(AUTOSAVE_KEY);
+  if (!raw) return;
+  try {
+    const snapshot = JSON.parse(raw);
+    autosaveSuppressed = true;
+    pricePerUnit = parseFloat(snapshot.pricePerUnit) || 0;
+    parts = snapshot.parts || [];
+    otherCogs = snapshot.otherCogs || [];
+    nreItems = snapshot.nreItems || [];
+    nextId = snapshot.nextId || (Math.max(0, ...parts.concat(otherCogs, nreItems).map(r => r.id || 0)) + 1);
+    document.getElementById('pricePerUnit').value = pricePerUnit;
+    renderAll();
+    autosaveSuppressed = false;
+  } catch (e) { /* corrupt snapshot — nothing to restore */ }
+  document.getElementById('restoreBanner').style.display = 'none';
+}
+
+function dismissAutosave() {
+  clearAutosave();
+  autosaveSuppressed = false;
+  document.getElementById('restoreBanner').style.display = 'none';
+}
+
+// Check for a leftover autosave snapshot before the first render so the banner appears
+// immediately on load, without flashing an empty table first. Suppress autosave until the
+// user restores or discards it — otherwise the empty starting table's own autosave (still
+// debouncing from page load) clears the very snapshot the banner is offering to restore.
+(function checkAutosaveOnLoad() {
+  const raw = localStorage.getItem(AUTOSAVE_KEY);
+  if (!raw) return;
+  try { autosaveSuppressed = true; showRestoreBanner(JSON.parse(raw)); } catch (e) { localStorage.removeItem(AUTOSAVE_KEY); }
+})();
+
+// Cheap first line of defense against an instinctive back/refresh: only prompts when there's
+// actually something to lose.
+window.addEventListener('beforeunload', (e) => {
+  if (hasAnyData()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+/* ── INIT ── */
+seedDefaults();
+renderAll();
+</script>
+
+</body>
+</html>
