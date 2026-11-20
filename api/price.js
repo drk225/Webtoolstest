@@ -74,21 +74,30 @@ function isAllowedDomain(hostname) {
 }
 
 // Cached across warm invocations of the same function instance — only the first request per
-// container pays the download+extract cost of the chromium-pack.tar this repo's postinstall
-// step produces (see scripts/make-chromium-pack.js).
+// container pays the extract-to-/tmp cost.
+//
+// Earlier version of this tried the "@sparticuz/chromium-min + self-host a chromium-pack.tar as
+// a static asset, download it at runtime" pattern some guides recommend to keep the function
+// bundle small. Abandoned after a real deploy: the tar was confirmed generated correctly at
+// build time (visible in the build log), but Vercel's static-file output for this zero-config,
+// no-framework project never actually included it — it 404'd live on every attempt, including
+// after removing it from .gitignore (a first, plausible-looking theory that turned out not to be
+// it either). Rather than keep guessing at Vercel's static-output assembly rules from outside,
+// this uses the plain @sparticuz/chromium package instead — its binary ships inside the package
+// itself, so executablePath() needs no URL and no network fetch at runtime at all. Larger
+// deployed function bundle, but one less network round-trip per cold start, which matters more
+// on Vercel's free Hobby plan's hard 10-second function timeout.
 let cachedExecutablePath = null;
-let downloadPromise = null;
+let extractPromise = null;
 
-async function getExecutablePath(chromium, req) {
+async function getExecutablePath(chromium) {
   if (cachedExecutablePath) return cachedExecutablePath;
-  if (!downloadPromise) {
-    const host = process.env.VERCEL_URL || req.headers.host;
-    const packUrl = `https://${host}/chromium-pack.tar`;
-    downloadPromise = chromium.executablePath(packUrl)
+  if (!extractPromise) {
+    extractPromise = chromium.executablePath()
       .then((p) => { cachedExecutablePath = p; return p; })
-      .catch((err) => { downloadPromise = null; throw err; });
+      .catch((err) => { extractPromise = null; throw err; });
   }
-  return downloadPromise;
+  return extractPromise;
 }
 
 module.exports = async (req, res) => {
@@ -114,12 +123,13 @@ module.exports = async (req, res) => {
 
   let browser = null;
   try {
-    // @sparticuz/chromium-min ships as an ES Module — require() fails with "require() of ES
-    // Module ... not supported" (confirmed in a real deploy). puppeteer-core is CJS, but
-    // dynamic import() works for either, so use it for both rather than mixing require/import.
-    const chromium = (await import('@sparticuz/chromium-min')).default;
+    // @sparticuz/chromium ships as an ES Module — require() fails with "require() of ES Module
+    // ... not supported" (confirmed in a real deploy, back when this used the -min variant).
+    // puppeteer-core is CJS, but dynamic import() works for either, so use it for both rather
+    // than mixing require/import.
+    const chromium = (await import('@sparticuz/chromium')).default;
     const puppeteer = (await import('puppeteer-core')).default;
-    const executablePath = await getExecutablePath(chromium, req);
+    const executablePath = await getExecutablePath(chromium);
 
     browser = await puppeteer.launch({
       args: chromium.args,

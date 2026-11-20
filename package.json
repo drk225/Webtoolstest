@@ -6,14 +6,8 @@
   "engines": {
     "node": "26.x"
   },
-  "scripts": {
-    "postinstall": "node scripts/make-chromium-pack.js"
-  },
   "dependencies": {
     "puppeteer-core": "^25.18.1",
-    "@sparticuz/chromium-min": "^153.0.0"
-  },
-  "devDependencies": {
     "@sparticuz/chromium": "^153.0.0"
   }
 }
