@@ -17,22 +17,32 @@ const fs = require('node:fs');
 // function with no Chromium to launch, which is a much worse failure mode to debug than a build
 // that visibly fails with a clear reason in the build log.
 function main() {
-  let chromiumPkgJsonPath;
-  try {
-    chromiumPkgJsonPath = require.resolve('@sparticuz/chromium/package.json');
-  } catch (e) {
-    throw new Error('[make-chromium-pack] @sparticuz/chromium not found in node_modules — is it still ' +
-      'listed in package.json devDependencies?');
+  // Go straight to the expected node_modules path rather than require.resolve('@sparticuz/
+  // chromium/package.json') — the first version of this script used require.resolve and failed
+  // in a real build with "not found in node_modules" even though @sparticuz/chromium devDependency
+  // installed fine. Likely cause: require.resolve enforces the target package's "exports" map
+  // (Node 12+ behavior), and @sparticuz/chromium may not explicitly list "./package.json" as an
+  // exported subpath — which throws ERR_PACKAGE_PATH_NOT_EXPORTED, indistinguishable from "missing"
+  // under a plain catch. This script's node_modules location is fixed and known (sibling of this
+  // repo's own package.json, no monorepo/hoisting ambiguity here), so there's no need to go
+  // through module resolution — just build the path directly.
+  const repoRoot = path.resolve(__dirname, '..');
+  const chromiumDir = path.join(repoRoot, 'node_modules', '@sparticuz', 'chromium');
+
+  if (!fs.existsSync(chromiumDir)) {
+    const scopeDir = path.join(repoRoot, 'node_modules', '@sparticuz');
+    const scopeContents = fs.existsSync(scopeDir) ? fs.readdirSync(scopeDir).join(', ') : '(node_modules/@sparticuz does not exist)';
+    throw new Error(`[make-chromium-pack] expected ${chromiumDir} to exist but it doesn't. ` +
+      `Contents of node_modules/@sparticuz: ${scopeContents}. Is @sparticuz/chromium still listed ` +
+      'in package.json devDependencies, and did npm install actually fetch it?');
   }
 
-  const chromiumDir = path.dirname(chromiumPkgJsonPath);
   const binDir = path.join(chromiumDir, 'bin');
   if (!fs.existsSync(binDir)) {
     throw new Error(`[make-chromium-pack] expected a bin/ directory at ${binDir} but it isn't there. ` +
       '@sparticuz/chromium may have changed its package layout — check its current README.');
   }
 
-  const repoRoot = path.resolve(__dirname, '..');
   const tarPath = path.join(repoRoot, 'chromium-pack.tar');
 
   console.log(`[make-chromium-pack] packing ${binDir} -> ${tarPath}`);
