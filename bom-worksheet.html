@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bill of Materials Worksheet — Rev: Ithaca Startup Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #23292d;
+  --paper:      #ffffff;
+  --panel:      #ffffff;
+  --tint-teal:  #e6f8f7;
+  --tint-orange:#fef0e5;
+  --rule:       #e1e5e6;
+  --muted:      #7c8a92;
+  --accent:     #f6862e;
+  --accent-deep:#d9701a;
+  --teal:       #1fb2ac;
+  --teal-deep:  #128078;
+  --slate:      #5b717e;
+  --warn:       #c0392b;
+  --warn-tint:  #fdecea;
+  --good:       #128078;
+  --good-tint:  #e6f8f7;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f4f6f6;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.wordmark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.logo-img { height: 34px; width: auto; display: block; }
+header .tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+header .backlink { font-size: 13px; color: var(--slate); text-decoration: none; }
+header .backlink:hover { color: var(--accent-deep); }
+
+main { max-width: 1760px; margin: 0 auto; padding: 36px 48px 90px; }
+
+.title-block { margin-bottom: 28px; }
+.eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--accent); display: inline-block; }
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.lede { font-size: 15px; line-height: 1.6; color: #465055; max-width: 68ch; }
+
+/* ── PANEL ── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 26px 28px;
+  margin-bottom: 24px;
+}
+.panel h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel h2 .n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--tint-teal);
+  color: var(--teal-deep);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── HEADER METADATA GRID ── */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.field label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  color: var(--ink);
+  background: var(--paper);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+button {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 9px 16px;
+  cursor: pointer;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+button:hover { border-color: var(--teal); }
+button.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
+button.primary:hover { background: var(--teal-deep); border-color: var(--teal-deep); }
+button.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+button.ghost { background: transparent; }
+button.small { padding: 5px 10px; font-size: 11px; }
+button.danger-ghost { color: var(--warn); border-color: var(--warn); background: transparent; }
+button.danger-ghost:hover { background: var(--warn-tint); }
+.toolbar .spacer { flex: 1; }
+
+/* ── SUMMARY BAR ── */
+.summary-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.stat {
+  background: var(--tint-teal);
+  border-radius: 5px;
+  padding: 14px 16px;
+}
+.stat.flagged { background: var(--warn-tint); }
+.stat.orange { background: var(--tint-orange); }
+.stat .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--teal-deep);
+  line-height: 1;
+}
+.stat.flagged .num { color: var(--warn); }
+.stat.orange .num { color: var(--accent-deep); }
+.stat .label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-top: 4px;
+}
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; table-layout: fixed; min-width: 1500px; }
+thead th {
+  position: relative;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-align: left;
+  padding: 8px 12px 8px 8px;
+  border-bottom: 2px solid var(--rule);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: none;
+}
+thead th:hover { color: var(--teal-deep); }
+.sort-icon { display: inline-block; margin-left: 3px; font-size: 9px; color: var(--rule); }
+.sort-icon::before { content: '▾▴'; letter-spacing: -2px; }
+thead th:hover .sort-icon { color: var(--slate); }
+thead th.sorted .sort-icon { color: var(--accent); }
+thead th.sorted .sort-icon::before { content: '▾'; letter-spacing: normal; }
+thead th.sorted.asc .sort-icon::before { content: '▴'; }
+thead th.nosort { cursor: default; }
+thead th.nosort:hover { color: var(--slate); }
+thead th.nosort .sort-icon { display: none; }
+
+/* Draggable column-width handle, Excel-style: sits on the right edge of each header cell. */
+.col-resize-handle {
+  position: absolute;
+  top: 0; right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 5;
+  user-select: none;
+}
+.col-resize-handle:hover, .col-resize-handle.resizing { background: var(--teal); opacity: 0.5; }
+
+tbody tr { height: 42px; }
+tbody td {
+  position: relative;
+  height: 42px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+  overflow: hidden;
+}
+tbody tr.driver { background: var(--tint-orange); }
+tbody tr.driver td:first-child { border-left: 3px solid var(--accent); }
+tbody tr.driver:hover { background: var(--tint-orange); filter: brightness(0.97); }
+tbody tr.archived-row { background: #fafbfb; opacity: 0.85; }
+
+td input, td select {
+  display: block;
+  width: 100%;
+  height: 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 6px 7px;
+  border: 1.5px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+td input:hover, td select:hover { border-color: var(--teal); }
+td input:focus, td select:focus {
+  outline: none;
+  border-color: var(--teal);
+  background: var(--paper);
+  box-shadow: 0 0 0 2px var(--tint-teal);
+}
+td input[type="number"] { font-family: 'IBM Plex Mono', monospace; text-align: right; }
+.cell-text, .link-cell {
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+td.total-cell {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 12px;
+}
+td.actions-cell { white-space: nowrap; text-align: right; overflow: visible; }
+col.col-name { width: 190px; }
+col.col-desc { width: 210px; }
+col.col-type { width: 130px; }
+col.col-num { width: 90px; }
+col.col-actions { width: 165px; }
+col.col-flex { width: 150px; }
+
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+td.name-cell { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+td.name-cell input, td.name-cell .cell-text { flex: 1; min-width: 0; }
+td.name-cell .flag-chip { flex: 0 0 auto; }
+.flag-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 3px;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--warn);
+  background: var(--warn-tint);
+  border-radius: 999px;
+  cursor: default;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── ARCHIVE SECTION ── */
+.archive-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate);
+  cursor: pointer;
+  padding: 10px 0;
+  user-select: none;
+}
+.archive-toggle .chevron { transition: transform 0.15s ease; display: inline-block; }
+.archive-toggle.open .chevron { transform: rotate(90deg); }
+#archiveSection { display: none; margin-top: 6px; }
+#archiveSection.open { display: block; }
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--slate);
+  background: #f4f6f6;
+  border-radius: 5px;
+  padding: 16px 18px;
+}
+.disclaimer strong { color: var(--ink); }
+
+/* ── AUTOSAVE RESTORE BANNER ── */
+.restore-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--tint-orange);
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+.restore-banner span { flex: 1; }
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 22px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── PRINT ── */
+#print-doc { display: none; }
+@media print {
+  header, footer, main > *:not(#print-doc) { display: none !important; }
+  #print-doc { display: block !important; }
+  @page { size: 8.5in 11in; margin: 0.6in; }
+  body { background: #fff; }
+  #print-doc h1 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; margin-bottom: 4px; }
+  #print-doc .meta-line { font-size: 11px; color: #555; margin-bottom: 14px; }
+  #print-doc table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 16px; }
+  #print-doc th, #print-doc td { border: 1px solid #ccc; padding: 4px 6px; text-align: left; }
+  #print-doc th { background: #f0f0f0; }
+  #print-doc h2 { font-size: 14px; margin: 14px 0 6px; page-break-after: avoid; }
+  #print-doc .section { page-break-inside: avoid; }
+  #print-doc .flagbox { background: #fdecea; border: 1px solid #c0392b; padding: 8px 10px; font-size: 10.5px; margin-bottom: 12px; }
+  #print-doc .disclaimer-print { font-size: 9.5px; color: #555; margin-top: 18px; border-top: 1px solid #ccc; padding-top: 8px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">
+    <img class="logo-img" src="images/revlogo.png" alt="Rev: Ithaca Startup Works">
+  </a>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <a class="backlink" href="index.html">← All resources</a>
+    <div class="tag">Bill of Materials</div>
+  </div>
+</header>
+
+<main>
+  <div class="restore-banner" id="restoreBanner" style="display:none;">
+    <span id="restoreBannerText"></span>
+    <button class="small primary" onclick="restoreAutosave()">Restore</button>
+    <button class="small ghost" onclick="dismissAutosave()">Discard</button>
+  </div>
+
+  <div class="title-block">
+    <div class="eyebrow">Hardware Resources</div>
+    <h1>Bill of Materials Worksheet</h1>
+    <p class="lede">
+      Build and cost out your parts list. Archive superseded or experimental purchases instead of losing the record, renumber parts in one click, and sort by cost to find what's actually driving your COGS — the things a static spreadsheet leaves you to track by hand.
+    </p>
+  </div>
+
+  <!-- HEADER METADATA -->
+  <div class="panel">
+    <h2><span class="n">1</span>Assembly Info</h2>
+    <div class="meta-grid">
+      <div class="field">
+        <label for="metaAssembly">Assembly / Product Name</label>
+        <input type="text" id="metaAssembly" placeholder="e.g. Enclosure Assembly v2">
+      </div>
+      <div class="field">
+        <label for="metaCompany">Company Name</label>
+        <input type="text" id="metaCompany" placeholder="Your company">
+      </div>
+      <div class="field">
+        <label for="metaCreated">Date Created</label>
+        <input type="date" id="metaCreated">
+      </div>
+      <div class="field">
+        <label for="metaUpdated">Last Updated</label>
+        <input type="date" id="metaUpdated">
+      </div>
+      <div class="field">
+        <label for="metaPreparedBy">Prepared By</label>
+        <input type="text" id="metaPreparedBy" placeholder="Name">
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTS TABLE -->
+  <div class="panel">
+    <h2><span class="n">2</span>Parts List</h2>
+
+    <div class="toolbar">
+      <button class="primary" onclick="addRow()">+ Add Part</button>
+      <button onclick="renumberActive()">Renumber Parts</button>
+      <button onclick="sortByCost()">Sort by Cost (High → Low)</button>
+      <button onclick="sortBySupplier()">Sort by Supplier/Manufacturer</button>
+      <div class="spacer"></div>
+      <span id="wfFileStatus" style="font-size:12px; color:var(--slate); margin-right:2px;">No file open</span>
+      <button class="ghost" onclick="wfOpen()">📂 Open (.xlsx)</button>
+      <button class="primary" onclick="wfSave(false)">💾 Save</button>
+      <button class="ghost" onclick="wfSave(true)">Save As…</button>
+      <input type="file" id="wfOpenInputFallback" accept=".xlsx" style="display:none" onchange="wfHandleOpenFallback(event)">
+    </div>
+    <div class="toolbar" style="margin-top:-10px;">
+      <span style="font-size:13px; color:var(--slate);">Importing an existing BOM you already have (not from this tool):</span>
+      <button class="ghost" onclick="document.getElementById('csvInput').click()">Upload CSV</button>
+      <input type="file" id="csvInput" accept=".csv,text/csv" style="display:none" onchange="loadCSV(event)">
+    </div>
+
+    <div class="summary-bar" id="summaryBar"></div>
+
+    <div class="table-wrap">
+      <table id="partsTable">
+        <colgroup id="activeColgroup">
+          <col class="col-num"><col class="col-name"><col class="col-desc"><col class="col-type">
+          <col class="col-flex"><col class="col-flex"><col class="col-flex"><col class="col-flex"><col class="col-num"><col class="col-num"><col class="col-num"><col class="col-actions">
+        </colgroup>
+        <thead>
+          <tr>
+            <th data-key="partNo">Part No.<span class="sort-icon"></span></th>
+            <th data-key="name">Name<span class="sort-icon"></span></th>
+            <th data-key="desc">Description<span class="sort-icon"></span></th>
+            <th data-key="type">Type of Part<span class="sort-icon"></span></th>
+            <th data-key="supplier">Supplier<span class="sort-icon"></span></th>
+            <th data-key="manufacturer">Manufacturer<span class="sort-icon"></span></th>
+            <th data-key="mfrPartNo">Mfr/Supplier Part No.<span class="sort-icon"></span></th>
+            <th data-key="orderNo">Link<span class="sort-icon"></span></th>
+            <th data-key="qty">Qty<span class="sort-icon"></span></th>
+            <th data-key="unitCost">Unit Cost<span class="sort-icon"></span></th>
+            <th data-key="totalCost">Total Cost<span class="sort-icon"></span></th>
+            <th class="nosort">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="activeRows"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState">No parts yet — click "+ Add Part" to start your BOM.</div>
+    </div>
+
+    <div class="archive-toggle" id="archiveToggle" onclick="toggleArchiveSection()">
+      <span class="chevron">▸</span>
+      <span id="archiveToggleLabel">Archived / Experimental (0)</span>
+    </div>
+    <div id="archiveSection">
+      <div class="table-wrap">
+        <table>
+          <colgroup id="archivedColgroup">
+            <col class="col-num"><col class="col-name"><col class="col-desc"><col class="col-type">
+            <col class="col-flex"><col class="col-flex"><col class="col-flex"><col class="col-flex"><col class="col-num"><col class="col-num"><col class="col-num"><col class="col-actions">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="nosort">Part No.</th><th class="nosort">Name</th><th class="nosort">Description</th>
+              <th class="nosort">Type of Part</th><th class="nosort">Supplier</th><th class="nosort">Manufacturer</th>
+              <th class="nosort">Mfr/Supplier Part No.</th>
+              <th class="nosort">Link</th><th class="nosort">Qty</th><th class="nosort">Unit Cost</th>
+              <th class="nosort">Total Cost</th><th class="nosort">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="archivedRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="panel">
+    <h2><span class="n">3</span>Export</h2>
+    <div class="toolbar" style="margin-bottom:0;">
+      <label style="font-size:13px; display:flex; align-items:center; gap:6px; margin-right:10px;">
+        <input type="checkbox" id="includeArchivedExport" style="width:auto;"> Include archived rows in export
+      </label>
+      <button class="accent" onclick="exportPDF()">Export PDF</button>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>What this tool is:</strong> a workshop aid for drafting and cleaning up a Bill of Materials — a concept companion to Rev: Ithaca Startup Works' Bill of Materials / Engineering BOM workshops, not a replacement for the official <em>Rev BOM Template.xlsx</em> your team may already be using for production tracking.<br><br>
+    <strong>Where the checks come from:</strong> the "flag" rules below (missing supplier, priced-but-fabricated parts, early-sourcing vendor reminders, etc.) are drawn directly from the guidance given in those workshop decks — they are nudges to double-check your data, not a hard gate. You can save or export a BOM with flags still showing.<br><br>
+    <strong>Supplier auto-fill:</strong> pasting a product link into "Link" fills in the Supplier field by matching the link's own domain (e.g. mcmaster.com → McMaster-Carr) against a short built-in list — nothing is fetched from that link or any other site. For McMaster and Digi-Key links specifically, the "Mfr/Supplier Part No." field is also filled in by reading the part number out of the link's own URL text (this is separate from this tool's own "Part No." column, which is for your own renumbering scheme). If a recognized link also carries a part number and Type of Part hasn't been set yet, Type of Part defaults to "Purchased." If the domain isn't recognized, or a field is already filled in, nothing changes.<br><br>
+    <strong>Unit Cost auto-fill (prototype, sends data out — read this one):</strong> unlike Supplier/Part No. above, a part's price isn't in the link's URL text — it only exists on the rendered page. Pasting a link from a recognized supplier (McMaster, Digi-Key, Mouser, Adafruit, SparkFun, Grainger, Online Metals) into "Link," when Unit Cost is still empty, sends that URL to this tool's own backend (a small function hosted alongside this page), which opens the page in a real headless browser, reads its price the same way a person looking at the page would, and sends just that number back — this is the one place in this tool where something you enter leaves your browser. It checks, in order: a structured price tag the page itself publishes (schema.org pricing data, when present — the most reliable source), then the first dollar amount near anything labeled "price," then the first dollar amount anywhere on the page. A "Looking up price…" placeholder shows on Unit Cost for a few seconds while this runs — it isn't blocking, you can keep working. That heuristic can occasionally grab a list price, a bulk-quantity price, or an unrelated dollar amount instead of the one you want, so double-check Unit Cost once it fills in; if it's wrong, missing, or the lookup fails (unsupported domain, timeout, or the supplier's site blocking the request), just type over it or fill it in by hand — this never blocks or errors the row. Unit Cost also auto-strips "$"/commas/"USD" from whatever lands in it, typed or looked up, so "$8.42" becomes "8.42."<br><br>
+    <strong>CSV import:</strong> "Upload CSV" adds rows from a CSV file into your current BOM by matching each column's header name (e.g. "Part No.", "Link" or "URL", "Qty" or "Quantity") against a short list of accepted names per field, regardless of column order — it doesn't need to exactly match this tool's own export headers. A column whose header isn't recognized is skipped and listed after import. Imported rows are added alongside what's already on your worksheet, not swapped in for it. Use this to bring in a BOM you already have from somewhere else — not needed for a file this tool itself saved; just use Open for that.<br><br>
+    <strong>Save/Edit per row:</strong> click "Save" on a row once its fields are filled in — this locks the row against accidental edits and refreshes the BOM's totals, flags, and cost-driver ranking to include it. Click "Edit" to unlock a saved row and change it again.<br><br>
+    <strong>Your data:</strong> nothing you enter here is uploaded or sent anywhere, with one exception: pasting a recognized supplier link sends that URL (and only that URL) to this tool's own price-lookup backend, described just above — everything else lives in this browser tab only. As a safety net against an accidental refresh or back-navigation, your in-progress work is also autosaved to this browser's local storage (still never leaves your machine) and offered back to you the next time you open this page. Your working file is a real <code>.xlsx</code> spreadsheet — use "Save" or "Save As…" to keep a copy anywhere on your computer (or a synced Drive/Dropbox folder, to share with teammates), and "Open" to pick back up later. It opens normally in Excel or Google Sheets too.
+  </div>
+</main>
+
+<footer>
+  <div>314 East State Street, Ithaca, NY 14850 · (607) 882-2400</div>
+  <a href="https://www.revithaca.com/hardware/" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:none;">revithaca.com/hardware ↗</a>
+</footer>
+
+<!-- PRINT DOCUMENT (populated at export time) -->
+<div id="print-doc"></div>
+
+<script>
+const TYPES = ['Fabricated', 'COTS', 'Electronics', 'Consumables', 'Purchased'];
+
+// Domain → supplier name, for auto-filling Supplier from a pasted product link.
+// Not a scrape — just a lookup on the URL's own domain, so it works with no server and no CORS issues.
+const SUPPLIER_DOMAINS = {
+  'mcmaster.com': 'McMaster-Carr',
+  'digikey.com': 'Digi-Key',
+  'mouser.com': 'Mouser Electronics',
+  'adafruit.com': 'Adafruit',
+  'sparkfun.com': 'SparkFun',
+  'aliexpress.com': 'AliExpress',
+  'alibaba.com': 'Alibaba',
+  'ebay.com': 'eBay',
+  'grainger.com': 'Grainger',
+  'onlinemetals.com': 'Online Metals',
+  'amazon.com': 'Amazon',
+  'homedepot.com': 'Home Depot',
+  'lowes.com': "Lowe's",
+  'walmart.com': 'Walmart',
+  'target.com': 'Target'
+};
+// Per the BOM workshop decks' "Vendors to Move Away From" guidance — fine for early sourcing/prototyping,
+// worth flagging as a nudge to find a production-grade supplier before scaling.
+const EARLY_SOURCING_VENDORS = new Set(['Amazon', 'Home Depot', "Lowe's", 'Walmart', 'Target']);
+
+function detectSupplierFromURL(url) {
+  let host;
+  try { host = new URL(url).hostname.toLowerCase(); } catch (e) { return null; }
+  host = host.replace(/^www\./, '');
+  for (const domain in SUPPLIER_DOMAINS) {
+    if (host === domain || host.endsWith('.' + domain)) return SUPPLIER_DOMAINS[domain];
+  }
+  // Fallback for any supplier not in the lookup table above: use the domain's first label
+  // (the text right after "www.", e.g. "digikey.com" -> "Digikey") as a readable supplier name.
+  const label = host.split('.')[0];
+  if (!label) return null;
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+// A few suppliers put the part number right in the product URL — pull it out so it doesn't
+// have to be copied by hand. McMaster: last path segment. Digi-Key: second-to-last. Mouser:
+// last path segment before the "?" query string. Amazon: the ASIN is the path segment right
+// before the "/ref=..." segment (or right after "/dp/" or "/gp/product/" when there's no ref).
+function detectPartNoFromURL(url) {
+  let host, segments;
+  try {
+    const u = new URL(url);
+    host = u.hostname.toLowerCase().replace(/^www\./, '');
+    segments = u.pathname.split('/').filter(Boolean);
+  } catch (e) { return null; }
+  if (!segments.length) return null;
+  if (host === 'mcmaster.com' || host.endsWith('.mcmaster.com')) {
+    return segments[segments.length - 1];
+  }
+  if (host === 'digikey.com' || host.endsWith('.digikey.com')) {
+    if (segments.length >= 2) return segments[segments.length - 2];
+  }
+  if (host === 'mouser.com' || host.endsWith('.mouser.com')) {
+    return segments[segments.length - 1];
+  }
+  if (host === 'amazon.com' || host.endsWith('.amazon.com')) {
+    const refIdx = segments.findIndex(s => s.toLowerCase().startsWith('ref'));
+    if (refIdx > 0) return segments[refIdx - 1];
+    const dpIdx = segments.findIndex(s => s === 'dp' || s === 'product');
+    if (dpIdx !== -1 && segments[dpIdx + 1]) return segments[dpIdx + 1];
+  }
+  return null;
+}
+
+// Strips currency formatting ("$12.34", "12.34 USD", "1,234.56") down to a plain number string,
+// so Unit Cost accepts pasted price text whether typed by hand or pasted from a vendor page.
+function cleanPriceText(raw) {
+  if (!raw) return '';
+  const s = raw.toString().trim().replace(/usd/ig, '').replace(/[$,]/g, '');
+  const m = s.match(/-?\d+(\.\d+)?/);
+  return m ? m[0] : '';
+}
+
+function cleanUnitCost(id, fromArchive) {
+  const list = fromArchive ? archived : rows;
+  const r = list.find(r => r.id === id);
+  if (!r) return;
+  const cleaned = cleanPriceText(r.unitCost);
+  if (cleaned !== r.unitCost) {
+    r.unitCost = cleaned;
+    syncFieldInput(id, 'unitCost', cleaned, fromArchive);
+  }
+}
+
+// PROTOTYPE — server-side price lookup. Supersedes an earlier bookmarklet-based prototype (see
+// InteractiveTools repo-conventions memory for that history). A plain fetch of a supplier's page
+// from here can't reach the price — confirmed two ways: curl-ing a real McMaster product URL
+// returns 200 OK with a full page, but that page's HTML has zero price data in it (it loads via
+// a private client-side API call after the page's own JS runs — this isn't a CORS problem,
+// there's nothing there regardless of origin); curl-ing a Digi-Key product page gets an outright
+// 403 (bot-blocked) before any HTML comes back at all. /api/price.js (this repo's one Vercel
+// serverless function) works around the first problem by rendering the page with a real headless
+// browser server-side, then running the same 3-tier price heuristic this prototype's earlier
+// bookmarklet used (schema.org JSON-LD -> price-class element -> full-page scan) against the
+// fully-rendered DOM. It can't work around the second kind of problem (bot-blocking) — if a
+// supplier's anti-bot defenses catch the lookup, this just comes back empty and Unit Cost stays
+// manual, same as today.
+//
+// Fires once, from updateField(), right when a recognized supplier link is pasted into Link —
+// only if Unit Cost is still empty, same "don't clobber the user's data" rule as every other
+// auto-fill field here. Never blocks the row: shows a "Looking up price…" placeholder on the
+// (empty) Unit Cost input while in flight, and simply clears it either way when done.
+const SUPPLIER_LOOKUP_DOMAINS = Object.keys(SUPPLIER_DOMAINS);
+
+function hostMatchesKnownSupplier(url) {
+  let host;
+  try { host = new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch (e) { return false; }
+  return SUPPLIER_LOOKUP_DOMAINS.some(d => host === d || host.endsWith('.' + d));
+}
+
+async function lookupPrice(id, url, fromArchive) {
+  const list = fromArchive ? archived : rows;
+  const input = (fromArchive ? document.getElementById('archivedRows') : document.getElementById('activeRows'))
+    .querySelector(`[data-row-id="${id}"][data-field="unitCost"]`);
+  if (input) input.placeholder = 'Looking up price…';
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 9000);
+  let result = null;
+  try {
+    const res = await fetch('/api/price?url=' + encodeURIComponent(url), { signal: controller.signal });
+    result = await res.json();
+  } catch (e) {
+    result = null; // network error, 404 (tool opened somewhere with no /api deployed), or aborted
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
+  const r = list.find(r => r.id === id);
+  if (!r) return; // row was removed/archived while the lookup was in flight
+  const liveInput = (fromArchive ? document.getElementById('archivedRows') : document.getElementById('activeRows'))
+    .querySelector(`[data-row-id="${id}"][data-field="unitCost"]`);
+
+  if (result && result.ok && result.price && !r.unitCost.trim()) {
+    const cleaned = cleanPriceText(result.price);
+    if (cleaned) {
+      r.unitCost = cleaned;
+      syncFieldInput(id, 'unitCost', cleaned, fromArchive);
+    }
+  }
+  if (liveInput) liveInput.placeholder = '';
+}
+
+let rows = [];       // active rows
+let archived = [];   // archived rows
+let nextId = 1;
+let sortKey = null;
+let sortAsc = true;
+
+function newRow(overrides) {
+  return Object.assign({
+    id: nextId++,
+    partNo: '', name: '', desc: '', type: '', supplier: '', manufacturer: '',
+    mfrPartNo: '', orderNo: '', qty: '', unitCost: '', archived: false, locked: false
+  }, overrides || {});
+}
+
+function addRow() {
+  rows.push(newRow());
+  render();
+}
+
+function removeRow(id, fromArchive) {
+  if (fromArchive) archived = archived.filter(r => r.id !== id);
+  else rows = rows.filter(r => r.id !== id);
+  render();
+}
+
+function archiveRow(id) {
+  const idx = rows.findIndex(r => r.id === id);
+  if (idx === -1) return;
+  const r = rows.splice(idx, 1)[0];
+  r.archived = true;
+  archived.unshift(r);
+  render();
+}
+
+function restoreRow(id) {
+  const idx = archived.findIndex(r => r.id === id);
+  if (idx === -1) return;
+  const r = archived.splice(idx, 1)[0];
+  r.archived = false;
+  rows.push(r);
+  render();
+}
+
+function updateField(id, field, value, fromArchive) {
+  const list = fromArchive ? archived : rows;
+  const r = list.find(r => r.id === id);
+  if (!r) return;
+  r[field] = value;
+  if (field === 'orderNo') {
+    if (!r.supplier.trim()) {
+      const detected = detectSupplierFromURL(value);
+      if (detected) {
+        r.supplier = detected;
+        syncFieldInput(id, 'supplier', detected, fromArchive);
+      }
+    }
+    if (!r.mfrPartNo.trim()) {
+      const detectedPartNo = detectPartNoFromURL(value);
+      if (detectedPartNo) {
+        r.mfrPartNo = detectedPartNo;
+        syncFieldInput(id, 'mfrPartNo', detectedPartNo, fromArchive);
+      }
+    }
+    // A pasted product link with a part number is a strong signal this is a purchased part —
+    // default Type to "Purchased" only when the user hasn't already picked one.
+    if (!r.type && isURL(value)) {
+      r.type = 'Purchased';
+      syncFieldInput(id, 'type', 'Purchased', fromArchive);
+    }
+    // Server-side price lookup (see lookupPrice above) — only for a recognized supplier domain,
+    // and only if Unit Cost is still empty. Fire-and-forget: it patches the DOM itself when (if)
+    // it resolves, same pattern as the other autofill fields above.
+    if (!r.unitCost.trim() && hostMatchesKnownSupplier(value)) {
+      lookupPrice(id, value, fromArchive);
+    }
+  }
+  // Deliberately no render() here — a full table re-render on every keystroke is what caused
+  // typed characters to freeze/drop (it rebuilds the input's DOM node mid-edit). The row's Save
+  // button below (saveRow) triggers the re-render, so the BOM's totals/flags catch up on save.
+  // Fields the autofill logic writes to programmatically (above) are instead patched directly
+  // in the DOM via syncFieldInput, since they won't otherwise be visible until the next render().
+  scheduleAutosave();
+}
+
+// Directly updates an already-rendered <input>'s visible value without rebuilding the table
+// (a full render() here would reintroduce the keystroke-freezing bug in updateField above).
+function syncFieldInput(id, field, value, fromArchive) {
+  const selector = `[data-row-id="${id}"][data-field="${field}"]`;
+  const tbody = fromArchive ? document.getElementById('archivedRows') : document.getElementById('activeRows');
+  const input = tbody && tbody.querySelector(selector);
+  if (input) input.value = value;
+}
+
+function saveRow(id) {
+  const r = rows.find(r => r.id === id);
+  if (!r) return;
+  r.locked = true;
+  render();
+}
+
+function editRow(id) {
+  const r = rows.find(r => r.id === id);
+  if (!r) return;
+  r.locked = false;
+  render();
+}
+
+function totalCost(r) {
+  const q = parseFloat(r.qty);
+  const u = parseFloat(r.unitCost);
+  if (isNaN(q) || isNaN(u)) return null;
+  return q * u;
+}
+
+function computeFlags(r) {
+  const flags = [];
+  if (!r.name.trim() || !r.type) flags.push('Row is missing a Name or Type of Part.');
+  if (r.type === 'Fabricated' && r.unitCost !== '' && !isNaN(parseFloat(r.unitCost)) && parseFloat(r.unitCost) !== 0) {
+    flags.push('Fabricated parts typically shouldn\'t carry a per-unit cost yet.');
+  }
+  if (['COTS', 'Electronics', 'Purchased'].includes(r.type)) {
+    if (!r.supplier.trim()) flags.push('No supplier listed for a purchased/COTS part.');
+    if (!r.orderNo.trim() && !r.manufacturer.trim()) flags.push('No order number or manufacturer — this part can\'t be re-ordered.');
+  }
+  if (r.type !== 'Fabricated' && (r.qty === '' || r.unitCost === '')) {
+    flags.push('Missing quantity or unit cost — cost total is incomplete.');
+  }
+  if (EARLY_SOURCING_VENDORS.has(r.supplier.trim())) {
+    flags.push(`${r.supplier.trim()} is fine for early sourcing, but consider a production-grade supplier before scaling.`);
+  }
+  return flags;
+}
+
+function isURL(s) {
+  return /^https?:\/\//i.test(s.trim());
+}
+
+function activeSubtotal() {
+  return rows.reduce((sum, r) => sum + (totalCost(r) || 0), 0);
+}
+
+function driverIds() {
+  const withCost = rows.filter(r => totalCost(r) !== null && totalCost(r) > 0)
+    .sort((a, b) => totalCost(b) - totalCost(a));
+  const n = Math.max(3, Math.ceil(withCost.length * 0.15));
+  return new Set(withCost.slice(0, n).map(r => r.id));
+}
+
+function sortRows() {
+  if (!sortKey) return;
+  rows.sort((a, b) => {
+    let av, bv;
+    if (sortKey === 'totalCost') { av = totalCost(a) ?? -Infinity; bv = totalCost(b) ?? -Infinity; }
+    else if (sortKey === 'qty' || sortKey === 'unitCost') { av = parseFloat(a[sortKey]) || 0; bv = parseFloat(b[sortKey]) || 0; }
+    else if (sortKey === 'supplierMfr') {
+      av = (a.supplier || a.manufacturer || '').toLowerCase();
+      bv = (b.supplier || b.manufacturer || '').toLowerCase();
+      if (av === bv) { av = (a.manufacturer || '').toLowerCase(); bv = (b.manufacturer || '').toLowerCase(); }
+    }
+    else { av = (a[sortKey] || '').toLowerCase(); bv = (b[sortKey] || '').toLowerCase(); }
+    if (av < bv) return sortAsc ? -1 : 1;
+    if (av > bv) return sortAsc ? 1 : -1;
+    return 0;
+  });
+}
+
+function sortByCost() {
+  sortKey = 'totalCost';
+  sortAsc = false;
+  render();
+}
+
+function sortBySupplier() {
+  sortKey = 'supplierMfr';
+  sortAsc = true;
+  render();
+}
+
+function setSort(key) {
+  if (sortKey === key) sortAsc = !sortAsc;
+  else { sortKey = key; sortAsc = true; }
+  render();
+}
+
+function renumberActive() {
+  rows.forEach((r, i) => { r.partNo = 'P-' + String(i + 1).padStart(3, '0'); });
+  render();
+}
+
+function fieldCell(r, field, type, fromArchive) {
+  const raw = (r[field] ?? '').toString();
+  const val = raw.replace(/"/g, '&quot;');
+  const locked = fromArchive || r.locked;
+  // Locked/archived rows show wrapped plain text instead of a clipped input box —
+  // this is what keeps long values from being cut off once a row is saved.
+  if (locked) {
+    const escaped = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const align = type === 'number' ? ' style="text-align:right;"' : '';
+    return `<span class="cell-text"${align}>${escaped}</span>`;
+  }
+  if (field === 'type') {
+    let opts = '<option value=""></option>' + TYPES.map(t =>
+      `<option value="${t}" ${r.type === t ? 'selected' : ''}>${t}</option>`).join('');
+    return `<select data-row-id="${r.id}" data-field="type" onchange="updateField(${r.id},'type',this.value,${!!fromArchive})">${opts}</select>`;
+  }
+  if (field === 'unitCost') {
+    // Plain type="text", not type="number" — a number input discards pasted text like "$8.42"
+    // outright (fails its own validation on paste) before cleanUnitCost ever gets a chance to
+    // strip the "$". inputmode="decimal" still gives mobile users a numeric keypad.
+    return `<input type="text" inputmode="decimal" value="${val}" data-row-id="${r.id}" data-field="unitCost" style="text-align:right;"
+      oninput="updateField(${r.id},'unitCost',this.value,${!!fromArchive})"
+      onblur="cleanUnitCost(${r.id},${!!fromArchive})">`;
+  }
+  return `<input type="${type}" value="${val}" data-row-id="${r.id}" data-field="${field}"
+    ${type === 'number' ? 'step="any"' : ''}
+    oninput="updateField(${r.id},'${field}',this.value,${!!fromArchive})">`;
+}
+
+function renderRow(r, isDriver, fromArchive) {
+  const tc = totalCost(r);
+  const flags = fromArchive ? [] : computeFlags(r);
+  const flagHtml = flags.length
+    ? `<span class="flag-chip" title="${flags.join(' | ').replace(/"/g, '&quot;')}">⚠ ${flags.length > 1 ? flags.length : ''}</span>`
+    : '';
+  const orderLocked = fromArchive || r.locked;
+  const orderCell = orderLocked
+    ? (isURL(r.orderNo) ? `<a class="link-cell" href="${r.orderNo}" target="_blank" rel="noopener">${r.orderNo}</a>` : `<span class="cell-text">${r.orderNo}</span>`)
+    : `<input type="text" value="${(r.orderNo||'').replace(/"/g,'&quot;')}" data-row-id="${r.id}" data-field="orderNo" oninput="updateField(${r.id},'orderNo',this.value,false)">`;
+  const actions = fromArchive
+    ? `<button class="small" onclick="restoreRow(${r.id})">Restore</button>
+       <button class="small danger-ghost" onclick="removeRow(${r.id}, true)">Delete</button>`
+    : (r.locked
+      ? `<button class="small primary" onclick="editRow(${r.id})">Edit</button>
+         <button class="small" onclick="archiveRow(${r.id})">Archive</button>
+         <button class="small danger-ghost" onclick="removeRow(${r.id}, false)">Remove</button>`
+      : `<button class="small primary" onclick="saveRow(${r.id})">Save</button>
+         <button class="small" onclick="archiveRow(${r.id})">Archive</button>
+         <button class="small danger-ghost" onclick="removeRow(${r.id}, false)">Remove</button>`);
+
+  const driverTitle = isDriver ? ' title="Cost driver — one of the largest contributors to this BOM\'s total cost"' : '';
+  return `<tr class="${isDriver ? 'driver' : ''} ${fromArchive ? 'archived-row' : ''}"${driverTitle}>
+    <td>${fieldCell(r, 'partNo', 'text', fromArchive)}</td>
+    <td class="name-cell">${fieldCell(r, 'name', 'text', fromArchive)}${flagHtml}</td>
+    <td>${fieldCell(r, 'desc', 'text', fromArchive)}</td>
+    <td>${fieldCell(r, 'type', 'text', fromArchive)}</td>
+    <td>${fieldCell(r, 'supplier', 'text', fromArchive)}</td>
+    <td>${fieldCell(r, 'manufacturer', 'text', fromArchive)}</td>
+    <td>${fieldCell(r, 'mfrPartNo', 'text', fromArchive)}</td>
+    <td>${orderCell}</td>
+    <td>${fieldCell(r, 'qty', 'number', fromArchive)}</td>
+    <td>${fieldCell(r, 'unitCost', 'number', fromArchive)}</td>
+    <td class="total-cell">${tc !== null ? '$' + tc.toFixed(2) : '—'}</td>
+    <td class="actions-cell">${actions}</td>
+  </tr>`;
+}
+
+function render() {
+  sortRows();
+  const drivers = driverIds();
+
+  document.getElementById('activeRows').innerHTML = rows.map(r => renderRow(r, drivers.has(r.id), false)).join('');
+  document.getElementById('emptyState').style.display = rows.length ? 'none' : 'block';
+  document.getElementById('archivedRows').innerHTML = archived.map(r => renderRow(r, false, true)).join('');
+  document.getElementById('archiveToggleLabel').textContent = `Archived / Experimental (${archived.length})`;
+
+  document.querySelectorAll('#partsTable thead th').forEach(th => {
+    th.classList.remove('sorted', 'asc');
+    if (th.dataset.key === sortKey || (sortKey === 'supplierMfr' && th.dataset.key === 'supplier')) {
+      th.classList.add('sorted');
+      if (sortAsc) th.classList.add('asc');
+    }
+  });
+
+  const subtotal = activeSubtotal();
+  const flagCount = rows.reduce((sum, r) => sum + computeFlags(r).length, 0);
+  document.getElementById('summaryBar').innerHTML = `
+    <div class="stat"><div class="num">$${subtotal.toFixed(2)}</div><div class="label">Active Subtotal</div></div>
+    <div class="stat orange"><div class="num">${rows.length}</div><div class="label">Active Parts</div></div>
+    <div class="stat flagged"><div class="num">${flagCount}</div><div class="label">Open Flags</div></div>
+    <div class="stat"><div class="num">${archived.length}</div><div class="label">Archived</div></div>
+  `;
+  scheduleAutosave();
+}
+
+// Excel-style column resizing: dragging a header's handle sets that column's width in both
+// the active and archived tables' <colgroup>s (they're kept in sync so the two tables line up).
+// table-layout:fixed only respects <col> widths if the <table>'s own width equals their sum —
+// otherwise the browser redistributes extra space proportionally. syncTableWidths() pins each
+// table's width explicitly so a resize sticks instead of being partially overridden.
+const COLGROUP_IDS = ['activeColgroup', 'archivedColgroup'];
+function syncTableWidths() {
+  COLGROUP_IDS.forEach(id => {
+    const colgroup = document.getElementById(id);
+    const total = Array.from(colgroup.children).reduce((sum, col) => sum + col.getBoundingClientRect().width, 0);
+    colgroup.closest('table').style.width = Math.max(total, 1500) + 'px';
+  });
+}
+function setColWidth(colIndex, px) {
+  const width = Math.max(50, px) + 'px';
+  COLGROUP_IDS.forEach(id => {
+    const cols = document.getElementById(id).children;
+    if (cols[colIndex]) cols[colIndex].style.width = width;
+  });
+  syncTableWidths();
+}
+function initColumnResize() {
+  syncTableWidths();
+  const headerRow = document.querySelector('#partsTable thead tr');
+  Array.from(headerRow.children).forEach((th, colIndex) => {
+    const handle = document.createElement('span');
+    handle.className = 'col-resize-handle';
+    th.appendChild(handle);
+    handle.addEventListener('click', e => e.stopPropagation());
+    handle.addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const startX = e.clientX;
+      const startWidth = th.getBoundingClientRect().width;
+      handle.classList.add('resizing');
+      function onMove(ev) {
+        setColWidth(colIndex, startWidth + (ev.clientX - startX));
+      }
+      function onUp() {
+        handle.classList.remove('resizing');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+}
+initColumnResize();
+
+function toggleArchiveSection() {
+  document.getElementById('archiveToggle').classList.toggle('open');
+  document.getElementById('archiveSection').classList.toggle('open');
+}
+
+document.querySelectorAll('#partsTable thead th[data-key]:not(.nosort)').forEach(th => {
+  th.addEventListener('click', () => setSort(th.dataset.key));
+});
+
+/* ── SAVE / LOAD ── */
+function collectMeta() {
+  return {
+    assembly: document.getElementById('metaAssembly').value,
+    company: document.getElementById('metaCompany').value,
+    created: document.getElementById('metaCreated').value,
+    updated: document.getElementById('metaUpdated').value,
+    preparedBy: document.getElementById('metaPreparedBy').value
+  };
+}
+function populateMeta(m) {
+  if (!m) return;
+  document.getElementById('metaAssembly').value = m.assembly || '';
+  document.getElementById('metaCompany').value = m.company || '';
+  document.getElementById('metaCreated').value = m.created || '';
+  document.getElementById('metaUpdated').value = m.updated || '';
+  document.getElementById('metaPreparedBy').value = m.preparedBy || '';
+}
+
+/* ── IMPORT: CSV (pre-scrub an existing BOM) ── */
+// Columns are matched by header NAME, not position — so a CSV with the same headers in a
+// different order (or with extra columns this tool doesn't use) still imports correctly.
+// A header name that doesn't match any of these is simply ignored; a few common aliases are
+// accepted too, since not every export calls a column exactly what this tool does.
+const CSV_HEADER_ALIASES = {
+  partNo: ['part no.', 'part no', 'part number', 'partno', 'part #'],
+  name: ['name'],
+  desc: ['description', 'desc'],
+  type: ['type of part', 'type'],
+  supplier: ['supplier'],
+  manufacturer: ['manufacturer', 'mfr'],
+  mfrPartNo: ['mfr/supplier part no.', 'mfr/supplier part no', 'mfr part no.', 'mfr part no', 'supplier part no.', 'supplier part no'],
+  orderNo: ['link', 'order no.', 'order no', 'order number', 'url'],
+  qty: ['qty', 'quantity'],
+  unitCost: ['unit cost', 'unit price', 'cost'],
+  archived: ['archived']
+};
+function matchCsvColumns(header) {
+  const colByField = {};
+  const usedCols = new Set();
+  Object.keys(CSV_HEADER_ALIASES).forEach(field => {
+    const aliases = CSV_HEADER_ALIASES[field];
+    const idx = header.findIndex((h, i) => !usedCols.has(i) && aliases.includes(h.trim().toLowerCase()));
+    if (idx !== -1) { colByField[field] = idx; usedCols.add(idx); }
+  });
+  return colByField;
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { field += c; }
+    } else if (c === '"') { inQuotes = true; }
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\r') { /* skip */ }
+    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+    else { field += c; }
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.length > 1 || r[0] !== '');
+}
+
+function loadCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const parsed = parseCSV(reader.result);
+    if (!parsed.length) { alert('That CSV looks empty.'); event.target.value = ''; return; }
+    const header = parsed[0].map(h => h.trim());
+    const colByField = matchCsvColumns(header);
+    if (!colByField.name) {
+      alert('That CSV doesn\'t have a recognizable "Name" column, so it can\'t be scrubbed in automatically. Try exporting a CSV from this tool first to see the expected format.');
+      event.target.value = '';
+      return;
+    }
+    const matchedFields = Object.keys(colByField);
+    const skippedHeaders = header.filter((h, i) => h && !Object.values(colByField).includes(i));
+    let added = 0;
+    parsed.slice(1).forEach(cols => {
+      if (!cols.some(c => c.trim() !== '')) return;
+      const overrides = {};
+      matchedFields.forEach(field => {
+        const i = colByField[field];
+        if (field === 'archived') overrides.archived = /^y/i.test((cols[i] || '').trim());
+        else overrides[field] = (cols[i] || '').trim();
+      });
+      const isArchived = !!overrides.archived;
+      const r = newRow(overrides);
+      if (isArchived) archived.push(r); else rows.push(r);
+      added++;
+    });
+    render();
+    event.target.value = '';
+    let msg = `Imported ${added} row${added === 1 ? '' : 's'} from CSV, added to your current BOM.`;
+    if (skippedHeaders.length) msg += `\n\nColumns not recognized and skipped: ${skippedHeaders.join(', ')}.`;
+    alert(msg);
+  };
+  reader.readAsText(file);
+}
+
+/* ── NATIVE SAVE / OPEN: working file is a real .xlsx ───────────────────────
+   Instead of a .json "save file" that looks like code to a non-technical
+   person, the working file is a REAL .xlsx — double-click it and Excel/Sheets
+   shows a normal, readable BOM. There is no hidden sheet and no embedded JSON
+   blob: every field this tool needs back is a plain, visible column
+   (including "Archived", so archived parts round-trip too).
+   "Total Cost" is written as a real formula (=Qty*Unit Cost), so it
+   recalculates if someone edits Qty or Unit Cost by hand in Excel.
+   What's intentionally NOT saved, because none of it is BOM data: sort order
+   (a view preference — worst case you click a column header again), which
+   rows were "locked" (editing-flow state — reopened rows simply start
+   unlocked/editable, same as a fresh CSV import already does elsewhere in
+   this tool), and this tool's internal row ids (session-only bookkeeping —
+   fresh ones are handed out on open).
+   Loading reads the sheet by COLUMN NAME, reusing the same header-matching
+   logic as "Upload CSV" (see matchCsvColumns above) — so a BOM a teammate
+   builds from scratch in Excel, with recognizable headers in any order, opens
+   directly here too, not just this tool's own saves.
+   This tool hand-rolls its own minimal zip writer (no library, to keep this
+   a single dependency-free file): it always writes uncompressed "STORE"
+   entries. Reading is more permissive — real Excel/Google Sheets exports
+   always use real DEFLATE compression, and almost always use a shared-string
+   table (<c t="s">) instead of inline text, so the reader also unpacks
+   DEFLATE entries (via the browser's built-in DecompressionStream — still no
+   library) and resolves shared-string references, not just the STORE +
+   inlineStr shape this tool itself writes. */
+// A real .xlsx (a ZIP of OOXML parts), not an HTML table wearing an .xls extension — Excel
+// flags that mismatch as "corrupted/unsafe" on open. No zip library available in this
+// single-file/no-dependency tool, so this hand-rolls a minimal uncompressed (STORE) ZIP plus
+// the handful of XML parts a worksheet needs. No shared-string table: text cells use
+// inlineStr, which is slightly larger but far simpler and fully valid OOXML.
+function crc32(bytes) {
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) {
+    crc ^= bytes[i];
+    for (let j = 0; j < 8; j++) crc = (crc >>> 1) ^ (0xEDB88320 & -(crc & 1));
+  }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function makeZip(files) {
+  const encoder = new TextEncoder();
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+  files.forEach(f => {
+    const nameBytes = encoder.encode(f.name);
+    const data = typeof f.data === 'string' ? encoder.encode(f.data) : f.data;
+    const crc = crc32(data);
+    const size = data.length;
+
+    const local = new Uint8Array(30 + nameBytes.length);
+    const lv = new DataView(local.buffer);
+    lv.setUint32(0, 0x04034b50, true);
+    lv.setUint16(4, 20, true);
+    lv.setUint16(6, 0, true);
+    lv.setUint16(8, 0, true);
+    lv.setUint16(10, 0, true);
+    lv.setUint16(12, 0, true);
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, size, true);
+    lv.setUint32(22, size, true);
+    lv.setUint16(26, nameBytes.length, true);
+    lv.setUint16(28, 0, true);
+    local.set(nameBytes, 30);
+    localParts.push(local, data);
+
+    const central = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(central.buffer);
+    cv.setUint32(0, 0x02014b50, true);
+    cv.setUint16(4, 20, true);
+    cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0, true);
+    cv.setUint16(10, 0, true);
+    cv.setUint16(12, 0, true);
+    cv.setUint16(14, 0, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, size, true);
+    cv.setUint32(24, size, true);
+    cv.setUint16(28, nameBytes.length, true);
+    cv.setUint16(30, 0, true);
+    cv.setUint16(32, 0, true);
+    cv.setUint16(34, 0, true);
+    cv.setUint16(36, 0, true);
+    cv.setUint32(38, 0, true);
+    cv.setUint32(42, offset, true);
+    central.set(nameBytes, 46);
+    centralParts.push(central);
+
+    offset += local.length + data.length;
+  });
+
+  const centralOffset = offset;
+  const centralSize = centralParts.reduce((sum, c) => sum + c.length, 0);
+  const end = new Uint8Array(22);
+  const ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(8, files.length, true);
+  ev.setUint16(10, files.length, true);
+  ev.setUint32(12, centralSize, true);
+  ev.setUint32(16, centralOffset, true);
+
+  return new Blob([...localParts, ...centralParts, end], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+}
+function escapeXml(s) {
+  return (s ?? '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function colLetter(n) {
+  let s = '';
+  while (n > 0) { const rem = (n - 1) % 26; s = String.fromCharCode(65 + rem) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+function xlsxTextCell(col, row, value, styleIdx) {
+  const ref = `${colLetter(col)}${row}`;
+  const s = styleIdx ? ` s="${styleIdx}"` : '';
+  const text = (value ?? '').toString();
+  if (!text) return `<c r="${ref}"${s}/>`;
+  return `<c r="${ref}"${s} t="inlineStr"><is><t xml:space="preserve">${escapeXml(text)}</t></is></c>`;
+}
+function xlsxNumberCell(col, row, value, styleIdx) {
+  const ref = `${colLetter(col)}${row}`;
+  const s = styleIdx ? ` s="${styleIdx}"` : '';
+  if (value === null || value === undefined || value === '' || isNaN(value)) return `<c r="${ref}"${s}/>`;
+  return `<c r="${ref}"${s}><v>${Number(value)}</v></c>`;
+}
+function xlsxFormulaCell(col, row, formula, cachedValue, styleIdx) {
+  const ref = `${colLetter(col)}${row}`;
+  const s = styleIdx ? ` s="${styleIdx}"` : '';
+  const vPart = (cachedValue !== null && cachedValue !== undefined && !isNaN(cachedValue)) ? `<v>${Number(cachedValue)}</v>` : '';
+  return `<c r="${ref}"${s}><f>${formula}</f>${vPart}</c>`;
+}
+
+function colLetterToIndex(letters) {
+  let n = 0;
+  for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
+  return n;
+}
+
+const WF_META_LABELS = {
+  'assembly / product name:': 'assembly',
+  'company:': 'company',
+  'date created:': 'created',
+  'last updated:': 'updated',
+  'prepared by:': 'preparedBy'
+};
+
+function wfBuildWorkbookBlob() {
+  const meta = collectMeta();
+  const header = ['Part No.', 'Name', 'Description', 'Type of Part', 'Supplier', 'Manufacturer', 'Mfr/Supplier Part No.', 'Link', 'Qty', 'Unit Cost', 'Total Cost', 'Archived'];
+  const dataset = rows.concat(archived);
+
+  const sheetRows = [];
+  sheetRows.push(`<row r="1">${xlsxTextCell(1, 1, 'Bill of Materials', 3)}</row>`);
+  sheetRows.push(`<row r="2"></row>`);
+  sheetRows.push(`<row r="3">${xlsxTextCell(1, 3, 'Assembly / Product Name:', 3)}${xlsxTextCell(2, 3, meta.assembly)}</row>`);
+  sheetRows.push(`<row r="4">${xlsxTextCell(1, 4, 'Company:', 3)}${xlsxTextCell(2, 4, meta.company)}</row>`);
+  sheetRows.push(`<row r="5">${xlsxTextCell(1, 5, 'Date Created:', 3)}${xlsxTextCell(2, 5, meta.created)}</row>`);
+  sheetRows.push(`<row r="6">${xlsxTextCell(1, 6, 'Last Updated:', 3)}${xlsxTextCell(2, 6, meta.updated)}</row>`);
+  sheetRows.push(`<row r="7">${xlsxTextCell(1, 7, 'Prepared By:', 3)}${xlsxTextCell(2, 7, meta.preparedBy)}</row>`);
+  sheetRows.push(`<row r="8">${xlsxTextCell(1, 8, 'Active Subtotal:', 3)}${xlsxTextCell(2, 8, '$' + activeSubtotal().toFixed(2))}</row>`);
+  sheetRows.push(`<row r="9">${xlsxTextCell(1, 9, 'Saved:', 3)}${xlsxTextCell(2, 9, new Date().toLocaleString())}</row>`);
+  sheetRows.push(`<row r="10"></row>`);
+  const HEADER_ROW = 11;
+  sheetRows.push(`<row r="${HEADER_ROW}">${header.map((h, i) => xlsxTextCell(i + 1, HEADER_ROW, h, 1)).join('')}</row>`);
+
+  dataset.forEach((r, i) => {
+    const row = HEADER_ROW + 1 + i;
+    const tc = totalCost(r);
+    const totalCell = tc !== null
+      ? xlsxFormulaCell(11, row, `I${row}*J${row}`, tc, 2)
+      : xlsxNumberCell(11, row, null, 2);
+    const cells = [
+      xlsxTextCell(1, row, r.partNo), xlsxTextCell(2, row, r.name), xlsxTextCell(3, row, r.desc),
+      xlsxTextCell(4, row, r.type), xlsxTextCell(5, row, r.supplier), xlsxTextCell(6, row, r.manufacturer),
+      xlsxTextCell(7, row, r.mfrPartNo), xlsxTextCell(8, row, r.orderNo),
+      xlsxNumberCell(9, row, r.qty, 2), xlsxNumberCell(10, row, r.unitCost, 2), totalCell,
+      xlsxTextCell(12, row, r.archived ? 'Yes' : 'No')
+    ].join('');
+    sheetRows.push(`<row r="${row}">${cells}</row>`);
+  });
+
+  const sheetXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<sheetData>${sheetRows.join('')}</sheetData>
+</worksheet>`;
+
+  const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+</Types>`;
+
+  const rootRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`;
+
+  const workbookXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets><sheet name="BOM" sheetId="1" r:id="rId1"/></sheets>
+</workbook>`;
+
+  const workbookRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+  const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<fonts count="2">
+<font><sz val="11"/><name val="Calibri"/></font>
+<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font>
+</fonts>
+<fills count="3">
+<fill><patternFill patternType="none"/></fill>
+<fill><patternFill patternType="gray125"/></fill>
+<fill><patternFill patternType="solid"><fgColor rgb="FF128078"/><bgColor indexed="64"/></patternFill></fill>
+</fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="4">
+<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+<xf numFmtId="2" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>
+<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+</cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
+</styleSheet>`;
+
+  return makeZip([
+    { name: '[Content_Types].xml', data: contentTypes },
+    { name: '_rels/.rels', data: rootRels },
+    { name: 'xl/workbook.xml', data: workbookXml },
+    { name: 'xl/_rels/workbook.xml.rels', data: workbookRels },
+    { name: 'xl/styles.xml', data: stylesXml },
+    { name: 'xl/worksheets/sheet1.xml', data: sheetXml }
+  ]);
+}
+
+// Unzip for both the uncompressed (STORE) entries makeZip() produces above and the
+// DEFLATE-compressed entries real Excel/Google Sheets always write. DEFLATE is unpacked
+// with the browser's built-in DecompressionStream, so this still needs no zip/inflate
+// library — just a browser recent enough to have that API (Chrome/Edge/Firefox/Safari all
+// have it). Async because DecompressionStream is stream-based.
+async function wfUnzip(buf) {
+  const data = new Uint8Array(buf);
+  const dv = new DataView(buf);
+  let eocdOffset = -1;
+  for (let i = data.length - 22; i >= 0; i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
+  }
+  if (eocdOffset === -1) throw new Error('Not a valid zip/.xlsx file (no end-of-central-directory record found).');
+  const numEntries = dv.getUint16(eocdOffset + 10, true);
+  const centralOffset = dv.getUint32(eocdOffset + 16, true);
+
+  const entries = [];
+  let offset = centralOffset;
+  for (let i = 0; i < numEntries; i++) {
+    if (dv.getUint32(offset, true) !== 0x02014b50) break;
+    const compMethod = dv.getUint16(offset + 10, true);
+    const compSize = dv.getUint32(offset + 20, true);
+    const nameLen = dv.getUint16(offset + 28, true);
+    const extraLen = dv.getUint16(offset + 30, true);
+    const commentLen = dv.getUint16(offset + 32, true);
+    const localOffset = dv.getUint32(offset + 42, true);
+    const name = new TextDecoder().decode(data.slice(offset + 46, offset + 46 + nameLen));
+    entries.push({ name, compMethod, compSize, localOffset });
+
+    offset += 46 + nameLen + extraLen + commentLen;
+  }
+
+  const files = {};
+  for (const entry of entries) {
+    const localNameLen = dv.getUint16(entry.localOffset + 26, true);
+    const localExtraLen = dv.getUint16(entry.localOffset + 28, true);
+    const dataStart = entry.localOffset + 30 + localNameLen + localExtraLen;
+    const compBytes = data.slice(dataStart, dataStart + entry.compSize);
+
+    if (entry.compMethod === 0) {
+      files[entry.name] = compBytes;
+    } else if (entry.compMethod === 8) {
+      if (typeof DecompressionStream === 'undefined') {
+        throw new Error(`"${entry.name}" uses zip (DEFLATE) compression, which needs this browser's built-in decompression support (DecompressionStream) to unpack. Please open this tool in a recent Chrome, Edge, Firefox, or Safari.`);
+      }
+      const stream = new Blob([compBytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      files[entry.name] = new Uint8Array(await new Response(stream).arrayBuffer());
+    } else {
+      throw new Error(`"${entry.name}" uses a zip compression method (${entry.compMethod}) this tool doesn't support.`);
+    }
+  }
+  return files;
+}
+
+// Shared-string table (xl/sharedStrings.xml): real Excel/Google Sheets exports reference
+// text cells into this table (<c t="s"><v>INDEX</v></c>) instead of inlining the text, so a
+// cell's text can live in a plain <t>, or be split across multiple <r><t> rich-text runs.
+function wfParseSharedStrings(xmlText) {
+  const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) return [];
+  return Array.from(doc.getElementsByTagName('si')).map(si => {
+    const runs = si.getElementsByTagName('t');
+    return Array.from(runs).map(t => t.textContent).join('');
+  });
+}
+
+// Reads a worksheet's <row>/<c> grid into one array per row: cells[colIndex-1] = text.
+// Handles the cell shapes this tool itself writes (inlineStr text, plain numeric <v>) plus
+// a formula cell's cached <v>, and a shared-string cell (t="s", <v> is an index into
+// sharedStrings) — enough to read back a file this tool saved, or any plain Excel/Google
+// Sheets export using ordinary text/number cells.
+function wfParseSheetXml(xmlText, sharedStrings) {
+  const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) throw new Error('That sheet\'s XML could not be parsed.');
+  return Array.from(doc.getElementsByTagName('row')).map(rowEl => {
+    const cells = {};
+    Array.from(rowEl.getElementsByTagName('c')).forEach(c => {
+      const ref = c.getAttribute('r') || '';
+      const m = ref.match(/^([A-Z]+)/);
+      if (!m) return;
+      const colIdx = colLetterToIndex(m[1]);
+      const isEl = c.getElementsByTagName('is')[0];
+      const tEl = isEl ? isEl.getElementsByTagName('t')[0] : null;
+      const vEl = c.getElementsByTagName('v')[0];
+      if (tEl) cells[colIdx] = tEl.textContent;
+      else if (c.getAttribute('t') === 's' && vEl) cells[colIdx] = (sharedStrings && sharedStrings[Number(vEl.textContent)]) || '';
+      else cells[colIdx] = vEl ? vEl.textContent : '';
+    });
+    const maxCol = Math.max(0, ...Object.keys(cells).map(Number));
+    const arr = [];
+    for (let i = 1; i <= maxCol; i++) arr.push(cells[i] || '');
+    return arr;
+  });
+}
+
+function wfUpdateStatus(label) {
+  document.getElementById('wfFileStatus').textContent = label || 'No file open';
+}
+
+// Resolves the physical part for the workbook's first sheet via workbook.xml +
+// workbook.xml.rels, since real workbooks don't always name it "sheet1.xml" — falls back to
+// that conventional name if either part is missing or doesn't parse.
+function wfFindFirstSheetPath(files) {
+  try {
+    const wbXml = files['xl/workbook.xml'];
+    const relsXml = files['xl/_rels/workbook.xml.rels'];
+    if (!wbXml || !relsXml) return 'xl/worksheets/sheet1.xml';
+    const wbDoc = new DOMParser().parseFromString(new TextDecoder().decode(wbXml), 'application/xml');
+    const firstSheet = wbDoc.getElementsByTagName('sheet')[0];
+    const rId = firstSheet && firstSheet.getAttribute('r:id');
+    if (!rId) return 'xl/worksheets/sheet1.xml';
+    const relsDoc = new DOMParser().parseFromString(new TextDecoder().decode(relsXml), 'application/xml');
+    const rel = Array.from(relsDoc.getElementsByTagName('Relationship')).find(r => r.getAttribute('Id') === rId);
+    const target = rel && rel.getAttribute('Target');
+    if (!target) return 'xl/worksheets/sheet1.xml';
+    return target.startsWith('/') ? target.slice(1) : `xl/${target}`;
+  } catch (e) {
+    return 'xl/worksheets/sheet1.xml';
+  }
+}
+
+async function wfLoadFromArrayBuffer(buf) {
+  let files;
+  try { files = await wfUnzip(buf); }
+  catch (e) { alert('Could not read that .xlsx file.\n\n' + e.message); return; }
+
+  const sheetPath = wfFindFirstSheetPath(files);
+  const sheet1 = files[sheetPath];
+  if (!sheet1) { alert('Could not find a worksheet inside that file.'); return; }
+
+  const sharedStrings = files['xl/sharedStrings.xml'] ? wfParseSharedStrings(new TextDecoder().decode(files['xl/sharedStrings.xml'])) : null;
+
+  let sheetRows;
+  try { sheetRows = wfParseSheetXml(new TextDecoder().decode(sheet1), sharedStrings); }
+  catch (e) { alert('Could not read that file\'s worksheet.\n\n' + e.message); return; }
+
+  // Meta label:value rows (e.g. "Company:" | "Acme Co.") can appear anywhere above the
+  // header row — collect them as we go, same way a person skims down the sheet.
+  const metaValues = {};
+  let headerRowIdx = -1;
+  let colByField = null;
+  for (let i = 0; i < sheetRows.length; i++) {
+    const rowArr = sheetRows[i];
+    const label = (rowArr[0] || '').trim().toLowerCase();
+    if (WF_META_LABELS[label]) { metaValues[WF_META_LABELS[label]] = (rowArr[1] || '').trim(); continue; }
+    const candidate = matchCsvColumns(rowArr);
+    if (candidate.name !== undefined) { headerRowIdx = i; colByField = candidate; break; }
+  }
+  if (headerRowIdx === -1) {
+    alert('That file doesn\'t have a recognizable column layout for a BOM (no "Name" column header found), so it can\'t be opened here.\n\nIf this is a BOM built from scratch in Excel, make sure it has a header row with recognizable column names (Name, Qty, Unit Cost, etc.) — the same names "Upload CSV" below looks for.');
+    return;
+  }
+
+  const matchedFields = Object.keys(colByField);
+  const newRows = [], newArchived = [];
+  for (let i = headerRowIdx + 1; i < sheetRows.length; i++) {
+    const rowArr = sheetRows[i];
+    if (!rowArr.some(c => (c || '').trim() !== '')) continue; // blank row — skip, don't stop (styling gaps happen)
+    const overrides = {};
+    matchedFields.forEach(field => {
+      const idx = colByField[field];
+      if (field === 'archived') overrides.archived = /^y/i.test((rowArr[idx] || '').trim());
+      else overrides[field] = (rowArr[idx] || '').trim();
+    });
+    const r = newRow(overrides);
+    if (overrides.archived) newArchived.push(r); else newRows.push(r);
+  }
+
+  populateMeta(Object.assign({ assembly: '', company: '', created: '', updated: '', preparedBy: '' }, metaValues));
+  rows = newRows;
+  archived = newArchived;
+  sortKey = null; sortAsc = true; // view preference only — not meaningful to carry across files
+  nextId = Math.max(0, ...rows.concat(archived).map(r => r.id || 0)) + 1;
+  render();
+}
+
+let wfFileHandle = null;
+
+async function wfSave(forceSaveAs) {
+  const blob = wfBuildWorkbookBlob();
+  const suggestedName = `${(document.getElementById('metaAssembly').value || 'bom').trim().replace(/[^a-z0-9\-_]+/gi, '_')}.xlsx`;
+
+  if (window.showSaveFilePicker) {
+    try {
+      let handle = wfFileHandle;
+      if (forceSaveAs || !handle) {
+        handle = await window.showSaveFilePicker({
+          suggestedName,
+          types: [{ description: 'Excel Workbook', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+        });
+      }
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      wfFileHandle = handle;
+      wfUpdateStatus(`File: ${handle.name}`);
+      clearAutosave();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user cancelled the save dialog
+      // any other failure (e.g. permission revoked) — fall through to the download fallback
+    }
+  }
+  // Firefox/Safari don't support the File System Access API — fall back to a normal download,
+  // same as every tool's save does today.
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = suggestedName;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  wfUpdateStatus(`${suggestedName} (downloaded — this browser can't link Save back to a chosen file)`);
+  clearAutosave();
+}
+
+async function wfOpen() {
+  if (window.showOpenFilePicker) {
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'Excel Workbook', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+      });
+      const file = await handle.getFile();
+      await wfLoadFromArrayBuffer(await file.arrayBuffer());
+      wfFileHandle = handle;
+      wfUpdateStatus(`File: ${handle.name}`);
+      clearAutosave();
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  document.getElementById('wfOpenInputFallback').click();
+}
+
+function wfHandleOpenFallback(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    await wfLoadFromArrayBuffer(reader.result);
+    wfFileHandle = null;
+    wfUpdateStatus(`${file.name} (opened via upload — this browser needs a fresh download on Save)`);
+    clearAutosave();
+  };
+  reader.readAsArrayBuffer(file);
+  event.target.value = '';
+}
+
+/* ── EXPORT: PDF (print) ── */
+function escapeHtml(s) {
+  return (s ?? '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function printTable(list, title) {
+  const cols = ['Part No.', 'Name', 'Description', 'Type', 'Supplier', 'Manufacturer', 'Mfr/Supplier Part No.', 'Link', 'Qty', 'Unit Cost', 'Total Cost'];
+  let rowsHtml = list.map(r => {
+    const tc = totalCost(r);
+    return `<tr>${[r.partNo, r.name, r.desc, r.type, r.supplier, r.manufacturer, r.mfrPartNo, r.orderNo, r.qty,
+      r.unitCost !== '' ? '$' + parseFloat(r.unitCost).toFixed(2) : '',
+      tc !== null ? '$' + tc.toFixed(2) : ''].map(v => `<td>${escapeHtml(v)}</td>`).join('')}</tr>`;
+  }).join('');
+  return `<div class="section"><h2>${title}</h2>
+    <table><thead><tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+    <tbody>${rowsHtml || '<tr><td colspan="10" style="color:#888;">No rows.</td></tr>'}</tbody></table></div>`;
+}
+function exportPDF() {
+  const includeArchived = document.getElementById('includeArchivedExport').checked;
+  const meta = collectMeta();
+  const flagLines = [];
+  rows.forEach(r => computeFlags(r).forEach(f => flagLines.push(`${r.name || '(unnamed part)'}: ${f}`)));
+  const subtotal = activeSubtotal();
+
+  let html = `<h1>Bill of Materials — ${escapeHtml(meta.assembly || 'Untitled Assembly')}</h1>
+  <div class="meta-line">
+    Company: ${escapeHtml(meta.company || '—')} &nbsp;|&nbsp;
+    Created: ${escapeHtml(meta.created || '—')} &nbsp;|&nbsp;
+    Last Updated: ${escapeHtml(meta.updated || '—')} &nbsp;|&nbsp;
+    Prepared By: ${escapeHtml(meta.preparedBy || '—')} &nbsp;|&nbsp;
+    Exported: ${new Date().toLocaleDateString()}
+  </div>`;
+
+  if (flagLines.length) {
+    html += `<div class="flagbox"><strong>${flagLines.length} open flag(s):</strong><br>${flagLines.map(escapeHtml).join('<br>')}</div>`;
+  }
+
+  html += printTable(rows, `Active Parts (Subtotal: $${subtotal.toFixed(2)})`);
+
+  if (includeArchived) {
+    html += printTable(archived, `Archived / Experimental Parts (${archived.length})`);
+  }
+
+  html += `<div class="disclaimer-print">This is a workshop aid for drafting a Bill of Materials — a companion to Rev: Ithaca Startup Works' BOM workshops, not the official Rev BOM Template.xlsx. Flags are guidance drawn from that workshop content, not hard requirements. Nothing entered in this tool is uploaded or sent anywhere.</div>`;
+
+  document.getElementById('print-doc').innerHTML = html;
+  window.print();
+}
+
+/* ── AUTOSAVE (localStorage only — never leaves the browser) ── */
+// Guards against the classic accidental-back/accidental-refresh data loss: every change is
+// snapshotted to localStorage (debounced so typing doesn't thrash it), and on next load — if
+// that snapshot wasn't cleared by a normal Save JSON / explicit discard — the user is offered
+// a one-click restore. This is separate from Save JSON: it's a safety net, not a save format,
+// and is cleared as soon as it's restored or discarded so it never resurfaces stale data.
+const AUTOSAVE_KEY = 'bomWorksheetAutosave_v1';
+let autosaveTimer = null;
+let autosaveSuppressed = false; // true right after a restore/discard, to avoid re-saving the banner's own removal as "new" data
+
+function hasAnyData() {
+  return rows.length > 0 || archived.length > 0
+    || Object.values(collectMeta()).some(v => (v || '').trim() !== '');
+}
+
+function scheduleAutosave() {
+  if (autosaveSuppressed) return;
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    if (!hasAnyData()) { localStorage.removeItem(AUTOSAVE_KEY); return; }
+    const snapshot = { meta: collectMeta(), rows, archived, sortKey, sortAsc, nextId, savedAt: new Date().toISOString() };
+    try { localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snapshot)); } catch (e) { /* storage full/unavailable — silently skip, Save JSON still works */ }
+  }, 800);
+}
+
+function clearAutosave() {
+  localStorage.removeItem(AUTOSAVE_KEY);
+}
+
+function showRestoreBanner(snapshot) {
+  const when = snapshot.savedAt ? new Date(snapshot.savedAt).toLocaleString() : 'a previous session';
+  const rowCount = (snapshot.rows || []).length + (snapshot.archived || []).length;
+  document.getElementById('restoreBannerText').textContent =
+    `Found unsaved work from ${when} (${rowCount} row${rowCount === 1 ? '' : 's'}) — looks like the tab was closed or refreshed before it was saved. Restore it?`;
+  document.getElementById('restoreBanner').style.display = 'flex';
+}
+
+function restoreAutosave() {
+  const raw = localStorage.getItem(AUTOSAVE_KEY);
+  if (!raw) return;
+  try {
+    const snapshot = JSON.parse(raw);
+    autosaveSuppressed = true;
+    populateMeta(snapshot.meta);
+    rows = snapshot.rows || [];
+    archived = snapshot.archived || [];
+    sortKey = snapshot.sortKey || null;
+    sortAsc = snapshot.sortAsc !== false;
+    nextId = snapshot.nextId || (Math.max(0, ...rows.concat(archived).map(r => r.id || 0)) + 1);
+    render();
+    autosaveSuppressed = false;
+  } catch (e) { /* corrupt snapshot — nothing to restore */ }
+  document.getElementById('restoreBanner').style.display = 'none';
+}
+
+function dismissAutosave() {
+  clearAutosave();
+  autosaveSuppressed = false;
+  document.getElementById('restoreBanner').style.display = 'none';
+}
+
+// Check for a leftover autosave snapshot before the first render so the banner appears
+// immediately on load, without flashing an empty table first. Suppress autosave until the
+// user restores or discards it — otherwise the empty starting table's own autosave (still
+// debouncing from page load) clears the very snapshot the banner is offering to restore.
+(function checkAutosaveOnLoad() {
+  const raw = localStorage.getItem(AUTOSAVE_KEY);
+  if (!raw) return;
+  try { autosaveSuppressed = true; showRestoreBanner(JSON.parse(raw)); } catch (e) { localStorage.removeItem(AUTOSAVE_KEY); }
+})();
+
+// Cheap first line of defense against an instinctive back/refresh: only prompts when there's
+// actually something to lose.
+window.addEventListener('beforeunload', (e) => {
+  if (hasAnyData()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+render();
+</script>
+
+</body>
+</html>
