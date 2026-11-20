@@ -155,14 +155,16 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // Short, bounded wait for price-bearing content to show up after the page's own JS runs —
-    // deliberately not the whole remaining time budget, so a slow/blocked page fails fast
-    // instead of eating the function's 10-second ceiling (this project is on Vercel's free
-    // Hobby plan, which hard-caps function duration at 10s with no way to raise it).
+    // Bounded wait for price-bearing content to show up after the page's own JS runs — not the
+    // whole remaining time budget, so a slow/blocked page still fails well short of the
+    // function's 10-second ceiling (Vercel Hobby plan, hard-capped, can't be raised). First real
+    // test against McMaster landed on the correct product page (title confirmed) in ~3.9s total
+    // with this wait maxed out at 3000ms and no price found — raising it to 7000ms to see if
+    // McMaster's pricing call is just slower than that budget, not genuinely absent/unmatched.
     try {
       await page.waitForFunction(
         `(${findPriceInPage.toString()})() !== null`,
-        { timeout: 3000 }
+        { timeout: 7000 }
       );
     } catch (e) {
       // Not found within the budget isn't necessarily "blocked" — the page may just genuinely
@@ -174,14 +176,22 @@ module.exports = async (req, res) => {
     if (price) {
       res.status(200).json({ ok: true, price: price });
     } else {
-      // TEMPORARY debug field — a title + text snippet of whatever Puppeteer actually landed
-      // on, so it's possible to tell a real-but-unmatched product page apart from a cookie/
-      // consent wall, a bot-check interstitial, or something else entirely, without needing
-      // page.screenshot() shipped back as a huge base64 blob.
-      const debugInfo = await page.evaluate(() => ({
-        title: document.title,
-        snippet: (document.body.innerText || '').slice(0, 500)
-      })).catch(() => null);
+      // TEMPORARY debug field — title + a snippet around the first "$" anywhere on the page
+      // (not just the first 500 characters, which landed entirely in the left nav on the first
+      // real test and proved nothing either way). Distinguishes three different possibilities:
+      // no "$" at all (price never rendered in this wait budget, or a consent/bot-check page),
+      // a "$" that the regex should have matched (a bug in findPriceInPage), or a price shown
+      // without a "$" at all (the regex itself needs to be less strict).
+      const debugInfo = await page.evaluate(() => {
+        const text = document.body.innerText || '';
+        const dollarIndex = text.indexOf('$');
+        return {
+          title: document.title,
+          bodyTextLength: text.length,
+          dollarSignCount: (text.match(/\$/g) || []).length,
+          contextAroundFirstDollar: dollarIndex === -1 ? null : text.slice(Math.max(0, dollarIndex - 40), dollarIndex + 40)
+        };
+      }).catch(() => null);
       res.status(200).json({ ok: false, reason: 'not_found', debug: debugInfo });
     }
   } catch (err) {
