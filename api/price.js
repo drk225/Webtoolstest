@@ -114,8 +114,11 @@ module.exports = async (req, res) => {
 
   let browser = null;
   try {
-    const chromium = require('@sparticuz/chromium-min');
-    const puppeteer = require('puppeteer-core');
+    // @sparticuz/chromium-min ships as an ES Module — require() fails with "require() of ES
+    // Module ... not supported" (confirmed in a real deploy). puppeteer-core is CJS, but
+    // dynamic import() works for either, so use it for both rather than mixing require/import.
+    const chromium = (await import('@sparticuz/chromium-min')).default;
+    const puppeteer = (await import('puppeteer-core')).default;
     const executablePath = await getExecutablePath(chromium, req);
 
     browser = await puppeteer.launch({
