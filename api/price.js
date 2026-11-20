@@ -128,14 +128,17 @@ module.exports = async (req, res) => {
     const page = await browser.newPage();
 
     let navigationFailed = false;
+    let navigationError = '';
     try {
       await page.goto(target.toString(), { waitUntil: 'domcontentloaded', timeout: 6000 });
     } catch (e) {
       navigationFailed = true;
+      navigationError = (e && e.message) || '';
     }
 
     if (navigationFailed) {
-      res.status(200).json({ ok: false, reason: 'timeout' });
+      // TEMPORARY debug field — see the note below in the outer catch.
+      res.status(200).json({ ok: false, reason: 'timeout', debug: navigationError });
       return;
     }
 
@@ -163,7 +166,10 @@ module.exports = async (req, res) => {
   } catch (err) {
     const message = (err && err.message) || '';
     const looksBlocked = /403|forbidden|blocked|captcha/i.test(message);
-    res.status(200).json({ ok: false, reason: looksBlocked ? 'blocked' : 'error' });
+    // TEMPORARY debug field — remove `debug` once this is diagnosed. There's no way to see
+    // Vercel's function logs from outside the dashboard, so this is the fastest way to find out
+    // what's actually throwing without walking through the UI.
+    res.status(200).json({ ok: false, reason: looksBlocked ? 'blocked' : 'error', debug: message });
   } finally {
     if (browser) {
       try { await browser.close(); } catch (e) {}
