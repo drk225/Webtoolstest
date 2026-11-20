@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Vercel serverless backend for the BOM worksheet's Unit Cost auto-fill (headless-render a supplier product page and read its price). The rest of this repo is plain static HTML with no build step; this is the one part of it that isn't.",
   "engines": {
-    "node": "20.x"
+    "node": "26.x"
   },
   "scripts": {
     "postinstall": "node scripts/make-chromium-pack.js"
