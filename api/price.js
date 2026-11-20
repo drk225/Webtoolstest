@@ -174,7 +174,15 @@ module.exports = async (req, res) => {
     if (price) {
       res.status(200).json({ ok: true, price: price });
     } else {
-      res.status(200).json({ ok: false, reason: 'not_found' });
+      // TEMPORARY debug field — a title + text snippet of whatever Puppeteer actually landed
+      // on, so it's possible to tell a real-but-unmatched product page apart from a cookie/
+      // consent wall, a bot-check interstitial, or something else entirely, without needing
+      // page.screenshot() shipped back as a huge base64 blob.
+      const debugInfo = await page.evaluate(() => ({
+        title: document.title,
+        snippet: (document.body.innerText || '').slice(0, 500)
+      })).catch(() => null);
+      res.status(200).json({ ok: false, reason: 'not_found', debug: debugInfo });
     }
   } catch (err) {
     const message = (err && err.message) || '';
